@@ -253,7 +253,10 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* THE medallion fill layer (single painted surface) */
 
 #overlay .overlay-card.overlay-medallion{
-  --mw: clamp(125px, 15vw, 200px);
+  /* Medallion width: grow with the smaller viewport edge (so on tall or wide
+     devices it uses the limiting dimension). Use a larger minimum and max so
+     tablet / large screens fill more space. */
+  --mw: clamp(140px, min(22vw, 28vh), 320px);
   --mh: calc(var(--mw) * 1.875);
 
   position: relative;
@@ -832,7 +835,10 @@ body[data-state="ready"] #best{
   position: absolute;
   left: 50%;
   top: 0;                          /* anchor at top of medallion box */
-  width: 120px;                    /* desktop default */
+  /* Size the apple relative to the medallion variable so it scales on
+     tablets and large viewports */
+  width: calc(var(--mw) * 0.9);
+  max-width: 360px;
   height: auto;
   z-index: 2;                      /* above the fill and inner */
   pointer-events: none;
@@ -870,7 +876,8 @@ body[data-state="ready"] #best{
 #overlay #homeApple{
   display: block;
   margin: -24px auto -6px;
-  width: 180px;     /* web/desktop default (smaller) */
+  width: calc(var(--mw) * 0.9);
+  max-width: 360px;
   height: auto;
   user-select: none;
   -webkit-user-drag: none;
