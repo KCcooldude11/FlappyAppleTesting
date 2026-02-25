@@ -109,6 +109,14 @@ body {
   body { --home-mw: clamp(160px, 12vw, 420px); }
 }
 
+/* Helper vars derived from --home-mw to calculate safe medallion sizing. */
+body {
+  /* top padding reserved for title */
+  --home-top-padding: max(24px, calc(var(--home-mw) * 0.6));
+  /* estimated title block height (approx font-size * 1.1) */
+  --home-title-h: min(220px, calc(var(--home-mw) * 0.55));
+}
+
 /* Use WitcherKnight for all UI text */
 body, #overlay, #gameover, #score, #best, button, .btn {
   font-family: 'WitcherKnight', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -228,9 +236,8 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   text-align: center;
   align-items: center;
   justify-content: center;
-  /* Reserve space for the title at the top using the home sizing variable.
-     Use a minimum so very small screens still have breathing room. */
-  padding-top: max(24px, calc(var(--home-mw) * 0.6));
+  /* Use computed top padding variable to keep spacing consistent */
+  padding-top: var(--home-top-padding);
 }
 
 /* Only make the overlay card clickable, don't give it box styling here */
@@ -270,9 +277,13 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* THE medallion fill layer (single painted surface) */
 
 #overlay .overlay-card.overlay-medallion{
-  /* Use the global --home-mw to keep medallion sizing consistent with the
-    rest of the home UI. This prevents independent oversizing. */
-  --mw: var(--home-mw);
+  /* Compute a safe medallion width that never causes the diamond to exceed
+    the viewport height when combined with title and top padding. We take the
+    smaller of the desired home width and the max possible width based on
+    available vertical space. */
+  --_maxFromVh: calc((100vh - var(--home-top-padding) - var(--home-title-h) - 48px) / 2);
+  --_safe-mw: min(var(--home-mw), var(--_maxFromVh));
+  --mw: var(--_safe-mw);
   --mh: calc(var(--mw) * 1.875);
 
   position: relative;
