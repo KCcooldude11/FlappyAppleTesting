@@ -1,4 +1,5 @@
 import * as C from './constants.js';
+import * as cfg from './config.js';
 
 let defaultSkinIndex = 0;
 
