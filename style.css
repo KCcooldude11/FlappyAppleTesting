@@ -794,7 +794,11 @@ body:not([data-state="ready"]) #homeTitle{
   display: none;
 }
 
-/* Home screen: hide HUD elements */
+/* Home screen: hide HUD container and elements */
+body[data-state="ready"] #hud {
+  display: none !important;
+}
+
 body[data-state="ready"] #btn-restart,
 body[data-state="ready"] #score,
 body[data-state="ready"] #best{

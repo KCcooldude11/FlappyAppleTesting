@@ -65,6 +65,9 @@ async function initializeApp() {
 
   // Update name button state
   onNameInputChanged();
+
+  // Initialize game state to ready (sets data-state attribute for CSS styling)
+  state.setGameMode('ready');
 }
 
 function onCanvasResize() {
