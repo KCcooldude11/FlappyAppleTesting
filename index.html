@@ -13,6 +13,10 @@
     <link rel="preload" href="./assets/WitcherKnight.woff2" as="font" type="font/woff2" crossorigin>
   </head>
   <body>
+    <script>
+      // Set initial game state synchronously to avoid flash of unstyled content
+      document.body.dataset.state = 'ready';
+    </script>
     <div id="app">
       <h1 id="homeTitle"><span class="titleText" data-text="Flappy Apple">Flappy Apple</span></h1>
       <canvas id="game" width="480" height="640" role="img" aria-label="Flappy Bird style game"></canvas>
