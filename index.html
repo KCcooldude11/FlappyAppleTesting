@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1880398129724005"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+    <title>Flappy Apple</title>
+    <link rel="preload" href="./assets/bird_idle.png" as="image">
+    <link rel="preload" href="./assets/bird_flap.png" as="image">
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="preload" href="./assets/WitcherKnight.woff2" as="font" type="font/woff2" crossorigin>
+  </head>
+  <body>
+    <div id="app">
+      <h1 id="homeTitle"><span class="titleText" data-text="Flappy Apple">Flappy Apple</span></h1>
+      <canvas id="game" width="480" height="640" role="img" aria-label="Flappy Bird style game"></canvas>
+      <div id="hud">
+        <div class="left">
+          <button id="btn-restart" aria-label="Restart" title="Restart">↻</button>
+        </div>
+        <div class="center">
+          <span id="score">0</span>
+        </div>
+        <div class="right">
+          <span id="best">Best: 0</span>
+        </div>
+      </div>
+    <div id="overlay" class="show">
+  <div class="overlay-card overlay-medallion">
+    <div class="overlay-medallion__fill"></div>
+    <div id="homeAppleWrap" aria-hidden="true">
+      <img id="homeApple" src="./assets/Apple_Fly.png" alt="Apple" draggable="false" />
+    </div>
+    <div class="overlay-medallion__inner">
+      <label class="field">
+        <span>Username</span>
+        <input id="username" maxlength="16" inputmode="text" autocomplete="username" placeholder="3–16 chars">
+      </label>
+
+      <button id="btn-play" disabled>Play</button>
+    </div>
+  </div>
+</div>
+  <div id="gameover" class="hide">
+  <div class="go-card">
+    <h2>Game Over</h2>
+    <img id="gameover-skin" class="hide" alt="" />
+      <div class="profile-line">
+    <strong id="go-username" class="username-label">Player</strong>
+    <button id="btn-edit-name" class="icon-btn" aria-label="Edit username" title="Edit username">
+      <!-- simple pencil icon, color comes from CSS (currentColor) -->
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" />
+        <path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+      </svg>
+    </button>
+  </div>
+  <dialog id="rename-dlg">
+    <form method="dialog" id="rename-form">
+      <h3 style="margin:0 0 8px;">Edit username</h3>
+      <input id="rename-input" maxlength="16" inputmode="text" autocomplete="username" placeholder="3–16 chars" />
+      <div class="actions" style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
+        <button id="rename-cancel" type="submit" value="cancel">Cancel</button>
+        <button id="rename-save" value="default" disabled>Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  </div>
+
+  <div class="leaderboard">
+    <div class="lb-title">The Ranks</div>
+    <div class="lb-head row">
+      <span class="rank">#</span>
+      <span class="name">Player</span>
+      <span class="score">Score</span>
+    </div>
+    <div id="leaderboard-rows" class="lb-rows"></div>
+    <div id="your-rank" class="your-rank hide">
+      <div class="yr-row">
+        <span class="rank yr-rank"><span class="txt" id="yr-rank-num">--</span></span>
+        <span class="yr-label">Your ranking</span>
+        <span class="yr-score" id="yr-best">--</span>
+      </div>
+    </div>
+  </div>
+
+  <p><button id="btn-try">Try Again</button></p>
+</div>
+
+    </div>
+    <script src="./main.v4.js"></script>
+  </body>
+</html>
