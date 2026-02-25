@@ -212,6 +212,8 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   text-align: center;
   align-items: center;
   justify-content: center;
+  /* Reserve space for the title at the top to prevent overlap */
+  padding-top: max(140px, 18vw);
 }
 
 /* Only make the overlay card clickable, don't give it box styling here */
