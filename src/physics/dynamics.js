@@ -18,7 +18,7 @@ export function decreaseFlapTimer(bird, dt) {
   }
 }
 
-export function applyFlap(bird, jumpVyScaled) {
+export function flap(bird, jumpVyScaled) {
   bird.vy = jumpVyScaled;
   bird.flapTimer = C.BIRD.FLAP_TIMER_MS;
 }
