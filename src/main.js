@@ -89,15 +89,9 @@ function onCanvasResize() {
 }
 
 function onFlapped() {
-  if (state.gameState.mode === 'ready') {
-    const name = input.getNameInputValue() || storage.getSavedName();
-    if (!fmt.isValidName(name)) {
-      input.setNameInputValue('');
-      input.setPlayButtonDisabled(true);
-      return;
-    }
-    startGame(name);
-  } else if (state.gameState.mode === 'playing') {
+  // Only flap if actively playing
+  // Game start should only happen via the Play button (onStartClicked)
+  if (state.gameState.mode === 'playing') {
     dynPhysics.flap(state.gameState.bird, C.PHYSICS.JUMP_VY * renderer.getScale());
   }
 }

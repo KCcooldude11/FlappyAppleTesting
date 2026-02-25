@@ -31,7 +31,10 @@ export function initializeInputHandlers(flappingCallback, startingCallback, rena
       flappingCallback();
     } else if (e.code === 'Enter') {
       e.preventDefault();
-      startingCallback();
+      // Only start game if the play button is enabled
+      if (btnPlay && !btnPlay.disabled) {
+        startingCallback();
+      }
     }
   });
 
