@@ -12,6 +12,8 @@ import * as updateModule from './update.js';
 
 let lastTime = 0;
 let onGameOverCallback = null;
+let onScoreUpdateCallback = null;
+let lastDisplayedScore = 0;
 
 export function gameLoop(t) {
   state.updateFrameTimestamp(t);
@@ -22,6 +24,12 @@ export function gameLoop(t) {
 
   // Update game state
   const collisionResult = updateModule.update(state.gameState, dt, renderer.getScale());
+
+  // Update score display if changed
+  if (state.gameState.score !== lastDisplayedScore && onScoreUpdateCallback) {
+    onScoreUpdateCallback(state.gameState.score);
+    lastDisplayedScore = state.gameState.score;
+  }
 
   if (collisionResult) {
     // Game over
@@ -101,8 +109,10 @@ export function render() {
   renderer.endFrame();
 }
 
-export function start(onGameOver) {
+export function start(onGameOver, onScoreUpdate) {
   onGameOverCallback = onGameOver;
+  onScoreUpdateCallback = onScoreUpdate;
+  lastDisplayedScore = 0;
   renderer.startFrame();
   render();
   lastTime = 0;

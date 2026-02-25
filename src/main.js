@@ -149,7 +149,11 @@ function startGame(name) {
     skinSys.switchToSkin(state.gameState, appleIdx, C.PHYSICS.BIRD_RADIUS_RATIO);
   }
 
-  loop.start(onGameOver);
+  loop.start(onGameOver, onScoreUpdate);
+}
+
+function onScoreUpdate(newScore) {
+  hudRender.updateScoreBadge(document.getElementById('score'), scoreTextEl, newScore);
 }
 
 async function onGameOver() {
