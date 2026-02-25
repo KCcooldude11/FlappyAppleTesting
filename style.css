@@ -95,7 +95,9 @@ body {
 
 /* Global home sizing variable used to scale the title / medallion UI consistently */
 body {
-  --home-mw: clamp(140px, min(22vw, 28vh), 360px);
+  /* Increase the maximum so tablets and large portrait devices render larger
+     home UI. Uses the smaller viewport edge so components scale sensibly. */
+  --home-mw: clamp(160px, min(28vw, 36vh), 520px);
 }
 
 /* Use WitcherKnight for all UI text */
@@ -259,9 +261,9 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 
 #overlay .overlay-card.overlay-medallion{
   /* Medallion width: grow with the smaller viewport edge (so on tall or wide
-     devices it uses the limiting dimension). Use a larger minimum and max so
-     tablet / large screens fill more space. */
-  --mw: clamp(140px, min(22vw, 28vh), 320px);
+    devices it uses the limiting dimension). Increased mid/max values so the
+    medallion fills more of tablet screens. */
+  --mw: clamp(160px, min(28vw, 36vh), 520px);
   --mh: calc(var(--mw) * 1.875);
 
   position: relative;
@@ -307,7 +309,8 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 
     /* Make inner content scale with the home width variable so form fields
       and buttons grow on larger screens */
-    width: min(calc(var(--home-mw) * 0.9), 62vw, 420px);
+    /* Allow the inner content to expand more on large screens */
+    width: min(calc(var(--home-mw) * 0.95), 62vw, 560px);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -340,12 +343,12 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   text-shadow: 0 1px 0 rgba(255,255,255,.35);
   text-align: center;
   width: 100%;
-  font-size: clamp(13px, calc(var(--home-mw) * 0.07), 20px);
+  font-size: clamp(14px, calc(var(--home-mw) * 0.085), 26px);
 }
 
 /* Softer input */
 #overlay .overlay-medallion__inner .field input{
-  width: min(calc(var(--home-mw) * 0.7), 62vw, 340px);
+  width: min(calc(var(--home-mw) * 0.82), 62vw, 480px);
   background: rgba(250, 245, 232, 0.92);
   border: 1px solid rgba(55, 30, 10, 0.20);
   box-shadow: 0 2px 8px rgba(0,0,0,.10);
@@ -363,9 +366,9 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   -webkit-text-fill-color: #f7f1e3; /* extra iOS insurance */
   
   border-radius: 999px;
-  padding: calc(var(--home-mw) * 0.045) calc(var(--home-mw) * 0.08);
+  padding: calc(var(--home-mw) * 0.05) calc(var(--home-mw) * 0.10);
   line-height: 1;
-  font-size: clamp(14px, calc(var(--home-mw) * 0.06), 22px);
+  font-size: clamp(15px, calc(var(--home-mw) * 0.08), 28px);
   cursor: pointer;
 
   box-shadow: 0 10px 18px rgba(0,0,0,.18);
@@ -658,7 +661,7 @@ kbd {
   font-weight: 400;
   display: inline-block;
   /* Scale the title with the global home size so it grows on tablets */
-  font-size: clamp(50px, calc(var(--home-mw) * 0.36), 160px);
+  font-size: clamp(56px, calc(var(--home-mw) * 0.45), 200px);
   letter-spacing: 0.08em;
 
   background: linear-gradient(to bottom, #ffff2f 0%, #ffbf00cc 25%, #ffff2f  45%, #ffbf00cc 70%, #ffff2f  100%);
@@ -847,8 +850,8 @@ body[data-state="ready"] #best{
   top: 0;                          /* anchor at top of medallion box */
   /* Size the apple relative to the medallion variable so it scales on
      tablets and large viewports */
-  width: calc(var(--mw) * 0.9);
-  max-width: 360px;
+  width: calc(var(--mw) * 0.95);
+  max-width: 520px;
   height: auto;
   z-index: 2;                      /* above the fill and inner */
   pointer-events: none;
