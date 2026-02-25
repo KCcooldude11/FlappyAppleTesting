@@ -8,6 +8,42 @@ html, body {
   overscroll-behavior: none;/* stop bounce on supported browsers */
 }
 
+/* ---------- Global Responsive Helpers ---------- */
+/* Fluid base font sizing so rem/em scale sensibly across devices */
+:root{
+  font-size: clamp(14px, 1.5vw, 18px); /* use rems for component fonts where possible */
+}
+
+/* Make images/media scale to their containers and avoid overflow */
+img, picture, video, canvas, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent long words / URLs from breaking layouts */
+.content, .text, p, li {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Safe overflow for pre/code/tables */
+pre, code, table, .table {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Make interactive controls comfortably tappable on touch devices.
+   Scoped to overlay and core UI to avoid changing small UI controls elsewhere. */
+#overlay button, #overlay input, #overlay .btn, #btn-play, #btn-try, #btn-restart {
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
+}
+
+/* Utility: force responsive media wrapper */
+.responsive-media { width:100%; height:auto; }
+
 .show { display: flex !important; }
 .hide { display: none !important; }
 
