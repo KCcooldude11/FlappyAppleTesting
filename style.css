@@ -95,9 +95,18 @@ body {
 
 /* Global home sizing variable used to scale the title / medallion UI consistently */
 body {
-  /* Increase the maximum so tablets and large portrait devices render larger
-     home UI. Uses the smaller viewport edge so components scale sensibly. */
-  --home-mw: clamp(160px, min(28vw, 36vh), 520px);
+  /* Base home sizing: conservative default for phones + desktops */
+  --home-mw: clamp(120px, 18vw, 320px);
+}
+
+/* Tablet-specific scaling: allow larger home UI on medium viewports */
+@media (min-width: 700px) and (max-width: 1199px){
+  body { --home-mw: clamp(140px, min(22vw, 30vh), 420px); }
+}
+
+/* Large desktops: moderate cap so elements don't overflow */
+@media (min-width: 1200px){
+  body { --home-mw: clamp(160px, 12vw, 420px); }
 }
 
 /* Use WitcherKnight for all UI text */
@@ -219,8 +228,9 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   text-align: center;
   align-items: center;
   justify-content: center;
-  /* Reserve space for the title at the top to prevent overlap */
-  padding-top: max(140px, 18vw);
+  /* Reserve space for the title at the top using the home sizing variable.
+     Use a minimum so very small screens still have breathing room. */
+  padding-top: max(24px, calc(var(--home-mw) * 0.6));
 }
 
 /* Only make the overlay card clickable, don't give it box styling here */
@@ -260,10 +270,9 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* THE medallion fill layer (single painted surface) */
 
 #overlay .overlay-card.overlay-medallion{
-  /* Medallion width: grow with the smaller viewport edge (so on tall or wide
-    devices it uses the limiting dimension). Increased mid/max values so the
-    medallion fills more of tablet screens. */
-  --mw: clamp(160px, min(28vw, 36vh), 520px);
+  /* Use the global --home-mw to keep medallion sizing consistent with the
+    rest of the home UI. This prevents independent oversizing. */
+  --mw: var(--home-mw);
   --mh: calc(var(--mw) * 1.875);
 
   position: relative;
