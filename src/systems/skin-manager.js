@@ -2,7 +2,7 @@ import * as C from '../constants.js';
 import * as cfg from '../config.js';
 
 export function canUseSkin(index, merrikhUnlockedThisRun) {
-  if (index === C.SKIN_INDICES.MERRIKH && !merrikhUnlockedThisRun) return false;
+  if (index === cfg.SKIN_INDICES.MERRIKH && !merrikhUnlockedThisRun) return false;
   return cfg.isSkinReady(index);
 }
 

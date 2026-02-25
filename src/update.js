@@ -8,6 +8,7 @@ import * as medalEcon from './systems/medals-economy.js';
 import * as skinSys from './systems/skin-manager.js';
 import * as bgEntity from './entities/background.js';
 import * as particlesRender from './render/particles.js';
+import * as cfg from './config.js';
 
 export function update(gameState, dt, scale) {
   if (gameState.mode !== 'playing') return null;
@@ -130,7 +131,7 @@ export function update(gameState, dt, scale) {
 
         if (m.type === 'merrikh') {
           gameState.merrikhUnlockedThisRun = true;
-          skinSys.switchToSkin(gameState, C.SKIN_INDICES.MERRIKH, C.PHYSICS.BIRD_RADIUS_RATIO);
+          skinSys.switchToSkin(gameState, cfg.SKIN_INDICES.MERRIKH, C.PHYSICS.BIRD_RADIUS_RATIO);
           if (C.MEDALS.LOCK_AFTER_MERRIKH) {
             gameState.skinLocked = true;
           }

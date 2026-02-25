@@ -144,7 +144,7 @@ function startGame(name) {
   uiOverlays.hideGameOver();
 
   // Reset skin to Apple at start
-  const appleIdx = C.SKIN_INDICES.APPLE;
+  const appleIdx = cfg.SKIN_INDICES.APPLE;
   if (appleIdx >= 0 && cfg.isSkinReady(appleIdx)) {
     skinSys.switchToSkin(state.gameState, appleIdx, C.PHYSICS.BIRD_RADIUS_RATIO);
   }
