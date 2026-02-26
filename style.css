@@ -255,7 +255,7 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* THE medallion fill layer (single painted surface) */
 
 #overlay .overlay-card.overlay-medallion{
-  --mw: clamp(125px, 15vw, 200px);
+  --mw: clamp(125px, 12vw, 180px);
   --mh: calc(var(--mw) * 1.875);
 
   position: relative;
@@ -832,7 +832,7 @@ body[data-state="ready"] #best{
 #overlay #homeApple{
   position: relative;
   display: block;
-  margin: -24px auto -6px;
+  margin: -40px auto -6px;
   width: 180px;
   height: auto;
   user-select: none;
@@ -868,7 +868,7 @@ body[data-state="ready"] #best{
 /* Apple icon sizing: responsive on all devices */
 #overlay #homeApple{
   display: block;
-  margin: -24px auto -6px;
+  margin: -40px auto -6px;
   width: 180px;
   height: auto;
   user-select: none;
