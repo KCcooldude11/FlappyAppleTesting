@@ -212,8 +212,13 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   text-align: center;
   align-items: center;
   justify-content: center;
-  /* Reserve space for the title at the top to prevent overlap */
-  padding-top: max(140px, 18vw);
+  /* Reserve dynamic space for the title and ensure bottom padding */
+  padding-top: max(clamp(16px, 12vw, 100px) + 60px, 140px);
+  padding-bottom: clamp(20px, 8vh, 60px);
+  /* Prevent content from exceeding viewport */
+  max-height: calc(100vh - max(clamp(16px, 12vw, 100px) + 60px, 140px) - clamp(20px, 8vh, 60px));
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Only make the overlay card clickable, don't give it box styling here */
@@ -253,12 +258,13 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* THE medallion fill layer (single painted surface) */
 
 #overlay .overlay-card.overlay-medallion{
-  --mw: clamp(125px, 15vw, 200px);
+  --mw: clamp(100px, 12vw, 160px);
   --mh: calc(var(--mw) * 1.875);
 
   position: relative;
   width: calc(var(--mw) * 2);
   height: calc(var(--mh) * 2);
+  flex-shrink: 0;
 
   pointer-events: auto;
 }
@@ -828,24 +834,9 @@ body[data-state="ready"] #best{
 }
 
 /* Apple icon on the yellow home medallion */
-#overlay #homeApple{
-  position: absolute;
-  left: 50%;
-  top: 0;                          /* anchor at top of medallion box */
-  width: 120px;                    /* desktop default */
-  height: auto;
-  z-index: 2;                      /* above the fill and inner */
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  filter: drop-shadow(0 10px 16px rgba(0,0,0,0.22));
-  will-change: transform;
-}
-
 #overlay.show #homeApple{
   animation: homeAppleBob 2.4s ease-in-out infinite;
 }
-
 
 /* Fall a bit, then rise back */
 @keyframes homeAppleBob{
@@ -866,11 +857,11 @@ body[data-state="ready"] #best{
 }
 
 
-/* Apple icon sizing: smaller on web, bigger on mobile */
+/* Apple icon sizing: responsive on all devices */
 #overlay #homeApple{
   display: block;
-  margin: -24px auto -6px;
-  width: 180px;     /* web/desktop default (smaller) */
+  margin: clamp(-16px, -3vw, -24px) auto clamp(-4px, -1vw, -6px);
+  width: clamp(120px, 14vw, 160px);
   height: auto;
   user-select: none;
   -webkit-user-drag: none;
@@ -879,12 +870,7 @@ body[data-state="ready"] #best{
   transform: translate(-50%, 10%);
 }
 
-@media (max-width: 600px){
-  #overlay #homeApple{
-    width: 180px;
-    transform: translate(-50%, 10%);
-  }
-}
+
 
 
 /* Bring the Username label closer and slightly upward */
