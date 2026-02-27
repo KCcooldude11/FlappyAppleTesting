@@ -828,7 +828,7 @@ body[data-state="ready"] #best{
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -80%) translateY(var(--innerLift));
+  transform: translate(-50%, -120%) translateY(var(--innerLift));
   width: 100%;
   pointer-events: none;
   display: flex;
