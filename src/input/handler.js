@@ -1,19 +1,21 @@
 import * as C from '../constants.js';
 
 // Prevent browser gestures
-function preventDefaultGestures() {
-  ['touchstart', 'touchmove', 'touchend', 'touchcancel'].forEach(type => {
-    document.addEventListener(type, e => e.preventDefault(), { passive: false });
+function preventDefaultGestures(canvas) {
+  if (!canvas) return;
+
+  // Prevent scrolling/zooming gestures only when interacting with the canvas.
+  // Do NOT block touchstart globally or inputs/buttons won't work on iOS.
+  ['touchmove', 'touchend', 'touchcancel'].forEach(type => {
+    canvas.addEventListener(type, e => e.preventDefault(), { passive: false });
   });
 
-  document.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
-  document.addEventListener('gesturestart', e => e.preventDefault(), { passive: false });
-  document.addEventListener('gesturechange', e => e.preventDefault(), { passive: false });
-  document.addEventListener('gestureend', e => e.preventDefault(), { passive: false });
+  // Optional: block double-tap zoom on canvas
+  canvas.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
 }
 
 export function initializeInputHandlers(flappingCallback, startingCallback, renamingCallback) {
-  preventDefaultGestures();
+  preventDefaultGestures(canvas);
 
   const canvas = document.getElementById('game');
   const nameInput = document.getElementById('username');

@@ -854,6 +854,10 @@ body[data-state="ready"] #best{
   will-change: transform;
 }
 
+#game{
+  touch-action: none;
+}
+
 #overlay.show #homeApple{
   animation: homeAppleBob 2.4s ease-in-out infinite;
 }
