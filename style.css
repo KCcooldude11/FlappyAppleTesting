@@ -842,7 +842,7 @@ body[data-state="ready"] #best{
   display: block;
 
   /* KEEP your spacing relative to the centered inner */
-  transform: translateY(-80px);
+  transform: translateY(-160px);
   margin: 0 auto -6px;
 
   width: 180px;
