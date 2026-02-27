@@ -3,7 +3,8 @@ import * as renderer from './index.js';
 import * as skin from '../systems/skin-manager.js';
 
 export function getBirdDrawSize(skinIndex) {
-  const baseH = C.PHYSICS.BIRD_BASE_H * skin.getSkinScale(skinIndex);
+  const s = renderer.getScale();
+  const baseH = C.PHYSICS.BIRD_BASE_H * s * skin.getSkinScale(skinIndex);
   const { idle, flap } = skin.getSkinImages(skinIndex);
   const img = idle || flap;
   const aspect = img && img.width && img.height ? img.width / img.height : 1;

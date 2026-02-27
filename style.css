@@ -268,12 +268,14 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* Overlay: center it, but don't style the card as a white box */
 #overlay.show { display: flex; }
 #overlay{
-  pointer-events: none;
+  pointer-events: auto;
   text-align: center;
   align-items: center;
   justify-content: center;
-  /* Use computed top padding variable to keep spacing consistent */
-  padding-top: var(--home-top-padding);
+  min-height: 100vh;
+  /* Reserve space for the title at the top to prevent overlap */
+  padding-top: max(140px, 18vw);
+  padding-bottom: 40px;  /* Prevent content from going off bottom */
 }
 
 /* Only make the overlay card clickable, don't give it box styling here */
@@ -313,13 +315,7 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* THE medallion fill layer (single painted surface) */
 
 #overlay .overlay-card.overlay-medallion{
-  /* Compute a safe medallion width that never causes the diamond to exceed
-    the viewport height when combined with title and top padding. We take the
-    smaller of the desired home width and the max possible width based on
-    available vertical space. */
-  --_maxFromVh: calc((100vh - var(--home-top-padding) - var(--home-title-h) - 48px) / 2);
-  --_safe-mw: min(var(--home-mw), var(--_maxFromVh));
-  --mw: var(--_safe-mw);
+  --mw: clamp(125px, 12vw, 180px);
   --mh: calc(var(--mw) * 1.875);
 
   position: relative;
@@ -327,6 +323,36 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   height: calc(var(--mh) * 2);
 
   pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+    --innerLift: 0px; /* set to e.g. -18px if you want the inner higher */
+}
+
+@media (min-width: 900px){
+  #overlay .overlay-card.overlay-medallion{
+    --mw: clamp(180px, 16vw, 320px);
+  }
+
+  /* scale the stuff that had fixed pixel sizes */
+  #overlay #homeApple{ width: 280px; }
+
+  #overlay .overlay-medallion__inner{
+    width: min(70vw, 360px);
+    gap: 16px;
+  }
+
+  #overlay .overlay-medallion__inner .field input{
+    width: min(70vw, 360px);
+    font-size: 18px;
+    padding: 10px 12px;
+  }
+
+  #overlay #btn-play{
+    padding: 14px 24px;
+    font-size: 22px;
+  }
 }
 
 #overlay .overlay-medallion__fill{
@@ -359,8 +385,7 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   position: absolute;
   left: 50%;
   top: 50%;
-  gap: 10px;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) translateY(var(--innerLift));
   z-index: 1;
 
     /* Make inner content scale with the home width variable so form fields
@@ -375,7 +400,7 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 
   background: transparent;
   border: 0;
-  padding: 0; 
+  padding: 0;
 }
 
 /* Center the whole Username block inside the medallion */
@@ -893,75 +918,58 @@ body[data-state="ready"] #best{
 #overlay #homeAppleWrap{
   position: absolute;
   left: 50%;
-  top: 0;
-  transform: translate(-50%, -40%); /* this is the placement again */
-  z-index: 2;
+  top: 50%;
+  transform: translate(-50%, -140%) translateY(var(--innerLift));
+  width: 100%;
   pointer-events: none;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
 }
 
 /* Apple icon on the yellow home medallion */
 #overlay #homeApple{
-  position: absolute;
-  left: 50%;
-  top: 0;                          /* anchor at top of medallion box */
-  /* Size the apple relative to the medallion variable so it scales on
-     tablets and large viewports */
-  width: calc(var(--mw) * 0.95);
-  max-width: 520px;
+  position: relative;
+  display: block;
+
+  /* KEEP your spacing relative to the centered inner */
+  transform: translateY(180px);
+  margin: 0 auto -6px;
+
+  width: 180px;
   height: auto;
-  z-index: 2;                      /* above the fill and inner */
-  pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
-  filter: drop-shadow(0 10px 16px rgba(0,0,0,0.22));
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.22));
   will-change: transform;
+}
+
+#game{
+  touch-action: none;
 }
 
 #overlay.show #homeApple{
   animation: homeAppleBob 2.4s ease-in-out infinite;
 }
 
-
 /* Fall a bit, then rise back */
 @keyframes homeAppleBob{
   /* top hold */
-  0%   { transform: translate(-50%, 10%); }
-  18%  { transform: translate(-50%, 10%); }
+  0%   { transform: translateY(0); }
+  18%  { transform: translateY(0); }
 
   /* fall to bottom (no hold) */
-  55%  { transform: translate(-50%, 34%); }
+  55%  { transform: translateY(20px); }
 
   /* rise back to top */
-  100% { transform: translate(-50%, 10%); }
+  100% { transform: translateY(0); }
 }
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce){
   #overlay.show #homeApple{ animation: none; }
 }
-
-
-/* Apple icon sizing: smaller on web, bigger on mobile */
-#overlay #homeApple{
-  display: block;
-  margin: -24px auto -6px;
-  width: calc(var(--mw) * 0.9);
-  max-width: 360px;
-  height: auto;
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.22));
-  transform: translate(-50%, 10%);
-}
-
-@media (max-width: 600px){
-  #overlay #homeApple{
-    width: 180px;
-    transform: translate(-50%, 10%);
-  }
-}
-
 
 /* Bring the Username label closer and slightly upward */
 #overlay .overlay-medallion__inner .field > span{
@@ -1025,4 +1033,10 @@ body[data-state="ready"] #best{
   min-width: 200px;
   padding: 12px 22px;
   font-size: 18px;
+}
+
+@media (min-width: 900px){
+  #overlay #homeApple{ width: 210px; }
+  #overlay .overlay-medallion__inner{ width: min(62vw, 260px); }
+  #overlay .overlay-medallion__inner .field input{ width: min(62vw, 260px); }
 }
