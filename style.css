@@ -1,27 +1,47 @@
-/* ---------- Reset & helpers ---------- */
+
+/* =========================
+   Reset & Helpers
+   ========================= */
 * { box-sizing: border-box; }
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  overflow: hidden;         /* stop any page scroll */
-  overscroll-behavior: none;/* stop bounce on supported browsers */
+  /* Consider enabling page scroll for accessibility and overscroll behaviors.
+     If you must lock the page, keep overflow hidden only on #app instead. */
+  /* overflow: hidden; */
+  overscroll-behavior: none;
 }
 
-/* ---------- Global Responsive Helpers ---------- */
-/* Fluid base font sizing so rem/em scale sensibly across devices */
+/* Fluid base font sizing so rem/em scale across devices */
 :root{
-  font-size: clamp(14px, 1.5vw, 18px); /* use rems for component fonts where possible */
+  font-size: clamp(14px, 1.5vw, 18px);
+  /* Design tokens */
+  --c-bg: #ffffff;
+  --c-ink: #111;
+  --c-ink-soft: rgba(0,0,0,.7);
+  --c-amber: #f9c44a;
+  --c-amber-strong: #c98512;
+  --c-primary: #6e1d24;
+  --shadow-1: 0 2px 6px rgba(0,0,0,.15);
+  --shadow-2: 0 10px 24px rgba(0,0,0,.2);
+  --shadow-3: 0 10px 30px rgba(0,0,0,.18);
+
+  --r-10: 10px;
+  --r-12: 12px;
+  --r-14: 14px;
+  --r-16: 16px;
 }
 
-/* Make images/media scale to their containers and avoid overflow */
+/* Media scales to its container */
 img, picture, video, canvas, svg {
   max-width: 100%;
   height: auto;
   display: block;
 }
 
-/* Prevent long words / URLs from breaking layouts */
+/* Prevent long words/URLs from breaking layouts */
 .content, .text, p, li {
   overflow-wrap: break-word;
   word-break: break-word;
@@ -33,150 +53,85 @@ pre, code, table, .table {
   overflow-x: auto;
 }
 
-/* Make interactive controls comfortably tappable on touch devices.
-   Scoped to overlay and core UI to avoid changing small UI controls elsewhere. */
+/* Tappable targets on core UI */
 #overlay button, #overlay input, #overlay .btn, #btn-play, #btn-try, #btn-restart {
   min-height: 44px;
   min-width: 44px;
   touch-action: manipulation;
 }
 
-/* Utility: force responsive media wrapper */
 .responsive-media { width:100%; height:auto; }
-
 .show { display: flex !important; }
 .hide { display: none !important; }
 
-#hud {
-  position: absolute;
-  top: 8px; left: 8px; right: 8px;
-  /* display: grid;   <-- REMOVE this line */
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  pointer-events: none;
-}
-
-#gameover .go-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,.9);
-  padding: 10px 14px;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.2);
-}
-
-#gameover .go-card h2 { 
-  font-size: 28px;     /* adjust as you like */
-  line-height: 1;
-  margin: 0;
-}
-
-/* Username line smaller + tighter */
-#gameover .profile-line{
-  margin-top: 2px;     /* was 6px */
-  gap: 6px;            /* was 8px */
-  font-size: 16px;     /* was 18px */
-}
-
-/* Edit icon button slightly smaller */
-#gameover .icon-btn{
-  width: 24px;
-  height: 24px;
-}
-#gameover .icon-btn svg{
-  width: 16px;
-  height: 16px;
-}
-
-/* Character image size inside the card */
-#gameover-skin {
-  display: block;
-  width: auto;
-  height: auto;
-  max-width: 90%;   /* only shrink if the card is narrower */
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-}
-
-#gameover > .leaderboard {
-  background: #fff;                       /* solid white */
-  box-shadow: 0 10px 30px rgba(0,0,0,.18);
-  padding: 10px 12px;
-  border-radius: 12px;
-}
-
-#app.show-hud #hud { display: grid; }
-
-/* ---------- Fonts ---------- */
+/* =========================
+   Fonts
+   ========================= */
 @font-face{
   font-family: 'WitcherKnight';
-  src: url('./assets/Witcher Knight.ttf') format('truetype');
+  src: url('./assets/WitcherKnight.ttf') format('truetype'); /* unify name/format */
   font-style: normal;
   font-display: swap;
 }
 
-/* ---------- Page ---------- */
+/* =========================
+   Page
+   ========================= */
 body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial, sans-serif;
-  color: #111;
-
-  /* iPhone-safe full height */
-  margin: 0;
-  min-height: 100svh; /* stable viewport on iOS */
-
-  overflow: hidden;
+  color: var(--c-ink);
+  min-height: 100svh; /* iOS stable viewport */
+  /* Consider not hiding overflow at the body level */
 }
 
-/* Global home sizing variable used to scale the title / medallion UI consistently */
-body {
-  /* Base home sizing: conservative default for phones + desktops */
-  --home-mw: clamp(120px, 18vw, 320px);
-}
-
-/* Tablet-specific scaling: allow larger home UI on medium viewports */
-@media (min-width: 700px) and (max-width: 1199px){
-  body { --home-mw: clamp(140px, min(22vw, 30vh), 420px); }
-}
-
-/* Large desktops: moderate cap so elements don't overflow */
-@media (min-width: 1200px){
-  body { --home-mw: clamp(160px, 12vw, 420px); }
-}
-
-/* Helper vars derived from --home-mw to calculate safe medallion sizing. */
-body {
-  /* top padding reserved for title */
-  --home-top-padding: max(24px, calc(var(--home-mw) * 0.6));
-  /* estimated title block height (approx font-size * 1.1) */
-  --home-title-h: min(220px, calc(var(--home-mw) * 0.55));
-}
-
-/* Use WitcherKnight for all UI text */
 body, #overlay, #gameover, #score, #best, button, .btn {
   font-family: 'WitcherKnight', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   letter-spacing: .3px;
 }
 
-/* ---------- App / Canvas ---------- */
+/* Global home sizing variable used to scale the title / medallion UI consistently */
+body { --home-mw: clamp(120px, 18vw, 320px); }
+
+/* Tablet-specific scaling */
+@media (min-width: 700px) and (max-width: 1199px){
+  body { --home-mw: clamp(140px, min(22vw, 30vh), 420px); }
+}
+
+/* Large desktops */
+@media (min-width: 1200px){
+  body { --home-mw: clamp(160px, 12vw, 420px); }
+}
+
+/* Helper vars derived from --home-mw */
+body {
+  --home-top-padding: max(24px, calc(var(--home-mw) * 0.6));
+  --home-title-h: min(220px, calc(var(--home-mw) * 0.55));
+}
+
+/* =========================
+   App / Canvas
+   ========================= */
 #app{
   position: fixed;
   inset: 0;
   width: 100vw;
 
-  /* use dynamic viewport when supported */
-  height: 100dvh;
-  height: 100svh; /* fallback */
-  overflow: hidden;
+  /* Fallback first, enhanced second */
+  height: 100svh;   /* fallback */
+  height: 100dvh;   /* modern dynamic viewport */
+  overflow: hidden; /* keep gameplay from scrolling */
 }
 
 #game{
   width: 100%;
   height: 100%;
   display: block;
+  touch-action: none;
 }
-/* ---------- HUD ---------- */
+
+/* =========================
+   HUD
+   ========================= */
 #hud {
   position: absolute;
   top: 8px; left: 8px; right: 8px;
@@ -190,13 +145,15 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 #hud .right { justify-content: flex-end; gap: 8px; }
 #hud .center { pointer-events: none; }
 
+#app.show-hud #hud { display: grid; }
+
 #score{
   --w: 28px;
   --h: 44px;
   position: relative;
   width: 0;
   height: 0;
-  overflow: visible;                     /* make sure nothing gets clipped */
+  overflow: visible;
   filter: drop-shadow(0 6px 14px rgba(0,0,0,.18));
 }
 #score::before,
@@ -206,79 +163,66 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   left: calc(-1 * var(--w));
   border-left:  var(--w) solid transparent;
   border-right: var(--w) solid transparent;
-  z-index: 0;                            /* triangles behind */
+  z-index: 0;
 }
-#score::before{ border-bottom: var(--h) solid #f9c44a; }
+#score::before{ border-bottom: var(--h) solid var(--c-amber); }
 #score::after {
   top: var(--h);
-  border-top: var(--h) solid #f9c44a;
+  border-top: var(--h) solid var(--c-amber);
 }
-
-/* number */
 #score .txt{
   position:absolute;
-  z-index: 1;                            /* text on top */
+  z-index: 1;
   left:  calc(-1 * var(--w));
   width: calc(2 * var(--w));
   top:   var(--h);
   transform: translateY(-50%);
   text-align: center;
   line-height: 1;
-  font-size: calc(var(--h) * 0.68);      /* slightly smaller to avoid touching edges */
+  font-size: calc(var(--h) * 0.68);
   pointer-events: none;
-}
-
-.field { display:flex; flex-direction:column; gap:6px; width: min(80vw, 260px); }
-.field input {
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,.15);
-  background: rgba(255,255,255,.95);
-  font-size: 16px;
 }
 
 #best {
   background: rgba(255,255,255,.7);
   padding: 4px 10px;
-  border-radius: 12px;
+  border-radius: var(--r-12);
 }
 #btn-restart {
   pointer-events: auto;
   border: 0;
   background: rgba(255,255,255,.85);
   padding: 6px 10px;
-  border-radius: 10px;
+  border-radius: var(--r-10);
   font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  box-shadow: var(--shadow-1);
 }
 
-/* ---------- Panels: overlay & gameover ---------- */
-/* Hidden by default; JS toggles .show/.hide */
+/* =========================
+   Overlay & Game Over Panels
+   ========================= */
 #overlay,
 #gameover {
   position: absolute;
   inset: 0;
   z-index: 5;
-  display: none;              /* default hidden */
+  display: none; /* JS toggles .show/.hide */
   align-items: center;
   justify-content: center;
 }
 
-/* Overlay: center it, but don't style the card as a white box */
 #overlay.show { display: flex; }
 #overlay{
   pointer-events: auto;
   text-align: center;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  /* Reserve space for the title at the top to prevent overlap */
+  min-height: 100svh;
   padding-top: max(140px, 18vw);
-  padding-bottom: 40px;  /* Prevent content from going off bottom */
+  padding-bottom: 40px;
 }
 
-/* Only make the overlay card clickable, don't give it box styling here */
 #overlay .overlay-card{
   pointer-events: auto;
   background: none;
@@ -287,404 +231,63 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   box-shadow: none;
 }
 
-/* Game over panel stacks: Title -> Leaderboard -> Try Again */
+/* Game Over layout */
 #gameover.show {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  pointer-events: none;       /* container doesn’t eat clicks */
+  pointer-events: none;
+  justify-content: flex-start;
+  padding-top: 12px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom));
+  --tryH: 62px; /* reserved height for pinned button */
 }
-#gameover > * {
-  pointer-events: auto;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Shared panel content look (GAMEOVER ONLY) */
+#gameover > * { pointer-events: auto; margin-left: auto; margin-right: auto; }
 #gameover > *{
   background: rgba(255,255,255,.9);
   padding: 16px 22px;
-  border-radius: 16px;
-  box-shadow: 0 10px 24px rgba(0,0,0,.2);
+  border-radius: var(--r-16);
+  box-shadow: var(--shadow-2);
 }
 
-#overlay h1 { margin: 0 0 8px; letter-spacing: 2px; }
-#overlay p  { margin: 6px 0; }
-#overlay p.small { font-size: 13px; opacity: .8; }
-
-/* THE medallion fill layer (single painted surface) */
-
-#overlay .overlay-card.overlay-medallion{
-  --mw: clamp(125px, 12vw, 180px);
-  --mh: calc(var(--mw) * 1.875);
-
-  position: relative;
-  width: calc(var(--mw) * 2);
-  height: calc(var(--mh) * 2);
-
-  pointer-events: auto;
+#gameover .go-card {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-    --innerLift: 0px; /* set to e.g. -18px if you want the inner higher */
-}
-
-@media (min-width: 900px){
-  #overlay .overlay-card.overlay-medallion{
-    --mw: clamp(180px, 16vw, 320px);
-  }
-
-  /* scale the stuff that had fixed pixel sizes */
-  #overlay #homeApple{ width: 280px; }
-
-  #overlay .overlay-medallion__inner{
-    width: min(70vw, 360px);
-    gap: 16px;
-  }
-
-  #overlay .overlay-medallion__inner .field input{
-    width: min(70vw, 360px);
-    font-size: 18px;
-    padding: 10px 12px;
-  }
-
-  #overlay #btn-play{
-    padding: 14px 24px;
-    font-size: 22px;
-  }
-}
-
-#overlay .overlay-medallion__fill{
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-
-  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-
-  background: #f3c24f; /* start simple, you can swap to gradient later */
-}
-
-/* Shadow without filter, also clipped to the diamond */
-#overlay .overlay-medallion__fill::before{
-  content:"";
-  position: absolute;
-  inset: 0;
-
-  -webkit-clip-path: inherit;
-  clip-path: inherit;
-
-  box-shadow:
-    0 12px 18px rgba(0,0,0,.22),
-    0 2px 0 rgba(0,0,0,.12);
-}
-
-/* Content: center it inside the diamond */
-#overlay .overlay-medallion__inner{
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) translateY(var(--innerLift));
-  z-index: 1;
-
-    /* Make inner content scale with the home width variable so form fields
-      and buttons grow on larger screens */
-    /* Allow the inner content to expand more on large screens */
-    width: min(calc(var(--home-mw) * 0.95), 62vw, 560px);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  align-items: center;
-  text-align: center;
-
-  background: transparent;
-  border: 0;
-  padding: 0;
-}
-
-/* Center the whole Username block inside the medallion */
-#overlay .overlay-medallion__inner .field{
-  align-items: center;   /* centers children horizontally */
-  width: 100%;
-}
-
-/* Force the input itself to be centered */
-#overlay .overlay-medallion__inner .field input{
-  display: block;
-  margin: 0 auto;
-}
-
-/* Label styling */
-#overlay .overlay-medallion__inner .field > span{
-  display: inline-block;
-  font-weight: 600;
-  letter-spacing: .06em;
-  color: rgba(40, 24, 10, 0.85);
-  text-shadow: 0 1px 0 rgba(255,255,255,.35);
-  text-align: center;
-  width: 100%;
-  font-size: clamp(14px, calc(var(--home-mw) * 0.085), 26px);
-}
-
-/* Softer input */
-#overlay .overlay-medallion__inner .field input{
-  width: min(calc(var(--home-mw) * 0.82), 62vw, 480px);
-  background: rgba(250, 245, 232, 0.92);
-  border: 1px solid rgba(55, 30, 10, 0.20);
-  box-shadow: 0 2px 8px rgba(0,0,0,.10);
-}
-
-/* Softer play button */
-#overlay #btn-play{
-  -webkit-appearance: none;
-  appearance: none;
-  border: 0;                 /* kills the white outline */
-  outline: none;
-  background: #6e1d24;
-  color: #f7f1e3;            /* force text color (no blue) */
-  text-decoration: none;
-  -webkit-text-fill-color: #f7f1e3; /* extra iOS insurance */
-  
-  border-radius: 999px;
-  padding: calc(var(--home-mw) * 0.05) calc(var(--home-mw) * 0.10);
-  line-height: 1;
-  font-size: clamp(15px, calc(var(--home-mw) * 0.08), 28px);
-  cursor: pointer;
-
-  box-shadow: 0 10px 18px rgba(0,0,0,.18);
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-}
-
-/* same look on focus */
-#overlay #btn-play:focus,
-#overlay #btn-play:focus-visible{
-  outline: none;
-  box-shadow:
-    0 0 0 3px rgba(255,191,0,0.35),
-    0 10px 18px rgba(0,0,0,.18);
-}
-
-#overlay #btn-play:disabled{
-  opacity: .55;
-  box-shadow: none;
-  cursor: not-allowed;
-}
-
-#overlay .field input#username{
-  -webkit-appearance: none;
-  appearance: none;
-  outline: none;                 /* remove default focus ring */
-  border-radius: 12px;
-
-  /* your normal state */
-  background: rgba(250, 245, 232, 0.92);
-  border: 1px solid rgba(55, 30, 10, 0.22);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
-
-  /* keep text centered (if you want) */
-  text-align: center;
-
-  /* makes the cursor match the palette */
-  caret-color: #c98512;
-}
-
-/* Keyboard focus (desktop) */
-#overlay .field input#username:focus-visible{
-  border-color: rgba(201, 133, 18, 0.95); /* amber */
-  box-shadow:
-    0 0 0 3px rgba(255, 191, 0, 0.35),    /* outer glow */
-    0 0 0 1px rgba(55, 30, 10, 0.55) inset,
-    0 6px 14px rgba(0,0,0,0.18);
-}
-
-/* Tap focus (mobile + fallback) */
-#overlay .field input#username:focus{
-  border-color: rgba(201, 133, 18, 0.95);
-  box-shadow:
-    0 0 0 3px rgba(255, 191, 0, 0.35),
-    0 0 0 1px rgba(55, 30, 10, 0.55) inset,
-    0 6px 14px rgba(0,0,0,0.18);
-}
-
-/* Optional: selection highlight color */
-#overlay .field input#username::selection{
-  background: rgba(255, 191, 0, 0.35);
-}
-
-/* iOS Safari sometimes adds inner shadow/blue tint: this helps neutralize it */
-#overlay .field input#username{
-  -webkit-tap-highlight-color: rgba(255,191,0,0.25);
-}
-
-/* ---------- Buttons & misc ---------- */
-button#btn-try {
-  border: 0;
-  background: #111;
-  color: #fff;
-  padding: 10px 18px;
-  border-radius: 999px;
-  cursor: pointer;
-}
-
-kbd {
-  background: #111;
-  color: #fff;
-  border-radius: 6px;
-  padding: 2px 6px;
-}
-
-/* ---------- Leaderboard ---------- */
-.leaderboard {
-  width: min(94vw, 380px);
-  max-width: 100%;
-  display: flex;
-  flex-direction: column;
-  max-height: 55vh;     /* keep your existing cap */
-  overflow: hidden;
-  background: rgba(255,255,255,.92);
-  backdrop-filter: blur(8px);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.18);
-  padding: 10px 12px;
-}
-
-.leaderboard .lb-title {
-  font-size: 30px;
-  position: center;
-}
-
-.leaderboard .lb-head.row { opacity: .7; margin-bottom: 6px; }
-
-.leaderboard .row {
-  display: grid;
-  grid-template-columns: 30px 1fr clamp(56px, 22vw, 84px);
   gap: 8px;
-  padding: 6px;
-  font-size: 14px;
+}
+#gameover .go-card h2 { 
+  font-size: 28px;
+  line-height: 1;
+  margin: 0;
 }
 
-.leaderboard .lb-head .rank{
-  position: static;
-  width: auto;
-  height: auto;
-  display: block;
-  opacity: .7;
-}
-
-.leaderboard .row:nth-child(odd) { background: rgba(0,0,0,.04); border-radius: 6px; }
-
-/* Rank cell with centered diamond + number */
-.leaderboard .rank{
-  --rw: 8px;   /* half-width  (tweak size here)  */
-  --rh: 12px;  /* half-height (kept small)       */
-  position: relative;
-  width: 0;
-  height: 0;
-  overflow: visible;
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,.18));
-}
-.leaderboard .rank::before{ border-bottom: var(--rh) solid #f9c44a; }
-.leaderboard .rank::after { top: var(--rh); border-top: var(--rh) solid #f9c44a; }
-
-/* was: .leaderboard .row:nth-child(odd) */
-.leaderboard .lb-rows .row:nth-child(odd){ background: rgba(0,0,0,.04); border-radius:6px; }
-
-.leaderboard .rank::before,
-.leaderboard .rank::after{
-  content:"";
-  position:absolute;
-  left: calc(-1 * var(--rw));
-  border-left:  var(--rw) solid transparent;
-  border-right: var(--rw) solid transparent;
-}
-
-#leaderboard-rows{
-  overflow: auto;
-  flex: 1 1 auto;
-  min-height: 0;
-}
-
-.leaderboard .rank .rank-num{
-  position:absolute;
-  z-index:1;
-  left:  calc(-1 * var(--rw));
-  width: calc(2 * var(--rw));
-  top:   var(--rh);
-  transform: translateY(-50%);
-  text-align:center;
-  line-height:1;
-  font-size:12px;
-  font-variant-numeric: tabular-nums;
-}
-
-.leaderboard .rank .txt{
-  position:absolute;
-  z-index:1;
-  left:  calc(-1 * var(--rw));
-  width: calc(2 * var(--rw));
-  top:   var(--rh);
-  transform: translateY(-50%);
-  text-align:center;
-  line-height:1;
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-
-/* Header row: keep the plain “#” (no diamond) */
-.leaderboard .lb-head .rank{
-  position: static;
-  width: auto;
-  height: auto;
-  filter: none;
-}
-.leaderboard .lb-head .rank::before,
-.leaderboard .lb-head .rank::after{ content:none; }
-.leaderboard .lb-head .rank .txt{ position:static; transform:none; }
-
-
-/* ---------- Small screens ---------- */
-@media (max-width: 360px) {
-  /* Let the canvas fill the viewport instead of forcing 360x600 */
-  .leaderboard { width: 94vw; }
-  .leaderboard .row { grid-template-columns: 26px 1fr clamp(52px, 24vw, 78px); }
-}
-.profile-line{
+#gameover .profile-line{
+  margin-top: 2px;
+  gap: 6px;
+  font-size: 16px;
   display:flex;
   align-items:center;
-  justify-content:center;   /* centers username + icon as a group */
-  gap:8px;
+  justify-content:center;
   width:100%;
-  margin-top:6px;
-  font-size:18px;
 }
-.username-label{
-  text-align:center;        /* centers the text itself */
-  font-weight:700;
-}
+.username-label{ text-align:center; font-weight:700; }
 
 .icon-btn{
-  display:inline-flex;       /* center the SVG inside the button */
+  display:inline-flex;
   align-items:center;
   justify-content:center;
-  width:28px;
-  height:28px;
+  width:24px; height:24px;
   border:0;
   background:transparent;
   cursor:pointer;
   border-radius:8px;
-  color:#333;                /* icon color (black/grey) */
+  color:#333;
   line-height:1;
   padding:0;
 }
-
 .icon-btn:hover{ background: rgba(0,0,0,.06); }
-
-.icon-btn svg{
-  width:18px;
-  height:18px;
-  fill:currentColor;         /* uses .icon-btn color */
-}
+.icon-btn svg{ width:16px; height:16px; fill: currentColor; }
 
 #rename-dlg{
   border:0; padding:0;
@@ -706,152 +309,295 @@ kbd {
 }
 #rename-save[disabled]{ opacity:.55; cursor:not-allowed; }
 
+/* =========================
+   Home Medallion
+   ========================= */
+#overlay .overlay-card.overlay-medallion{
+  --mw: clamp(125px, 12vw, 180px);
+  --mh: calc(var(--mw) * 1.875);
 
-.go-skin {
-  display: block;
-  width: clamp(96px, 28vw, 200px);
-  height: auto;                /* preserve aspect */
-  margin: 6px auto 0;
-  image-rendering: auto;       /* or 'pixelated' if you like the chunky look */
+  position: relative;
+  width: calc(var(--mw) * 2);
+  height: calc(var(--mh) * 2);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  --innerLift: 0px;
 }
 
-/* Big gold title on the home screen only */
-/* Title card */
-#homeTitle{
-  font-weight: 400;
-  position: fixed;
-  top: max(16px, env(safe-area-inset-top));
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  z-index: 50;
-
-  /* keep your container styling (optional) */
-  /* background: rgba(255,255,255,0.92);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 14px;
-  padding: 14px 22px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.18); */
-
-  white-space: nowrap;
-  pointer-events: none;
+@media (min-width: 900px){
+  #overlay .overlay-card.overlay-medallion{ --mw: clamp(180px, 16vw, 320px); }
+  #overlay #homeApple{ width: 280px; }
+  #overlay .overlay-medallion__inner{
+    width: min(70vw, 360px);
+    gap: 16px;
+  }
+  #overlay .overlay-medallion__inner .field input{
+    width: min(70vw, 360px);
+    font-size: 18px;
+    padding: 10px 12px;
+  }
+  #overlay #btn-play{
+    padding: 14px 24px;
+    font-size: 22px;
+  }
 }
 
-/* simplified gold gradient text + shadow */
-#homeTitle .titleText{
-  font-weight: 400;
-  display: inline-block;
-  /* Scale the title with the global home size so it grows on tablets */
-  font-size: clamp(56px, calc(var(--home-mw) * 0.45), 200px);
-  letter-spacing: 0.08em;
-
-  background: linear-gradient(to bottom, #ffff2f 0%, #ffbf00cc 25%, #ffff2f  45%, #ffbf00cc 70%, #ffff2f  100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow: none;
-
-  /* Use drop-shadow instead */
-  filter:
-    drop-shadow(0 2px 0 rgba(0,0,0,0.18))
-    drop-shadow(0 10px 14px rgba(0,0,0,0.28));
-}
-
-#homeTitle .titleText::after{
-  content: attr(data-text);
+#overlay .overlay-medallion__fill{
   position: absolute;
   inset: 0;
-
-  /* golden diagonal beam with hard-ish edges */
-  background: linear-gradient(
-    120deg,
-    rgba(255,191,0,0) 0%,
-    rgba(255,191,0,0) 44%,
-
-    /* beam core (gold) */
-    rgba(255,215,64,0.95) 49%,
-    rgba(255,245,170,0.95) 52%,
-    rgba(255,215,64,0.95) 55%,
-
-    rgba(255,191,0,0) 60%,
-    rgba(255,191,0,0) 100%
-  );
-
-  background-size: 260% 120%;
-  background-position: -140% 0;
-
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-
-  /* make it "golden light" instead of white glare */
-  mix-blend-mode: plus-lighter; /* if unsupported, it will just render normally */
-  opacity: 0.95;
-
-  /* warm glow */
-  filter:
-    drop-shadow(0 0 10px rgba(255,191,0,0.35))
-    drop-shadow(0 0 18px rgba(255,230,120,0.18));
-
-  pointer-events: none;
-  animation: homeTitleBeam 7s linear infinite;
+  z-index: 0;
+  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  background: #f3c24f;
 }
-
-@keyframes homeTitleBeam{
-  /* sweep for the first 57.142% (4s of a 7s cycle) */
-  0%        { background-position: -140% 0; }
-  57.142%   { background-position:  140% 0; }
-
-  /* hold for the remaining 42.858% (3s pause) */
-  100%      { background-position:  140% 0; }
-}
-
-/* Optional: stop sheen when not on home screen (since you hide the title anyway) */
-body:not([data-state="ready"]) #homeTitle .titleText::after{
-  animation: none;
-}
-
-/* Medallion pattern layer, extend into safe areas */
-#app::before{
+#overlay .overlay-medallion__fill::before{
   content:"";
-  position: fixed;
-  left: 0; right: 0;
-  top: calc(-1 * env(safe-area-inset-top));
-  bottom: calc(-1 * env(safe-area-inset-bottom));
-  pointer-events: none;
-
-  z-index: -1;
-
-  --tile: 84px;
-  background-repeat: repeat, repeat;
-  background-size: var(--tile) var(--tile), var(--tile) var(--tile);
-  background-position:
-    calc(50% - (var(--tile) / 2)) calc(50% - (var(--tile) / 2)),
-    calc(50% - (var(--tile) / 2) + (var(--tile) / 2)) calc(50% - (var(--tile) / 2) + (var(--tile) / 2));
-
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cpath d='M42 12 L58 42 L42 72 L26 42 Z' fill='rgba(235,235,235,0.16)'/%3E%3Crect x='30' y='40' width='24' height='4' rx='1.5' fill='rgba(110,29,36,0.35)'/%3E%3C/svg%3E"),
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cpath d='M42 12 L58 42 L42 72 L26 42 Z' fill='rgba(235,235,235,0.16)'/%3E%3Crect x='30' y='40' width='24' height='4' rx='1.5' fill='rgba(110,29,36,0.35)'/%3E%3C/svg%3E");
+  position: absolute;
+  inset: 0;
+  -webkit-clip-path: inherit;
+  clip-path: inherit;
+  box-shadow:
+    0 12px 18px rgba(0,0,0,.22),
+    0 2px 0 rgba(0,0,0,.12);
 }
 
-/* Gradient layer behind the pattern */
-#app::after{
+#overlay .overlay-medallion__inner{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateY(var(--innerLift));
+  z-index: 1;
+  width: min(calc(var(--home-mw) * 0.95), 62vw, 560px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+
+#overlay .overlay-medallion__inner .field{
+  align-items: center;
+  width: 100%;
+  gap: 6px;
+}
+#overlay .overlay-medallion__inner .field > span{
+  display: inline-block;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: rgba(40, 24, 10, 0.85);
+  text-shadow: 0 1px 0 rgba(255,255,255,.35);
+  text-align: center;
+  width: 100%;
+  font-size: clamp(14px, calc(var(--home-mw) * 0.085), 26px);
+  margin-top: -2px;
+  margin-bottom: -2px;
+}
+#overlay .overlay-medallion__inner .field input{
+  display: block;
+  margin: 0 auto;
+  width: min(calc(var(--home-mw) * 0.82), 62vw, 480px);
+  background: rgba(250, 245, 232, 0.92);
+  border: 1px solid rgba(55, 30, 10, 0.20);
+  box-shadow: 0 2px 8px rgba(0,0,0,.10);
+}
+
+/* Play button */
+#overlay #btn-play{
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  outline: none;
+  background: var(--c-primary);
+  color: #f7f1e3;
+  -webkit-text-fill-color: #f7f1e3;
+  border-radius: 999px;
+  padding: calc(var(--home-mw) * 0.05) calc(var(--home-mw) * 0.10);
+  line-height: 1;
+  font-size: clamp(15px, calc(var(--home-mw) * 0.08), 28px);
+  cursor: pointer;
+  box-shadow: 0 10px 18px rgba(0,0,0,.18);
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+#overlay #btn-play:focus,
+#overlay #btn-play:focus-visible{
+  outline: none;
+  box-shadow:
+    0 0 0 3px rgba(255,191,0,0.35),
+    0 10px 18px rgba(0,0,0,.18);
+}
+#overlay #btn-play:disabled{
+  opacity: .55;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+#overlay .field input#username{
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+  border-radius: 12px;
+  background: rgba(250, 245, 232, 0.92);
+  border: 1px solid rgba(55, 30, 10, 0.22);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  text-align: center;
+  caret-color: var(--c-amber-strong);
+}
+#overlay .field input#username:focus-visible,
+#overlay .field input#username:focus{
+  border-color: rgba(201, 133, 18, 0.95);
+  box-shadow:
+    0 0 0 3px rgba(255, 191, 0, 0.35),
+    0 0 0 1px rgba(55, 30, 10, 0.55) inset,
+    0 6px 14px rgba(0,0,0,0.18);
+}
+#overlay .field input#username::selection{ background: rgba(255, 191, 0, 0.35); }
+#overlay .field input#username{ -webkit-tap-highlight-color: rgba(255,191,0,0.25); }
+
+/* Apple icon on the yellow home medallion */
+#overlay #homeAppleWrap{
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -140%) translateY(var(--innerLift));
+  width: 100%;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+#overlay #homeApple{
+  position: relative;
+  display: block;
+  transform: translateY(180px);
+  margin: 0 auto -6px;
+  width: 180px;
+  height: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.22));
+  will-change: transform;
+}
+#overlay.show #homeApple{ animation: homeAppleBob 2.4s ease-in-out infinite; }
+
+@keyframes homeAppleBob{
+  0%, 18%  { transform: translateY(0); }
+  55%      { transform: translateY(20px); }
+  100%     { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce){
+  #overlay.show #homeApple{ animation: none; }
+}
+
+/* =========================
+   Buttons & misc
+   ========================= */
+button#btn-try {
+  border: 0;
+  background: #111;
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+kbd {
+  background: #111;
+  color: #fff;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+/* =========================
+   Leaderboard
+   ========================= */
+.leaderboard {
+  width: min(94vw, 380px);
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  max-height: 55vh; /* capped when not pinned */
+  overflow: hidden;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  box-shadow: var(--shadow-3);
+  padding: 10px 12px;
+}
+
+.leaderboard .lb-title {
+  font-size: 30px;
+  text-align: center; /* fixed */
+}
+
+.leaderboard .lb-head.row { opacity: .7; margin-bottom: 6px; }
+
+.leaderboard .row {
+  display: grid;
+  grid-template-columns: 30px 1fr clamp(56px, 22vw, 84px);
+  gap: 8px;
+  padding: 6px;
+  font-size: 14px;
+}
+.leaderboard .row:nth-child(odd){ background: rgba(0,0,0,.04); border-radius: 6px; }
+
+.leaderboard .lb-head .rank{
+  position: static;
+  width: auto;
+  height: auto;
+  display: block;
+  opacity: .7;
+  filter: none;
+}
+.leaderboard .lb-head .rank::before,
+.leaderboard .lb-head .rank::after{ content:none; }
+.leaderboard .lb-head .rank .txt{ position:static; transform:none; }
+
+/* Rank diamond */
+.leaderboard .rank{
+  --rw: 8px;
+  --rh: 12px;
+  position: relative;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,.18));
+}
+.leaderboard .rank::before{ border-bottom: var(--rh) solid var(--c-amber); }
+.leaderboard .rank::after { top: var(--rh); border-top: var(--rh) solid var(--c-amber); }
+.leaderboard .rank::before,
+.leaderboard .rank::after{
   content:"";
-  position: fixed;
-  left: 0; right: 0;
-  top: calc(-1 * env(safe-area-inset-top));
-  bottom: calc(-1 * env(safe-area-inset-bottom));
-  pointer-events: none;
-
-  z-index: -2;
-  background: linear-gradient(#3D4973, #577DB5);
+  position:absolute;
+  left: calc(-1 * var(--rw));
+  border-left:  var(--rw) solid transparent;
+  border-right: var(--rw) solid transparent;
+}
+.leaderboard .rank .rank-num,
+.leaderboard .rank .txt{
+  position:absolute;
+  z-index:1;
+  left:  calc(-1 * var(--rw));
+  width: calc(2 * var(--rw));
+  top:   var(--rh);
+  transform: translateY(-50%);
+  text-align:center;
+  line-height:1;
+  font-size:12px;
+  font-variant-numeric: tabular-nums;
 }
 
-/* Hide the medallion pattern except on the home (ready) screen */
-#app::before { display: none; }
-body[data-state="ready"] #app::before { display: block; }
+#leaderboard-rows{
+  overflow: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+}
 
+/* Your rank block */
 .your-rank{
   flex: 0 0 auto;
   margin-top: 10px;
@@ -870,173 +616,167 @@ body[data-state="ready"] #app::before { display: block; }
   border-radius: 8px;
   background: rgba(0,0,0,0.03);
 }
+.your-rank .yr-label{ font-size: 15px; opacity: 0.95; }
+.your-rank .yr-score{ font-size: 15px; font-variant-numeric: tabular-nums; opacity: 0.95; }
+/* Slightly bigger diamond */
+.your-rank .yr-rank{ --rw: 10px; --rh: 14px; }
 
-.your-rank .yr-label{
-  font-size: 15px;
-  opacity: 0.95;
+/* Small screens */
+@media (max-width: 360px) {
+  .leaderboard { width: 94vw; }
+  .leaderboard .row { grid-template-columns: 26px 1fr clamp(52px, 24vw, 78px); }
 }
 
-.your-rank .yr-score{
-  font-size: 15px;
-  font-variant-numeric: tabular-nums;
-  opacity: 0.95;
-}
-
-/* Make the diamond a little bigger than the leaderboard rows */
-.your-rank .yr-rank{
-  --rw: 10px;
-  --rh: 14px;
-}
-
-/* Default: hide the title except on the home screen */
-body:not([data-state="ready"]) #homeTitle{
-  display: none;
-}
-
-/* Home screen: hide HUD container and elements */
-body[data-state="ready"] #hud {
-  display: none !important;
-}
-
-body[data-state="ready"] #btn-restart,
-body[data-state="ready"] #score,
-body[data-state="ready"] #best{
-  display: none !important;
-}
-
-/* Center the text the user types */
-#username{
-  text-align: center;
-}
-
-/* Center the placeholder text too */
-#username::placeholder{
-  text-align: center;
-  opacity: .7; /* optional */
-}
-
-#overlay #homeAppleWrap{
-  position: absolute;
+/* =========================
+   Home Title
+   ========================= */
+#homeTitle{
+  font-weight: 400;
+  position: fixed;
+  top: max(16px, env(safe-area-inset-top));
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -140%) translateY(var(--innerLift));
-  width: 100%;
+  transform: translateX(-50%);
+  margin: 0;
+  z-index: 50;
+  white-space: nowrap;
   pointer-events: none;
-  display: flex;
-  justify-content: center;
-  z-index: 2;
 }
-
-/* Apple icon on the yellow home medallion */
-#overlay #homeApple{
-  position: relative;
-  display: block;
-
-  /* KEEP your spacing relative to the centered inner */
-  transform: translateY(180px);
-  margin: 0 auto -6px;
-
-  width: 180px;
-  height: auto;
-  user-select: none;
-  -webkit-user-drag: none;
+#homeTitle .titleText{
+  font-weight: 400;
+  display: inline-block;
+  font-size: clamp(56px, calc(var(--home-mw) * 0.45), 200px);
+  letter-spacing: 0.08em;
+  background: linear-gradient(to bottom, #ffff2f 0%, #ffbf00cc 25%, #ffff2f 45%, #ffbf00cc 70%, #ffff2f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter:
+    drop-shadow(0 2px 0 rgba(0,0,0,0.18))
+    drop-shadow(0 10px 14px rgba(0,0,0,0.28));
+}
+#homeTitle .titleText::after{
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    120deg,
+    rgba(255,191,0,0) 0%,
+    rgba(255,191,0,0) 44%,
+    rgba(255,215,64,0.95) 49%,
+    rgba(255,245,170,0.95) 52%,
+    rgba(255,215,64,0.95) 55%,
+    rgba(255,191,0,0) 60%,
+    rgba(255,191,0,0) 100%
+  );
+  background-size: 260% 120%;
+  background-position: -140% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  mix-blend-mode: plus-lighter;
+  opacity: 0.95;
+  filter:
+    drop-shadow(0 0 10px rgba(255,191,0,0.35))
+    drop-shadow(0 0 18px rgba(255,230,120,0.18));
   pointer-events: none;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.22));
-  will-change: transform;
+  animation: homeTitleBeam 7s linear infinite;
 }
-
-#game{
-  touch-action: none;
+@keyframes homeTitleBeam{
+  0%        { background-position: -140% 0; }
+  57.142%   { background-position:  140% 0; }
+  100%      { background-position:  140% 0; }
 }
+body:not([data-state="ready"]) #homeTitle .titleText::after{ animation: none; }
+body:not([data-state="ready"]) #homeTitle{ display: none; }
 
-#overlay.show #homeApple{
-  animation: homeAppleBob 2.4s ease-in-out infinite;
+/* =========================
+   Background layers
+   ========================= */
+#app::before{
+  content:"";
+  position: fixed;
+  left: 0; right: 0;
+  top: calc(-1 * env(safe-area-inset-top));
+  bottom: calc(-1 * env(safe-area-inset-bottom));
+  pointer-events: none;
+  z-index: -1;
+
+  --tile: 84px;
+  background-repeat: repeat, repeat;
+  background-size: var(--tile) var(--tile), var(--tile) var(--tile);
+  background-position:
+    calc(50% - (var(--tile) / 2)) calc(50% - (var(--tile) / 2)),
+    calc(50% - (var(--tile) / 2) + (var(--tile) / 2)) calc(50% - (var(--tile) / 2) + (var(--tile) / 2));
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cpath d='M42 12 L58 42 L42 72 L26 42 Z' fill='rgba(235,235,235,0.16)'/%3E%3Crect x='30' y='40' width='24' height='4' rx='1.5' fill='rgba(110,29,36,0.35)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='84' viewBox='0 0 84 84'%3E%3Cpath d='M42 12 L58 42 L42 72 L26 42 Z' fill='rgba(235,235,235,0.16)'/%3E%3Crect x='30' y='40' width='24' height='4' rx='1.5' fill='rgba(110,29,36,0.35)'/%3E%3C/svg%3E");
 }
-
-/* Fall a bit, then rise back */
-@keyframes homeAppleBob{
-  /* top hold */
-  0%   { transform: translateY(0); }
-  18%  { transform: translateY(0); }
-
-  /* fall to bottom (no hold) */
-  55%  { transform: translateY(20px); }
-
-  /* rise back to top */
-  100% { transform: translateY(0); }
+#app::after{
+  content:"";
+  position: fixed;
+  left: 0; right: 0;
+  top: calc(-1 * env(safe-area-inset-top));
+  bottom: calc(-1 * env(safe-area-inset-bottom));
+  pointer-events: none;
+  z-index: -2;
+  background: linear-gradient(#3D4973, #577DB5);
 }
+#app::before { display: none; }
+body[data-state="ready"] #app::before { display: block; }
 
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce){
-  #overlay.show #homeApple{ animation: none; }
-}
-
-/* Bring the Username label closer and slightly upward */
-#overlay .overlay-medallion__inner .field > span{
-  margin-top: -2px;
-  margin-bottom: -2px;
-}
-
-/* Keep input centered and consistent */
-#overlay .overlay-medallion__inner .field{
-  gap: 6px;
-}
-
-/* Let gameover content start at top, not vertically centered */
-#gameover.show{
-  justify-content: flex-start;          /* overrides justify-content:center from base */
-  padding-top: 12px;
-  padding-bottom: calc(16px + env(safe-area-inset-bottom));
-}
-
-/* Make room so pinned button does not overlap content */
-#gameover.show{
-  --tryH: 62px; /* reserved height for the pinned button row */
-}
-
-/* The middle area (leaderboard) can shrink and will scroll its rows */
+/* =========================
+   Gameover specifics: pinned Try Again
+   ========================= */
 #gameover.show .leaderboard{
-  max-height: none;                    /* remove 55vh cap */
+  max-height: none;
   flex: 1 1 auto;
   min-height: 0;
-  margin-bottom: var(--tryH);          /* reserve space for the pinned button */
+  margin-bottom: var(--tryH);
 }
-
-/* Keep header visible, scroll only the rows */
 #gameover.show #leaderboard-rows{
   overflow: auto;
   flex: 1 1 auto;
   min-height: 0;
 }
-
-/* Pin the <p> that contains Try Again */
 #gameover.show > p{
   position: fixed;
   left: 50%;
   bottom: calc(10px + env(safe-area-inset-bottom));
   transform: translateX(-50%);
   z-index: 9999;
-
-  margin: 0;
-  padding: 0;
-
-  /* Undo your global "#gameover > *" card styling for this row */
+  margin: 0; padding: 0;
   background: transparent;
   box-shadow: none;
   border-radius: 0;
-
   pointer-events: auto;
 }
-
-/* Optional: make sure the button is easy to tap on iPhone */
 #btn-try{
   min-width: 200px;
   padding: 12px 22px;
   font-size: 18px;
 }
 
-@media (min-width: 900px){
-  #overlay #homeApple{ width: 210px; }
-  #overlay .overlay-medallion__inner{ width: min(62vw, 260px); }
-  #overlay .overlay-medallion__inner .field input{ width: min(62vw, 260px); }
+/* =========================
+   States: hide UI when home
+   ========================= */
+body[data-state="ready"] #hud,
+body[data-state="ready"] #btn-restart,
+body[data-state="ready"] #score,
+body[data-state="ready"] #best{
+  display: none !important;
+}
+
+/* Inputs: center */
+#username, #username::placeholder{ text-align: center; }
+#username::placeholder{ opacity: .7; }
+
+/* Skin images */
+#gameover-skin,
+.go-skin {
+  display: block;
+  width: clamp(96px, 28vw, 200px);
+  height: auto;
+  margin: 6px auto 0;
+  image-rendering: auto; /* or 'pixelated' */
 }
