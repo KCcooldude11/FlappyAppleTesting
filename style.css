@@ -267,6 +267,7 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+    --innerLift: 0px; /* set to e.g. -18px if you want the inner higher */
 }
 
 #overlay .overlay-medallion__fill{
@@ -296,6 +297,10 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 
 /* Content: center it inside the diamond */
 #overlay .overlay-medallion__inner{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateY(var(--innerLift));
   z-index: 1;
 
   width: min(62vw, 220px);
@@ -307,7 +312,7 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 
   background: transparent;
   border: 0;
-  padding: 0; 
+  padding: 0;
 }
 
 /* Center the whole Username block inside the medallion */
@@ -820,26 +825,33 @@ body[data-state="ready"] #best{
 }
 
 #overlay #homeAppleWrap{
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) translateY(var(--innerLift));
   width: 100%;
   pointer-events: none;
   display: flex;
   justify-content: center;
-  order: -1;  /* Place apple above the form content */
+  z-index: 2;
 }
 
 /* Apple icon on the yellow home medallion */
 #overlay #homeApple{
   position: relative;
   display: block;
-  margin: -80px auto -6px;
+
+  /* KEEP your spacing relative to the centered inner */
+  --bob: 0px;
+  transform: translateY(calc(-80px + var(--bob)));
+  margin: 0 auto -6px;
+
   width: 180px;
   height: auto;
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
   filter: drop-shadow(0 6px 10px rgba(0,0,0,0.22));
-  z-index: 2;
   will-change: transform;
 }
 
@@ -849,15 +861,10 @@ body[data-state="ready"] #best{
 
 /* Fall a bit, then rise back */
 @keyframes homeAppleBob{
-  /* top hold */
-  0%   { transform: translateY(0); }
-  18%  { transform: translateY(0); }
-
-  /* fall to bottom (no hold) */
-  55%  { transform: translateY(20px); }
-
-  /* rise back to top */
-  100% { transform: translateY(0); }
+  0%   { --bob: 0px; }
+  18%  { --bob: 0px; }
+  55%  { --bob: 20px; }
+  100% { --bob: 0px; }
 }
 
 /* Respect reduced motion */
