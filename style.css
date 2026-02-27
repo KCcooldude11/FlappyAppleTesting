@@ -828,21 +828,6 @@ body[data-state="ready"] #best{
   order: -1;  /* Place apple above the form content */
 }
 
-/* Apple icon on the yellow home medallion */
-#overlay #homeApple{
-  position: relative;
-  display: block;
-  margin: -80px auto -6px;
-  width: 180px;
-  height: auto;
-  user-select: none;
-  -webkit-user-drag: none;
-  pointer-events: none;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.22));
-  z-index: 2;
-  will-change: transform;
-}
-
 #overlay.show #homeApple{
   animation: homeAppleBob 2.4s ease-in-out infinite;
 }
