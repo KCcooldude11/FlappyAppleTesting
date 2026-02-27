@@ -15,9 +15,10 @@ function preventDefaultGestures(canvas) {
 }
 
 export function initializeInputHandlers(flappingCallback, startingCallback, renamingCallback) {
+   const canvas = document.getElementById('game');
+  
   preventDefaultGestures(canvas);
-
-  const canvas = document.getElementById('game');
+ 
   const nameInput = document.getElementById('username');
   const btnPlay = document.getElementById('btn-play');
   const btnTry = document.getElementById('btn-try');
