@@ -2,7 +2,7 @@
 // Organize by category for clarity
 
 export const CANVAS = {
-  BASE_H: 640,
+  BASE_H: 720,
   DPR: Math.max(1, Math.floor(window.devicePixelRatio || 1)),
   OFFSCREEN_DPR_CAP: 1.5,
   BLUR_PX: 6,

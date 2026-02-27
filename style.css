@@ -208,7 +208,7 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 /* Overlay: center it, but don't style the card as a white box */
 #overlay.show { display: flex; }
 #overlay{
-  pointer-events: none;
+  pointer-events: auto;
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -832,7 +832,7 @@ body[data-state="ready"] #best{
 #overlay #homeApple{
   position: relative;
   display: block;
-  margin: -40px auto -6px;
+  margin: -80px auto -6px;
   width: 180px;
   height: auto;
   user-select: none;
