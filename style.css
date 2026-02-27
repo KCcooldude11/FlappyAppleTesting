@@ -108,14 +108,19 @@ body {
    App / Canvas
    ========================= */
 #app{
-  display: grid;
-  place-items: center; /* vertical + horizontal centering */
-  background: transparent; /* your pattern/gradient sits on #app::before/::after */
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100svh;   /* fallback */
+  height: 100dvh;   /* modern dynamic viewport */
+  overflow: hidden; /* keep gameplay from scrolling */
 }
 
-
-#game {
+#game{
+  width: 100%;
+  height: 100%;
   display: block;
+  touch-action: none;
 }
 
 /* =========================
