@@ -272,10 +272,10 @@ body, #overlay, #gameover, #score, #best, button, .btn {
   text-align: center;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100svh;
   /* Reserve space for the title at the top to prevent overlap */
-  padding-top: max(140px, 18vw);
-  padding-bottom: 40px;  /* Prevent content from going off bottom */
+  padding-top: clamp(88px, 12vh, 140px);
+  padding-bottom: clamp(16px, 6vh, 40px);
 }
 
 /* Only make the overlay card clickable, don't give it box styling here */
@@ -932,8 +932,6 @@ body[data-state="ready"] #best{
   position: relative;
   display: block;
 
-  /* KEEP your spacing relative to the centered inner */
-  transform: translateY(180px);
   margin: 0 auto -6px;
 
   width: 180px;
@@ -1035,8 +1033,32 @@ body[data-state="ready"] #best{
   font-size: 18px;
 }
 
-@media (min-width: 900px){
-  #overlay #homeApple{ width: 210px; }
-  #overlay .overlay-medallion__inner{ width: min(62vw, 260px); }
-  #overlay .overlay-medallion__inner .field input{ width: min(62vw, 260px); }
+
+@media (orientation: landscape) and (max-height: 520px){
+  #overlay{
+    padding-top: clamp(64px, 10vh, 110px);
+    padding-bottom: 14px;
+  }
+
+  #overlay .overlay-card.overlay-medallion{
+    --mw: clamp(110px, 10vh, 150px);
+  }
+
+  #overlay #homeApple{ width: 140px; }
+
+  #overlay .overlay-medallion__inner{
+    width: min(60vw, 200px);
+    gap: 10px;
+  }
+
+  #overlay .overlay-medallion__inner .field input{
+    width: min(60vw, 200px);
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+
+  #overlay #btn-play{
+    padding: 10px 16px;
+    font-size: 18px;
+  }
 }
