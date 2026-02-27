@@ -653,6 +653,13 @@ kbd {
   padding-right: calc(12px + env(safe-area-inset-right));
 }
 
+@media (max-width: 360px){
+  #homeTitle .titleText{
+    font-size: clamp(34px, 12vw, 90px);
+    letter-spacing: 0.06em; /* slightly tighter so it fits */
+  }
+}
+
 /* simplified gold gradient text + shadow */
 #homeTitle .titleText{
   font-weight: 400;
