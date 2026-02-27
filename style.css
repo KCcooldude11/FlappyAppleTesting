@@ -272,7 +272,26 @@ body, #overlay, #gameover, #score, #best, button, .btn {
 
 @media (min-width: 900px){
   #overlay .overlay-card.overlay-medallion{
-    --mw: clamp(140px, 10vw, 220px);
+    --mw: clamp(180px, 16vw, 320px);
+  }
+
+  /* scale the stuff that had fixed pixel sizes */
+  #overlay #homeApple{ width: 280px; }
+
+  #overlay .overlay-medallion__inner{
+    width: min(70vw, 360px);
+    gap: 16px;
+  }
+
+  #overlay .overlay-medallion__inner .field input{
+    width: min(70vw, 360px);
+    font-size: 18px;
+    padding: 10px 12px;
+  }
+
+  #overlay #btn-play{
+    padding: 14px 24px;
+    font-size: 22px;
   }
 }
 
