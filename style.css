@@ -645,6 +645,12 @@ kbd {
 
   white-space: nowrap;
   pointer-events: none;
+
+    /* keep title away from edges on narrow screens + respect safe areas */
+  box-sizing: border-box;
+  max-width: calc(100vw - 24px - env(safe-area-inset-left) - env(safe-area-inset-right));
+  padding-left: calc(12px + env(safe-area-inset-left));
+  padding-right: calc(12px + env(safe-area-inset-right));
 }
 
 /* simplified gold gradient text + shadow */
