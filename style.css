@@ -826,4 +826,50 @@ body[data-state="ready"] #best{
   #overlay .overlay-medallion__inner .field > span{
     font-size: calc(var(--home-mw) * 0.10);
   }
+  @keyframes homeAppleBob{
+    0%, 18%, 100% { transform: translateY(calc(var(--home-mw) * 0.01)); }
+    55%           { transform: translateY(calc(var(--home-mw) * 0.01 + 3.5 * var(--u))); }
+  }
+}
+
+@media (max-width: 520px){
+  /* Make the leaderboard card a bit wider */
+  .leaderboard{
+    width: min(96vw, 420px);
+    padding: calc(1.4 * var(--space-2)) calc(1.4 * var(--space-3));
+  }
+
+  /* Bump text sizes inside leaderboard */
+  .leaderboard,
+  .leaderboard .row,
+  .leaderboard .yr-row,
+  .leaderboard .lb-title{
+    font-size: clamp(16px, 4.2vw, 20px);
+  }
+
+  .leaderboard .lb-title{
+    font-size: clamp(22px, 6vw, 28px);
+  }
+
+  /* Make each row taller (more tappable) */
+  .leaderboard .row,
+  .your-rank .yr-row{
+    padding: calc(1.1 * var(--space-2));
+    gap: calc(1.2 * var(--space-2));
+  }
+
+  /* Make the rank diamond bigger */
+  .leaderboard .rank{
+    --rw: calc(1.1 * var(--u));
+    --rh: calc(1.6 * var(--u));
+  }
+  .leaderboard .rank .rank-num,
+  .leaderboard .rank .txt{
+    font-size: clamp(12px, 3.6vw, 16px);
+  }
+
+  /* Slightly widen the score column so numbers don't feel cramped */
+  .leaderboard .row{
+    grid-template-columns: calc(3.6 * var(--u)) 1fr calc(9.6 * var(--u));
+  }
 }
