@@ -464,7 +464,7 @@ body {
   /* LANDSCAPE-SAFE: smaller offset & size so it never pushes out */
   transform: translateY(calc(var(--home-mw) * 0.01));
   margin: 0 auto calc(-0.6 * var(--u));
-  width: calc(var(--home-mw) * 0.86);
+  width: calc(var(--home-mw) * 0.92);
   height: auto;
   user-select: none;
   -webkit-user-drag: none;
