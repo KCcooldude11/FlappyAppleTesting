@@ -855,6 +855,16 @@ body[data-state="ready"] #best{
   }
 
   /* ---------- Gameover cards bigger ---------- */
+  /* Make the whole gameover stack tighter on mobile */
+#gameover.show{
+  gap: var(--space-2);
+}
+
+/* Make the gameover cards less padded and less wide */
+#gameover > *{
+  padding: var(--space-2) calc(1.4 * var(--u));
+  max-width: min(92vw, 360px);
+}
 
   #gameover .go-card h2{
     font-size: clamp(26px, 7vw, 34px);
