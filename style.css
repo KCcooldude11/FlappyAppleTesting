@@ -890,7 +890,8 @@ body[data-state="ready"] #best{
   /* ---------- Leaderboard: not as wide, but taller ---------- */
   .leaderboard{
     width: min(92vw, 360px);                 /* slightly narrower */
-    padding: var(--space-2) var(--space-3);  /* back to normal */
+    padding: var(--space-2) var(--space-3);
+    padding-left: calc(var(--space-3) + 0.8 * var(--u)); /* extra breathing room for the diamond */
     max-height: 76svh;
   }
 
@@ -902,7 +903,10 @@ body[data-state="ready"] #best{
     font-size: clamp(14px, 3.8vw, 16px);
     padding: var(--space-1);                 /* smaller row height */
     gap: var(--space-2);
-    grid-template-columns: calc(3.0 * var(--u)) 1fr calc(8.8 * var(--u));
+    grid-template-columns:
+      calc(4.6 * var(--u))   /* wider rank col so diamond fits */
+      1fr
+      minmax(calc(12.0 * var(--u)), auto); /* safer score col */
   }
 
   /* rows area tall enough to show 10 most of the time */
@@ -919,8 +923,9 @@ body[data-state="ready"] #best{
 
   /* Rank diamonds slightly bigger */
   .leaderboard .rank{
-    --rw: calc(1.0 * var(--u));
-    --rh: calc(1.5 * var(--u));
+    --rw: calc(1.35 * var(--u));
+    --rh: calc(2.00 * var(--u));
+    justify-self: center; /* prevents left clipping */
   }
   .your-rank .yr-rank{
     --rw: calc(1.2 * var(--u));
