@@ -858,15 +858,15 @@ body[data-state="ready"] #best{
   /* Make the whole gameover stack tighter on mobile */
   /* tighter stack */
   #gameover.show{
-    gap: calc(0.8 * var(--space-2));
-    padding-top: var(--space-2);
-    padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
+    gap: calc(0.35 * var(--space-2)); /* tighter stack */
+    padding-top: var(--space-1);
+    padding-bottom: calc(var(--space-1) + env(safe-area-inset-bottom));
   }
 
   /* make every "card" smaller */
   #gameover > *{
     max-width: min(90vw, 320px);
-    padding: calc(0.85 * var(--space-2)) calc(1.15 * var(--u));
+    padding: calc(0.55 * var(--space-2)) calc(1.10 * var(--u)); /* less vertical padding */
     border-radius: var(--r-12);
   }
 
@@ -877,16 +877,14 @@ body[data-state="ready"] #best{
 
   /* profile row text smaller */
   #gameover .profile-line{
-    font-size: clamp(14px, 4vw, 16px);
+    font-size: clamp(16px, 4.6vw, 19px); /* bigger username line */
     gap: var(--space-1);
   }
-
   /* slightly smaller skin image */
   #gameover-skin,
-  .go-skin{
-    width: min(58vw, 220px);
-  }
-
+    .go-skin{
+      margin: calc(0.15 * var(--u)) auto 0; /* less gap above username/title */
+    }
   /* ---------- Leaderboard: not as wide, but taller ---------- */
   .leaderboard{
     width: min(92vw, 360px);                 /* slightly narrower */
