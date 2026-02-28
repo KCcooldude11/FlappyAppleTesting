@@ -475,9 +475,9 @@ body {
 #overlay.show #homeApple{ animation: homeAppleBob 2.4s ease-in-out infinite; }
 
 @keyframes homeAppleBob{
-  0%, 18%  { transform: translateY(calc(var(--home-mw) * 0.22)); }
-  55%      { transform: translateY(calc(var(--home-mw) * 0.22 + 2 * var(--u))); }
-  100%     { transform: translateY(calc(var(--home-mw) * 0.22)); }
+  0%, 18%  { transform: translateY(calc(var(--home-mw) * 0.01)); }
+  55%      { transform: translateY(calc(var(--home-mw) * 0.01 + 2 * var(--u))); }
+  100%     { transform: translateY(calc(var(--home-mw) * 0.01)); }
 }
 @media (prefers-reduced-motion: reduce){
   #overlay.show #homeApple{ animation: none; }
