@@ -799,3 +799,31 @@ body[data-state="ready"] #best{
     gap: var(--space-2);
   }
 }
+
+/* =========================
+   MOBILE PORTRAIT: make home input + button noticeably bigger
+   ========================= */
+@media (max-width: 520px) and (orientation: portrait){
+  :root{
+    /* Bigger home scale on phones, still height-capped so it won't spill */
+    --home-mw: min(38vmin, calc(100svh / 4.4));
+  }
+
+  /* Make the username input bigger */
+  #overlay .overlay-medallion__inner .field input{
+    width: min(calc(var(--home-mw) * 0.92), 86vw);
+    font-size: clamp(16px, calc(2.1 * var(--u)), 22px);
+    padding: calc(1.1 * var(--space-2)) calc(1.1 * var(--space-3));
+  }
+
+  /* Make the play button bigger */
+  #overlay #btn-play{
+    font-size: calc(var(--home-mw) * 0.10);
+    padding: calc(var(--home-mw) * 0.065) calc(var(--home-mw) * 0.13);
+  }
+
+  /* Optional: label a bit bigger too */
+  #overlay .overlay-medallion__inner .field > span{
+    font-size: calc(var(--home-mw) * 0.10);
+  }
+}
