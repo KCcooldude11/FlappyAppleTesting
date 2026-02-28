@@ -974,7 +974,7 @@ body[data-state="ready"] #best{
 @media (min-width: 700px) and (max-width: 1024px) and (orientation: portrait){
   :root{
     /* Global UI scale bump */
-    --u: 1.15vmin;
+    --u: 1.5vmin;
 
     /* Optional: make the home medallion slightly larger too */
     --home-mw: min(30vmin, calc(100svh / 4.6));
