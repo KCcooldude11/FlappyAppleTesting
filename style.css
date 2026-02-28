@@ -920,13 +920,6 @@ body[data-state="ready"] #best{
   .your-rank .yr-row{
     padding: var(--space-1);
   }
-
-  /* Rank diamonds slightly bigger */
-  .leaderboard .rank{
-    --rw: calc(1.35 * var(--u));
-    --rh: calc(2.00 * var(--u));
-    justify-self: center; /* prevents left clipping */
-  }
   .your-rank .yr-rank{
     --rw: calc(1.2 * var(--u));
     --rh: calc(1.7 * var(--u));
@@ -948,8 +941,8 @@ body[data-state="ready"] #best{
   }
   /* Bigger rank medallion/diamond */
   .leaderboard .rank{
-    --rw: calc(1.05 * var(--u));
-    --rh: calc(1.60 * var(--u));
+    --rw: calc(1.5 * var(--u));
+    --rh: calc(2 * var(--u));
   }
 
   /* Give the score column more guaranteed room */
