@@ -811,7 +811,7 @@ body[data-state="ready"] #best{
 
   /* Make the username input bigger */
   #overlay .overlay-medallion__inner .field input{
-    width: min(calc(var(--home-mw) * 0.92), 86vw);
+    width: min(calc(var(--home-mw) * 1.12), 86vw);
     font-size: clamp(16px, calc(2.1 * var(--u)), 22px);
     padding: calc(1.1 * var(--space-2)) calc(1.1 * var(--space-3));
   }
