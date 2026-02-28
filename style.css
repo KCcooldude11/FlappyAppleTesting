@@ -462,7 +462,7 @@ body {
   position: relative;
   display: block;
   /* LANDSCAPE-SAFE: smaller offset & size so it never pushes out */
-  transform: translateY(calc(var(--home-mw) * 0.72));
+  transform: translateY(calc(var(--home-mw) * 0.52));
   margin: 0 auto calc(-0.6 * var(--u));
   width: calc(var(--home-mw) * 0.86);
   height: auto;
