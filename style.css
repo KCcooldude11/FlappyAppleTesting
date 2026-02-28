@@ -941,4 +941,29 @@ body[data-state="ready"] #best{
   button#btn-try *{
     font-size: inherit;
   }
+  /* Bigger rank medallion/diamond */
+  .leaderboard .rank{
+    --rw: calc(1.05 * var(--u));
+    --rh: calc(1.60 * var(--u));
+  }
+
+  /* Give the score column more guaranteed room */
+  .leaderboard .row{
+    grid-template-columns:
+      calc(3.2 * var(--u))
+      1fr
+      minmax(calc(12.0 * var(--u)), auto);
+  }
+
+  /* Prevent grid children from forcing overflow */
+  .leaderboard .row > *{ min-width: 0; }
+
+  /* Keep score text inside the card */
+  .leaderboard .row > :last-child{
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: calc(0.6 * var(--u)); /* small breathing room from card edge */
+  }
 }
