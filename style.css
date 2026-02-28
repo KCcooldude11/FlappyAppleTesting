@@ -5,7 +5,8 @@
 
 /* Canonical fluid unit: 1% of the smaller viewport edge */
 :root {
-  --u: 1vmin;
+  --uiScale: 1;
+  --u: calc(1vmin * var(--uiScale));
 
   /* Design tokens */
   --c-bg: #ffffff;
@@ -804,20 +805,12 @@ body[data-state="ready"] #best{
    Mobile portrait: gentle global scale bump (TEST)
    ========================= */
 @media (max-width: 520px) and (orientation: portrait){
-  :root{
-    --u: 1.12vmin; /* try 1.08–1.18 */
-  }
+  :root{ --uiScale: 1.12; } /* try 1.10–1.18 */
 }
 
 /* =========================
    Tablet portrait (iPad-ish): scale UI up a bit
    ========================= */
 @media (min-width: 700px) and (max-width: 1024px) and (orientation: portrait){
-  :root{
-    /* Global UI scale bump */
-    --u: 1.3vmin;
-
-    /* Optional: make the home medallion slightly larger too */
-    --home-mw: min(30vmin, calc(100svh / 4.6));
-  }
+  :root{ --uiScale: 1.30; } /* your choice */
 }
