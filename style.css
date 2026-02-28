@@ -462,7 +462,7 @@ body {
   position: relative;
   display: block;
   /* LANDSCAPE-SAFE: smaller offset & size so it never pushes out */
-  transform: translateY(calc(var(--home-mw) * 0.22));
+  transform: translateY(calc(var(--home-mw) * 0.01));
   margin: 0 auto calc(-0.6 * var(--u));
   width: calc(var(--home-mw) * 0.86);
   height: auto;
@@ -712,35 +712,40 @@ body[data-state="ready"] #app::before { display: block; }
 /* =========================
    Gameover specifics: pinned Try Again
    ========================= */
-#gameover.show .leaderboard{
-  max-height: none;
-  flex: 1 1 auto;
-  min-height: 0;
-  margin-bottom: var(--tryH);
+/* Let the stack sit nicely, but don’t force the leaderboard to fill the screen */
+#gameover.show{
+  justify-content: center; /* looks good on tall screens */
 }
-#gameover.show #leaderboard-rows{
+
+/* Leaderboard should keep its natural height and stop after top 10 + your rank */
+#gameover .leaderboard{
+  flex: 0 1 auto;                 /* do NOT grow to fill */
+  max-height: min(72svh, calc(70 * var(--u))); /* cap the whole card */
+}
+
+/* Scroll only the top-10 rows area when space is tight */
+#leaderboard-rows{
   overflow: auto;
-  flex: 1 1 auto;
-  min-height: 0;
+  max-height: min(36svh, calc(34 * var(--u))); /* if there is extra space, it just won’t scroll */
 }
+
+/* Try Again sits below leaderboard, not pinned */
 #gameover.show > p{
-  position: fixed;
-  left: 50%;
-  bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
-  transform: translateX(-50%);
-  z-index: 9999;
-  margin: 0; padding: 0;
+  position: static;
+  margin: var(--space-2) 0 0;
   background: transparent;
   box-shadow: none;
   border-radius: 0;
+  padding: 0;
   pointer-events: auto;
 }
+
+/* Button sizing stays fluid */
 #btn-try{
   min-width: calc(20 * var(--u));
   padding: var(--space-3) var(--space-4);
   font-size: var(--fs-2);
 }
-
 /* =========================
    States: hide UI when home
    ========================= */
