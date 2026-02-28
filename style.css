@@ -831,45 +831,93 @@ body[data-state="ready"] #best{
     55%           { transform: translateY(calc(var(--home-mw) * 0.01 + 3.5 * var(--u))); }
   }
 }
-
+/* =========================
+   MOBILE UI SCALE BUMP
+   ========================= */
 @media (max-width: 520px){
-  /* Make the leaderboard card a bit wider */
-  .leaderboard{
-    width: min(96vw, 420px);
-    padding: calc(1.4 * var(--space-2)) calc(1.4 * var(--space-3));
+  /* ---------- HUD: restart + best bigger ---------- */
+  #btn-restart{
+    font-size: clamp(18px, 4.8vw, 22px);
+    padding: calc(1.2 * var(--space-2)) calc(1.6 * var(--space-3));
+    border-radius: var(--r-14);
   }
 
-  /* Bump text sizes inside leaderboard */
-  .leaderboard,
-  .leaderboard .row,
-  .leaderboard .yr-row,
-  .leaderboard .lb-title{
+  #best{
     font-size: clamp(16px, 4.2vw, 20px);
+    padding: calc(1.0 * var(--space-2)) calc(1.4 * var(--space-3));
+    border-radius: var(--r-14);
   }
 
-  .leaderboard .lb-title{
-    font-size: clamp(22px, 6vw, 28px);
+  /* ---------- Gameover cards bigger ---------- */
+  #gameover > *{
+    padding: calc(1.4 * var(--space-3)) calc(2.2 * var(--u));
+    border-radius: var(--r-16);
   }
 
-  /* Make each row taller (more tappable) */
-  .leaderboard .row,
-  .your-rank .yr-row{
-    padding: calc(1.1 * var(--space-2));
+  #gameover .go-card h2{
+    font-size: clamp(26px, 7vw, 34px);
+  }
+
+  #gameover .profile-line{
+    font-size: clamp(16px, 4.5vw, 20px);
     gap: calc(1.2 * var(--space-2));
   }
 
-  /* Make the rank diamond bigger */
+  /* Make the skin image a bit bigger on gameover */
+  #gameover-skin,
+  .go-skin{
+    width: min(72vw, 260px);
+  }
+
+  /* ---------- Leaderboard: not as wide, but taller ---------- */
+  .leaderboard{
+    width: min(94vw, 380px);                 /* back to your normal width feel */
+    padding: calc(1.2 * var(--space-2)) calc(1.2 * var(--space-3));
+    max-height: 78svh;                       /* allow more vertical room on phones */
+  }
+
+  .leaderboard .lb-title{
+    font-size: clamp(22px, 6.2vw, 30px);
+  }
+
+  .leaderboard .row{
+    font-size: clamp(15px, 4.2vw, 18px);
+    padding: calc(1.1 * var(--space-2));
+    grid-template-columns: calc(3.2 * var(--u)) 1fr calc(9.2 * var(--u));
+  }
+
+  /* Let the rows area be taller before it scrolls */
+  #leaderboard-rows{
+    max-height: 52svh;
+  }
+
+  /* Your rank section bigger */
+  .your-rank{
+    font-size: clamp(15px, 4.2vw, 18px);
+  }
+  .your-rank .yr-row{
+    padding: calc(1.1 * var(--space-2));
+  }
+
+  /* Rank diamonds slightly bigger */
   .leaderboard .rank{
-    --rw: calc(1.1 * var(--u));
-    --rh: calc(1.6 * var(--u));
+    --rw: calc(1.0 * var(--u));
+    --rh: calc(1.5 * var(--u));
+  }
+  .your-rank .yr-rank{
+    --rw: calc(1.2 * var(--u));
+    --rh: calc(1.7 * var(--u));
   }
   .leaderboard .rank .rank-num,
   .leaderboard .rank .txt{
     font-size: clamp(12px, 3.6vw, 16px);
   }
 
-  /* Slightly widen the score column so numbers don't feel cramped */
-  .leaderboard .row{
-    grid-template-columns: calc(3.6 * var(--u)) 1fr calc(9.6 * var(--u));
+  /* ---------- Try Again bigger ---------- */
+  #btn-try{
+    min-width: min(86vw, 320px);
+    font-size: clamp(18px, 5.2vw, 22px);
+    padding: calc(1.4 * var(--space-3)) calc(1.8 * var(--space-4));
+    border-radius: 999rem;
   }
 }
