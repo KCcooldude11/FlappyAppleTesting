@@ -856,29 +856,35 @@ body[data-state="ready"] #best{
 
   /* ---------- Gameover cards bigger ---------- */
   /* Make the whole gameover stack tighter on mobile */
-#gameover.show{
-  gap: var(--space-2);
-}
+  /* tighter stack */
+  #gameover.show{
+    gap: calc(0.8 * var(--space-2));
+    padding-top: var(--space-2);
+    padding-bottom: calc(var(--space-2) + env(safe-area-inset-bottom));
+  }
 
-/* Make the gameover cards less padded and less wide */
-#gameover > *{
-  padding: var(--space-2) calc(1.4 * var(--u));
-  max-width: min(92vw, 360px);
-}
+  /* make every "card" smaller */
+  #gameover > *{
+    max-width: min(90vw, 320px);
+    padding: calc(0.85 * var(--space-2)) calc(1.15 * var(--u));
+    border-radius: var(--r-12);
+  }
 
+  /* reduce title size a bit */
   #gameover .go-card h2{
-    font-size: clamp(26px, 7vw, 34px);
+    font-size: clamp(22px, 6vw, 28px);
   }
 
+  /* profile row text smaller */
   #gameover .profile-line{
-    font-size: clamp(16px, 4.5vw, 20px);
-    gap: calc(1.2 * var(--space-2));
+    font-size: clamp(14px, 4vw, 16px);
+    gap: var(--space-1);
   }
 
-  /* Make the skin image a bit bigger on gameover */
+  /* slightly smaller skin image */
   #gameover-skin,
   .go-skin{
-    width: min(72vw, 260px);
+    width: min(58vw, 220px);
   }
 
   /* ---------- Leaderboard: not as wide, but taller ---------- */
@@ -931,12 +937,9 @@ body[data-state="ready"] #best{
     min-width: min(72vw, 240px);   /* not ridiculously wide */
     max-width: 88vw;
 
-    /* taller button */
-    min-height: 44px;
-    padding: calc(1.1 * var(--space-3)) calc(1.4 * var(--space-4));
-
-    /* bigger text */
-    font-size: clamp(18px, 5vw, 22px);
+    font-size: clamp(20px, 5.8vw, 26px);
     line-height: 1;
+    padding: calc(0.9 * var(--space-3)) calc(1.2 * var(--space-4));
+    min-height: 48px;
   }
 }
