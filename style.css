@@ -943,6 +943,7 @@ body[data-state="ready"] #best{
   .leaderboard .rank{
     --rw: calc(1.5 * var(--u));
     --rh: calc(2 * var(--u));
+     justify-self: center; /* prevents left clipping */
   }
 
   /* Give the score column more guaranteed room */
