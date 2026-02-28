@@ -927,8 +927,16 @@ body[data-state="ready"] #best{
 
   /* ---------- Try Again bigger ---------- */
   #btn-try{
-    min-width: min(84vw, 280px);
-    font-size: clamp(16px, 4.8vw, 20px);
-    padding: calc(1.0 * var(--space-3)) calc(1.2 * var(--space-4));
+    width: auto;
+    min-width: min(72vw, 240px);   /* not ridiculously wide */
+    max-width: 88vw;
+
+    /* taller button */
+    min-height: 44px;
+    padding: calc(1.1 * var(--space-3)) calc(1.4 * var(--space-4));
+
+    /* bigger text */
+    font-size: clamp(18px, 5vw, 22px);
+    line-height: 1;
   }
 }
