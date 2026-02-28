@@ -932,15 +932,11 @@ body[data-state="ready"] #best{
   }
 
   /* ---------- Try Again bigger ---------- */
-  #btn-try{
-    width: auto;
-    min-width: min(72vw, 240px);   /* not ridiculously wide */
-    max-width: 88vw;
-
+  button#btn-try{
     font-size: clamp(20px, 5.8vw, 26px);
     line-height: 1;
-    padding: calc(0.9 * var(--space-3)) calc(1.2 * var(--space-4));
     min-height: 48px;
+    padding: calc(0.9 * var(--space-3)) calc(1.2 * var(--space-4));
   }
   button#btn-try *{
     font-size: inherit;
