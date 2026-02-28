@@ -967,3 +967,16 @@ body[data-state="ready"] #best{
   margin-top: calc(0.9 * var(--space-2));
 }
 }
+
+/* =========================
+   Tablet portrait (iPad-ish): scale UI up a bit
+   ========================= */
+@media (min-width: 700px) and (max-width: 1024px) and (orientation: portrait){
+  :root{
+    /* Global UI scale bump */
+    --u: 1.15vmin;
+
+    /* Optional: make the home medallion slightly larger too */
+    --home-mw: min(30vmin, calc(100svh / 4.6));
+  }
+}
