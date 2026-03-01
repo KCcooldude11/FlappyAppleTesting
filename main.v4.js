@@ -554,7 +554,7 @@ function getBgForTheme(t) {
   const MERRIKH_INDEX = SKINS.findIndex(s => s.name === 'Merrikh');
   let skinLocked = false;
 
-  const MERRIKH_UNLOCK_COLUMN = 301;                 // the “spire 500” target
+  const MERRIKH_UNLOCK_COLUMN = 20;                 // the “spire 500” target
   const LOCK_AFTER_MERRIKH    = true;                // optional: keep Merrikh once earned
 
   let merrikhUnlockedThisRun = false;

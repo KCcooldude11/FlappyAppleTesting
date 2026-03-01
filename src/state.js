@@ -71,7 +71,7 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
 
   gameState.medallions = [];
   gameState.columnsSpawned = 0;
-  gameState.nextMedalColumn = 16;
+  gameState.nextMedalColumn = 1;
 
   gameState.theme = 1;
   gameState.themeTransition = null;
