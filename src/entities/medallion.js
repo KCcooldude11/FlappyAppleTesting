@@ -13,7 +13,7 @@ export function createMedallion(x, y, size, special = false) {
 }
 
 export function nextMedalJump() {
-  return 1; // TEST: spawn every column
+  return 13 + Math.floor(Math.random() * 8); // [13..20]
 }
 
 export function spawnMedalForMerrikh(prevPipe, currentPipe, screenH, pipeGap, scale) {

@@ -22,6 +22,13 @@ export const gameState = {
     r: 0,
   },
 
+  glitch: {
+    active: false,
+    intensity: 0,      // 0..1
+    nextBurstAt: 0,    // ms timestamp
+    burstUntil: 0      // ms timestamp
+  },
+
   // Pipes and collision
   pipes: [],
   lastPipeAt: 0,
@@ -33,7 +40,7 @@ export const gameState = {
   // Medallions
   medallions: [],
   columnsSpawned: 0,
-  nextMedalColumn: 1,
+  nextMedalColumn: 16,
 
   // Themes
   theme: 1, // 1 | 2 | 3
@@ -71,7 +78,7 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
 
   gameState.medallions = [];
   gameState.columnsSpawned = 0;
-  gameState.nextMedalColumn = 1;
+  gameState.nextMedalColumn = 16;
 
   gameState.theme = 1;
   gameState.themeTransition = null;
