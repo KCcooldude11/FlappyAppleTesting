@@ -999,7 +999,7 @@ body[data-state="ready"] #best{
 
   /* Optional: make score diamond a bit bigger too */
   #score{
-    --w: calc(2.6 * var(--u));
-    --h: calc(4.1 * var(--u));
+    --w: calc(2.6 * var(--u + 1vmin));
+    --h: calc(4.1 * var(--u + 1vmin));
   }
 }
