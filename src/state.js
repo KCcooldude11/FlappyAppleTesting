@@ -33,7 +33,7 @@ export const gameState = {
   // Medallions
   medallions: [],
   columnsSpawned: 0,
-  nextMedalColumn: 1,
+  nextMedalColumn: 16,
 
   // Themes
   theme: 1, // 1 | 2 | 3
@@ -71,7 +71,7 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
 
   gameState.medallions = [];
   gameState.columnsSpawned = 0;
-  gameState.nextMedalColumn = 1;
+  gameState.nextMedalColumn = 16;
 
   gameState.theme = 1;
   gameState.themeTransition = null;
