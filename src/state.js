@@ -33,7 +33,7 @@ export const gameState = {
   // Medallions
   medallions: [],
   columnsSpawned: 0,
-  nextMedalColumn: 16,
+  nextMedalColumn: 1,
 
   // Themes
   theme: 1, // 1 | 2 | 3

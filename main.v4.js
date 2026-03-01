@@ -731,7 +731,7 @@ function startHomeAppleLoop(){
 
   let medallions = []; // {x,y,size,r,taken}
   let columnsSpawned = 0;
-  let nextMedalColumn = 1;
+  let nextMedalColumn = 16;
 
   // ===== Core helpers =====
   function resetGame(){
