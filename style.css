@@ -980,26 +980,3 @@ body[data-state="ready"] #best{
     --home-mw: min(30vmin, calc(100svh / 4.6));
   }
 }
-
-/* iPad Pro portrait (1024 x 1366-ish): scale HUD + panels up */
-@media (min-width: 1000px) and (max-width: 1050px) and (min-height: 1200px) and (orientation: portrait){
-  :root{
-    --u: 2.0vmin; /* try 1.30–1.55 */
-  }
-
-  /* Force HUD items to visibly scale even if something else is limiting it */
-  #btn-restart{
-    font-size: calc(var(--fs-2) * 1.15);
-    padding: calc(var(--space-1) * 1.25) calc(var(--space-2) * 1.35);
-  }
-  #best{
-    font-size: calc(var(--fs-2) * 1.15);
-    padding: calc(var(--space-1) * 1.10) calc(var(--space-2) * 1.25);
-  }
-
-  /* Optional: make score diamond a bit bigger too */
-  #score{
-    --w: calc(2.6 * var(--u + 1vmin));
-    --h: calc(4.1 * var(--u + 1vmin));
-  }
-}
