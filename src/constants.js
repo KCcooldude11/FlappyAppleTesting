@@ -41,7 +41,7 @@ export const BIRD = {
 
 export const THEME = {
   FADE_MS: 800,
-  THRESHOLDS: [100, 200],
+  THRESHOLDS: [5, 10],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
