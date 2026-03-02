@@ -5,7 +5,7 @@
 
 /* Canonical fluid unit: 1% of the smaller viewport edge */
 :root {
-  --u: 1vmin;
+  --u: clamp(5px, 1.05vmin, 11px);
 
   /* Design tokens */
   --c-bg: #ffffff;
@@ -43,7 +43,10 @@
   /* Global home sizing (landscape-safe):
      - 28vmin for normal scaling
      - capped by height: ensure medallion+spacing fits inside 100svh */
-  --home-mw: min(28vmin, calc(100svh / 4.8));
+  --home-mw: min(clamp(180px, 30vmin, 360px), calc(100svh / 4.8), 88vw);
+
+  /* Touch-first sizing floor */
+  --control-min: 44px;
 }
 
 * { box-sizing: border-box; }
@@ -56,7 +59,7 @@ html, body {
 }
 
 /* Make rem fluid by tying it to the canonical unit (optional) */
-html { font-size: calc(1.5 * var(--u)); }
+html { font-size: clamp(14px, calc(1.5 * var(--u)), 18px); }
 
 body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial, sans-serif;
@@ -71,8 +74,8 @@ img, picture, video, canvas, svg { max-width: 100%; height: auto; display: block
 pre, code, table, .table { max-width: 100%; overflow-x: auto; }
 
 #overlay button, #overlay input, #overlay .btn, #btn-play, #btn-try, #btn-restart {
-  min-height: calc(3.0 * var(--u));
-  min-width:  calc(3.0 * var(--u));
+  min-height: var(--control-min);
+  min-width:  var(--control-min);
   touch-action: manipulation;
 }
 
@@ -777,7 +780,7 @@ body[data-state="ready"] #best{
   /* Slightly reduce master width in landscape to further protect height */
   :root {
     /* Make the height cap a bit stricter in landscape */
-    --home-mw: min(26vmin, calc(100svh / 5.0));
+    --home-mw: min(clamp(165px, 26vmin, 320px), calc(100svh / 5.0), 72vw);
   }
 
   #homeTitle .titleText {
@@ -791,7 +794,7 @@ body[data-state="ready"] #best{
 
   #overlay #homeApple {
     /* smaller offset & size */
-    transform: translateY(calc(var(--home-mw) * 0.60));
+    transform: translateY(calc(var(--home-mw) * 0.04));
     width: calc(var(--home-mw) * 0.80);
   }
 
@@ -984,7 +987,7 @@ body[data-state="ready"] #best{
 /* iPad Pro portrait (1024 x 1366-ish): scale HUD + panels up */
 @media (min-width: 1000px) and (max-width: 1050px) and (min-height: 1200px) and (orientation: portrait){
   :root{
-    --u: 1.55min; /* try 1.30–1.55 */
+    --u: 1.55vmin; /* try 1.30–1.55 */
   }
 
   /* Force HUD items to visibly scale even if something else is limiting it */

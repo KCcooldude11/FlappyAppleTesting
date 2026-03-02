@@ -24,9 +24,10 @@ export const gameState = {
 
   glitch: {
     active: false,
-    intensity: 0,      // 0..1
-    nextBurstAt: 0,    // ms timestamp
-    burstUntil: 0      // ms timestamp
+    intensity: 0,
+    nextBurstAt: 0,
+    burstUntil: 0,
+    burstIntensity: 0,
   },
 
   // Pipes and collision
