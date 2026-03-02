@@ -27,6 +27,27 @@ npx http-server .
 
 `netlify.toml` is included and sets the publish directory to the project root.
 
+## Pre-launch database hardening (Supabase)
+
+Before launching publicly, run the SQL migration in:
+
+- `supabase/launch_hardening_constraints.sql`
+
+How to apply:
+
+1. Open Supabase dashboard → **SQL Editor**.
+2. Paste the script from `supabase/launch_hardening_constraints.sql`.
+3. Run it on your production database.
+
+What it enforces:
+
+- Valid `device_id` format and uniqueness in `profiles`
+- Valid `name` rules (3–16 chars, not `guest`)
+- Score bounds (`0..10000`) in `scores`
+- Foreign key integrity (`scores.device_id` → `profiles.device_id`)
+- Ranking indexes + refreshed `player_best_scores` view
+- RLS enabled with direct table access revoked for anon/authenticated
+
 ## Replace the bird art
 
 Put your own 2 PNGs in `/assets` with the same filenames:

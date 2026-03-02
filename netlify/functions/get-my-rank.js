@@ -1,12 +1,37 @@
 const { supabase } = require('./_utils/supabase');
+const {
+  cleanupOldBuckets,
+  enforceRateLimit,
+  getClientIp,
+  handlePreflight,
+  isValidDeviceId,
+  requireMethod,
+  response,
+} = require('./_utils/security');
 
 exports.handler = async (event) => {
   try {
+    cleanupOldBuckets();
+
+    const preflight = handlePreflight(event);
+    if (preflight) return preflight;
+
+    const methodError = requireMethod(event, ['GET']);
+    if (methodError) {
+      return methodError;
+    }
+
+    const ip = getClientIp(event);
+    const byIp = enforceRateLimit(`get-my-rank:ip:${ip}`, 90, 60 * 1000);
+    if (!byIp.allowed) {
+      return response(429, { error: 'Too many rank requests', retryAfterSec: byIp.retryAfterSec });
+    }
+
     const url = new URL(event.rawUrl || `http://x${event.path}`);
     const deviceId = url.searchParams.get('deviceId');
 
-    if (!deviceId) {
-      return { statusCode: 400, body: JSON.stringify({ error: 'deviceId is required' }) };
+    if (!isValidDeviceId(deviceId || '')) {
+      return response(400, { error: 'Valid deviceId is required' });
     }
 
     // 1) Get this player’s best
@@ -17,7 +42,7 @@ exports.handler = async (event) => {
       .single();
 
     if (meErr || !me) {
-      return { statusCode: 200, body: JSON.stringify({ hasScore: false }) };
+      return response(200, { hasScore: false });
     }
 
     // 2) Count how many players are ahead of me:
@@ -29,7 +54,7 @@ exports.handler = async (event) => {
       .gt('best_score', me.best_score);
 
     if (higherErr) {
-      return { statusCode: 500, body: JSON.stringify({ error: higherErr.message }) };
+      return response(500, { error: higherErr.message });
     }
 
     const { count: tieEarlierCount, error: tieErr } = await supabase
@@ -39,7 +64,7 @@ exports.handler = async (event) => {
       .lt('first_achieved_at', me.first_achieved_at);
 
     if (tieErr) {
-      return { statusCode: 500, body: JSON.stringify({ error: tieErr.message }) };
+      return response(500, { error: tieErr.message });
     }
 
     const { count: totalPlayers, error: totalErr } = await supabase
@@ -47,23 +72,19 @@ exports.handler = async (event) => {
       .select('*', { count: 'exact', head: true });
 
     if (totalErr) {
-      return { statusCode: 500, body: JSON.stringify({ error: totalErr.message }) };
+      return response(500, { error: totalErr.message });
     }
 
     const rank = (higherCount || 0) + (tieEarlierCount || 0) + 1;
 
-    return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        hasScore: true,
-        rank,
-        totalPlayers: totalPlayers || 0,
-        name: me.name,
-        bestScore: me.best_score,
-      }),
-    };
+    return response(200, {
+      hasScore: true,
+      rank,
+      totalPlayers: totalPlayers || 0,
+      name: me.name,
+      bestScore: me.best_score,
+    });
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    return response(500, { error: e.message || 'Internal Server Error' });
   }
 };
