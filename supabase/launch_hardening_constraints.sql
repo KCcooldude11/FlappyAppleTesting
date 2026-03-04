@@ -89,7 +89,7 @@ where
   or trim(device_id) !~ '^[A-Za-z0-9-]+$'
   or score is null
   or score < 0
-  or score > 10000;
+  or score > 100000;
 
 -- Remove orphan score rows so FK can be added safely.
 delete from public.scores s
@@ -107,7 +107,7 @@ begin
   ) then
     alter table public.scores
       add constraint scores_score_range_chk
-      check (score between 0 and 10000);
+      check (score between 0 and 100000);
   end if;
 
   if not exists (
