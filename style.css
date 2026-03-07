@@ -428,7 +428,7 @@ body {
   cursor: not-allowed;
 }
 
-#overlay #support-links{
+#support-links{
   position: fixed;
   right: max(calc(1.6 * var(--u)), env(safe-area-inset-right));
   bottom: max(calc(1.6 * var(--u)), env(safe-area-inset-bottom));
@@ -438,8 +438,8 @@ body {
   gap: calc(0.8 * var(--u));
 }
 
-#overlay #btn-support,
-#overlay #btn-patreon{
+#btn-support,
+#btn-patreon{
   -webkit-appearance: none;
   appearance: none;
   display: inline-flex;
@@ -456,24 +456,24 @@ body {
   box-shadow: 0 calc(0.5 * var(--u)) calc(0.8 * var(--u)) rgba(0,0,0,.10);
 }
 
-#overlay #btn-patreon{
+#btn-patreon{
   width: calc(var(--home-mw) * 0.26);
   height: calc(var(--home-mw) * 0.15);
   padding: 0;
 }
 
-#overlay #btn-patreon svg{
+#btn-patreon svg{
   width: calc(var(--home-mw) * 0.12);
   height: calc(var(--home-mw) * 0.12);
   fill: #665354;
 }
 
-#overlay #btn-support:focus,
-#overlay #btn-support:focus-visible,
-#overlay #btn-support:hover,
-#overlay #btn-patreon:focus,
-#overlay #btn-patreon:focus-visible,
-#overlay #btn-patreon:hover{
+#btn-support:focus,
+#btn-support:focus-visible,
+#btn-support:hover,
+#btn-patreon:focus,
+#btn-patreon:focus-visible,
+#btn-patreon:hover{
   color: rgba(40, 24, 10, 0.98);
   border-color: rgba(57, 47, 141, 0.95);
   box-shadow:

@@ -7,12 +7,15 @@ let sharePayload = {
   skinSrc: '',
 };
 
+let hasSupportLinks = false;
+
 export function hideOverlay() {
   const overlay = document.getElementById('overlay');
   if (overlay) {
     overlay.classList.add('hide');
     overlay.classList.remove('show');
   }
+  updateSupportLinksVisibility();
 }
 
 export function showOverlay() {
@@ -21,6 +24,7 @@ export function showOverlay() {
     overlay.classList.remove('hide');
     overlay.classList.add('show');
   }
+  updateSupportLinksVisibility();
 }
 
 export function showGameOver() {
@@ -29,6 +33,7 @@ export function showGameOver() {
     gameoverEl.classList.remove('hide');
     gameoverEl.classList.add('show');
   }
+  updateSupportLinksVisibility();
 }
 
 export function hideGameOver() {
@@ -37,6 +42,7 @@ export function hideGameOver() {
     gameoverEl.classList.add('hide');
     gameoverEl.classList.remove('show');
   }
+  updateSupportLinksVisibility();
 }
 
 export function updateGameOverSkinImage(skinImageSrc, skinName = 'Character') {
@@ -181,8 +187,18 @@ export function setupSupportLink() {
     patreonLink.removeAttribute('href');
   }
 
-  const hasAnySupportLink = Boolean(koFiUrl || patreonUrl);
-  wrap.classList.toggle('hide', !hasAnySupportLink);
+  hasSupportLinks = Boolean(koFiUrl || patreonUrl);
+  updateSupportLinksVisibility();
+}
+
+function updateSupportLinksVisibility() {
+  const wrap = document.getElementById('support-links');
+  if (!wrap) return;
+
+  const isHomeShowing = document.getElementById('overlay')?.classList.contains('show');
+  const isGameOverShowing = document.getElementById('gameover')?.classList.contains('show');
+  const shouldShow = hasSupportLinks && (isHomeShowing || isGameOverShowing);
+  wrap.classList.toggle('hide', !shouldShow);
 }
 
 export function setSharePayload(payload) {
