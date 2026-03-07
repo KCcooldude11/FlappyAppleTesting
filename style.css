@@ -450,21 +450,21 @@ body {
   background: rgba(250, 245, 232, 0.75);
   color: rgba(40, 24, 10, 0.9);
   text-decoration: none;
-  padding: calc(var(--home-mw) * 0.026) calc(var(--home-mw) * 0.07);
+  padding: calc(var(--home-mw) * 0.03) calc(var(--home-mw) * 0.08);
   line-height: 1.1;
-  font-size: calc(var(--home-mw) * 0.052);
+  font-size: calc(var(--home-mw) * 0.06);
   box-shadow: 0 calc(0.5 * var(--u)) calc(0.8 * var(--u)) rgba(0,0,0,.10);
 }
 
 #overlay #btn-patreon{
-  width: calc(var(--home-mw) * 0.22);
-  height: calc(var(--home-mw) * 0.13);
+  width: calc(var(--home-mw) * 0.26);
+  height: calc(var(--home-mw) * 0.15);
   padding: 0;
 }
 
 #overlay #btn-patreon svg{
-  width: calc(var(--home-mw) * 0.105);
-  height: calc(var(--home-mw) * 0.105);
+  width: calc(var(--home-mw) * 0.12);
+  height: calc(var(--home-mw) * 0.12);
   fill: #665354;
 }
 
