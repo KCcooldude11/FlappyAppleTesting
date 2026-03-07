@@ -518,9 +518,9 @@ body {
   position: relative;
   display: block;
   /* LANDSCAPE-SAFE: smaller offset & size so it never pushes out */
-  transform: translateY(calc(var(--home-mw) * 0.01));
+  transform: translateY(calc(var(--home-mw) * -0.03));
   margin: 0 auto calc(-0.6 * var(--u));
-  width: calc(var(--home-mw) * 0.92);
+  width: calc(var(--home-mw) * 0.98);
   height: auto;
   user-select: none;
   -webkit-user-drag: none;
@@ -531,9 +531,9 @@ body {
 #overlay.show #homeApple{ animation: homeAppleBob 2.4s ease-in-out infinite; }
 
 @keyframes homeAppleBob{
-  0%, 18%  { transform: translateY(calc(var(--home-mw) * 0.01)); }
-  55%      { transform: translateY(calc(var(--home-mw) * 0.01 + 2 * var(--u))); }
-  100%     { transform: translateY(calc(var(--home-mw) * 0.01)); }
+  0%, 18%  { transform: translateY(calc(var(--home-mw) * -0.03)); }
+  55%      { transform: translateY(calc(var(--home-mw) * -0.03 + 2 * var(--u))); }
+  100%     { transform: translateY(calc(var(--home-mw) * -0.03)); }
 }
 @media (prefers-reduced-motion: reduce){
   #overlay.show #homeApple{ animation: none; }
@@ -856,8 +856,8 @@ body[data-state="ready"] #best{
 
   #overlay #homeApple {
     /* smaller offset & size */
-    transform: translateY(calc(var(--home-mw) * 0.04));
-    width: calc(var(--home-mw) * 0.80);
+    transform: translateY(calc(var(--home-mw) * 0));
+    width: calc(var(--home-mw) * 0.86);
   }
 
   #overlay .overlay-medallion__inner {
@@ -898,8 +898,8 @@ body[data-state="ready"] #best{
     font-size: calc(var(--home-mw) * 0.10);
   }
   @keyframes homeAppleBob{
-    0%, 18%, 100% { transform: translateY(calc(var(--home-mw) * 0.01)); }
-    55%           { transform: translateY(calc(var(--home-mw) * 0.01 + 3.5 * var(--u))); }
+    0%, 18%, 100% { transform: translateY(calc(var(--home-mw) * -0.03)); }
+    55%           { transform: translateY(calc(var(--home-mw) * -0.03 + 3.5 * var(--u))); }
   }
 }
 /* =========================
