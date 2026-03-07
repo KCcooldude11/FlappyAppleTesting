@@ -48,9 +48,9 @@ export const THEME = {
     3: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.38, cy: 0.50 } },
   },
   EXTRA_ZOOM: {
-    1: { desktop: 1.00, mobile: 1.14 },
-    2: { desktop: 1.00, mobile: 1.20 },
-    3: { desktop: 1.00, mobile: 1.16 },
+    1: { desktop: 1.00, mobile: 1.36 },
+    2: { desktop: 1.00, mobile: 1.42 },
+    3: { desktop: 1.00, mobile: 1.38 },
   },
 };
 
