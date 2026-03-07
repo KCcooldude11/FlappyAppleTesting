@@ -279,6 +279,7 @@ async function generateShareCardBlob(payload) {
   bg.addColorStop(1, '#577DB5');
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, width, height);
+  drawShareMedallionPattern(ctx, width, height);
 
   const panelX = 90;
   const panelY = 170;
@@ -289,21 +290,18 @@ async function generateShareCardBlob(payload) {
   roundRect(ctx, panelX, panelY, panelW, panelH, 42);
   ctx.fill();
 
-  ctx.fillStyle = '#6e1d24';
-  ctx.font = `700 82px ${getShareFontFamily()}`;
-  ctx.textAlign = 'center';
-  ctx.fillText('Flappy Apple', width / 2, 295);
+  drawShareTitle(ctx, 'Flappy Apple', width / 2, 300);
 
   if (payload.skinSrc) {
     try {
       const sprite = await loadImage(payload.skinSrc);
-      const maxW = 420;
-      const maxH = 420;
+      const maxW = 520;
+      const maxH = 520;
       const scale = Math.min(maxW / sprite.width, maxH / sprite.height);
       const drawW = Math.round(sprite.width * scale);
       const drawH = Math.round(sprite.height * scale);
       const drawX = Math.round((width - drawW) / 2);
-      const drawY = 380;
+      const drawY = 345;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(sprite, drawX, drawY, drawW, drawH);
     } catch {}
@@ -311,13 +309,9 @@ async function generateShareCardBlob(payload) {
 
   ctx.fillStyle = '#111111';
   ctx.font = `600 58px ${getShareFontFamily()}`;
-  ctx.fillText(payload.username || 'Player', width / 2, 890);
+  ctx.fillText(payload.username || 'Player', width / 2, 905);
 
-  drawShareScoreBadge(ctx, width / 2, 1005, payload.score ?? 0);
-
-  ctx.font = `500 38px ${getShareFontFamily()}`;
-  ctx.fillStyle = 'rgba(17,17,17,0.8)';
-  ctx.fillText('Score', width / 2, 1160);
+  drawShareScoreBadge(ctx, width / 2, 1115, payload.score ?? 0);
 
   return await new Promise((resolve, reject) => {
     canvas.toBlob(blob => {
@@ -341,6 +335,66 @@ async function ensureShareFontsReady() {
 
 function getShareFontFamily() {
   return "'WitcherKnight', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+}
+
+function drawShareTitle(ctx, text, centerX, baselineY) {
+  const gradient = ctx.createLinearGradient(0, baselineY - 100, 0, baselineY + 10);
+  gradient.addColorStop(0, '#ffff2f');
+  gradient.addColorStop(0.25, '#ffbf00cc');
+  gradient.addColorStop(0.45, '#ffff2f');
+  gradient.addColorStop(0.70, '#ffbf00cc');
+  gradient.addColorStop(1, '#ffff2f');
+
+  ctx.save();
+  ctx.textAlign = 'center';
+  ctx.font = `400 112px ${getShareFontFamily()}`;
+
+  ctx.shadowColor = 'rgba(0,0,0,0.18)';
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 3;
+  ctx.fillStyle = gradient;
+  ctx.fillText(text, centerX, baselineY);
+
+  ctx.shadowColor = 'rgba(0,0,0,0.28)';
+  ctx.shadowBlur = 12;
+  ctx.shadowOffsetY = 10;
+  ctx.fillText(text, centerX, baselineY);
+  ctx.restore();
+}
+
+function drawShareMedallionPattern(ctx, width, height) {
+  const tile = 108;
+  const halfTile = tile / 2;
+
+  const drawDiamond = (centerX, centerY) => {
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY - 38);
+    ctx.lineTo(centerX + 28, centerY);
+    ctx.lineTo(centerX, centerY + 38);
+    ctx.lineTo(centerX - 28, centerY);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(235,235,235,0.16)';
+    ctx.fill();
+
+    ctx.beginPath();
+    const barW = 24;
+    const barH = 4;
+    const barX = centerX - barW / 2;
+    const barY = centerY - barH / 2;
+    roundRect(ctx, barX, barY, barW, barH, 1.5);
+    ctx.fillStyle = 'rgba(110,29,36,0.35)';
+    ctx.fill();
+  };
+
+  ctx.save();
+  for (let y = -tile; y <= height + tile; y += tile) {
+    for (let x = -tile; x <= width + tile; x += tile) {
+      drawDiamond(x, y);
+      drawDiamond(x + halfTile, y + halfTile);
+    }
+  }
+  ctx.restore();
 }
 
 function drawShareScoreBadge(ctx, centerX, centerY, score) {
