@@ -43,12 +43,23 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
   ctx.clip();
   ctx.imageSmoothingEnabled = false;
 
-  let cursorY = y + h - tileH;
   const limit = capY + (ready.cap ? capH : 0) - C.SPIRE.TILE_OVERLAP;
 
-  while (cursorY + tileH > limit) {
-    ctx.drawImage(imgTile, x, cursorY, drawW, tileH);
-    cursorY -= tileH - C.SPIRE.TILE_OVERLAP;
+  const shaftTop = Math.max(y, limit);
+  const shaftHeight = Math.max(0, y + h - shaftTop);
+  if (shaftHeight > 0) {
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(clipX, shaftTop, clipW, shaftHeight);
+    ctx.clip();
+
+    let cursorY = y + h - tileH;
+    while (cursorY + tileH > limit) {
+      ctx.drawImage(imgTile, x, cursorY, drawW, tileH);
+      cursorY -= tileH - C.SPIRE.TILE_OVERLAP;
+    }
+
+    ctx.restore();
   }
 
   if (ready.cap) ctx.drawImage(imgCap, x, capY, drawW, capH);
