@@ -428,14 +428,21 @@ body {
   cursor: not-allowed;
 }
 
-#overlay #btn-support{
-  -webkit-appearance: none;
-  appearance: none;
-  display: inline-flex;
+#overlay #support-links{
   position: fixed;
   right: max(calc(1.6 * var(--u)), env(safe-area-inset-right));
   bottom: max(calc(1.6 * var(--u)), env(safe-area-inset-bottom));
   z-index: 7;
+  display: inline-flex;
+  align-items: center;
+  gap: calc(0.8 * var(--u));
+}
+
+#overlay #btn-support,
+#overlay #btn-patreon{
+  -webkit-appearance: none;
+  appearance: none;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   border-radius: 999rem;
@@ -449,9 +456,24 @@ body {
   box-shadow: 0 calc(0.5 * var(--u)) calc(0.8 * var(--u)) rgba(0,0,0,.10);
 }
 
+#overlay #btn-patreon{
+  width: calc(var(--home-mw) * 0.22);
+  height: calc(var(--home-mw) * 0.13);
+  padding: 0;
+}
+
+#overlay #btn-patreon svg{
+  width: calc(var(--home-mw) * 0.105);
+  height: calc(var(--home-mw) * 0.105);
+  fill: #ff424d;
+}
+
 #overlay #btn-support:focus,
 #overlay #btn-support:focus-visible,
-#overlay #btn-support:hover{
+#overlay #btn-support:hover,
+#overlay #btn-patreon:focus,
+#overlay #btn-patreon:focus-visible,
+#overlay #btn-patreon:hover{
   color: rgba(40, 24, 10, 0.98);
   border-color: rgba(201, 133, 18, 0.95);
   box-shadow:

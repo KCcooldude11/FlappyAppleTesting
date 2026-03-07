@@ -151,18 +151,32 @@ export function setupRenameModal(onSave) {
 }
 
 export function setupSupportLink() {
+  const wrap = document.getElementById('support-links');
   const supportLink = document.getElementById('btn-support');
-  if (!supportLink) return;
+  const patreonLink = document.getElementById('btn-patreon');
+  if (!wrap || !supportLink || !patreonLink) return;
 
-  const url = (C.URLS.SUPPORT_CREATOR || '').trim();
-  if (!url) {
+  const koFiUrl = (C.URLS.SUPPORT_CREATOR || '').trim();
+  const patreonUrl = (C.URLS.PATREON_CREATOR || '').trim();
+
+  if (koFiUrl) {
+    supportLink.href = koFiUrl;
+    supportLink.classList.remove('hide');
+  } else {
     supportLink.classList.add('hide');
     supportLink.removeAttribute('href');
-    return;
   }
 
-  supportLink.href = url;
-  supportLink.classList.remove('hide');
+  if (patreonUrl) {
+    patreonLink.href = patreonUrl;
+    patreonLink.classList.remove('hide');
+  } else {
+    patreonLink.classList.add('hide');
+    patreonLink.removeAttribute('href');
+  }
+
+  const hasAnySupportLink = Boolean(koFiUrl || patreonUrl);
+  wrap.classList.toggle('hide', !hasAnySupportLink);
 }
 
 export function startHomeAppleAnimation() {

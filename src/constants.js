@@ -99,6 +99,7 @@ export const URLS = {
   GET_LEADERBOARD: '/.netlify/functions/get-leaderboard',
   GET_MY_RANK: '/.netlify/functions/get-my-rank',
   SUPPORT_CREATOR: 'https://ko-fi.com/kalidonia',
+  PATREON_CREATOR: 'https://www.patreon.com/cw/Magmadoodle',
   FETCH_TIMEOUT_MS: 2000,
   NETLIFY_TIMEOUT_MS: 1500,
 };
