@@ -432,6 +432,10 @@ body {
   -webkit-appearance: none;
   appearance: none;
   display: inline-flex;
+  position: fixed;
+  right: max(calc(1.6 * var(--u)), env(safe-area-inset-right));
+  bottom: max(calc(1.6 * var(--u)), env(safe-area-inset-bottom));
+  z-index: 7;
   align-items: center;
   justify-content: center;
   border-radius: 999rem;
