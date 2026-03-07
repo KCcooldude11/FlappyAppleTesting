@@ -41,7 +41,7 @@ export const BIRD = {
 
 export const THEME = {
   FADE_MS: 800,
-  THRESHOLDS: [10, 20],
+  THRESHOLDS: [100, 200],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
@@ -98,6 +98,7 @@ export const URLS = {
   SUBMIT_SCORE: '/.netlify/functions/submit-score',
   GET_LEADERBOARD: '/.netlify/functions/get-leaderboard',
   GET_MY_RANK: '/.netlify/functions/get-my-rank',
+  SUPPORT_CREATOR: '',
   FETCH_TIMEOUT_MS: 2000,
   NETLIFY_TIMEOUT_MS: 1500,
 };

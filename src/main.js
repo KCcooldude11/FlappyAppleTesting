@@ -45,6 +45,7 @@ async function initializeApp() {
 
   // Setup rename modal
   uiOverlays.setupRenameModal(onRenameSubmitted);
+  uiOverlays.setupSupportLink();
 
   // UI overlay startup
   uiOverlays.showOverlay();

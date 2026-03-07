@@ -150,6 +150,21 @@ export function setupRenameModal(onSave) {
   }
 }
 
+export function setupSupportLink() {
+  const supportLink = document.getElementById('btn-support');
+  if (!supportLink) return;
+
+  const url = (C.URLS.SUPPORT_CREATOR || '').trim();
+  if (!url) {
+    supportLink.classList.add('hide');
+    supportLink.removeAttribute('href');
+    return;
+  }
+
+  supportLink.href = url;
+  supportLink.classList.remove('hide');
+}
+
 export function startHomeAppleAnimation() {
   const apple = document.getElementById('homeApple');
   if (!apple) return;
