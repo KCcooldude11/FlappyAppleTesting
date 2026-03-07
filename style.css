@@ -465,7 +465,7 @@ body {
 #overlay #btn-patreon svg{
   width: calc(var(--home-mw) * 0.105);
   height: calc(var(--home-mw) * 0.105);
-  fill: #ff424d;
+  fill: #665354;
 }
 
 #overlay #btn-support:focus,
