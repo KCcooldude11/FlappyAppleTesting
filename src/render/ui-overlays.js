@@ -1,6 +1,12 @@
 import * as C from '../constants.js';
 import * as fmt from '../utils/formatters.js';
 
+let sharePayload = {
+  username: 'Player',
+  score: 0,
+  skinSrc: '',
+};
+
 export function hideOverlay() {
   const overlay = document.getElementById('overlay');
   if (overlay) {
@@ -177,6 +183,164 @@ export function setupSupportLink() {
 
   const hasAnySupportLink = Boolean(koFiUrl || patreonUrl);
   wrap.classList.toggle('hide', !hasAnySupportLink);
+}
+
+export function setSharePayload(payload) {
+  sharePayload = {
+    username: (payload?.username || 'Player').trim() || 'Player',
+    score: Number.isFinite(payload?.score) ? payload.score : 0,
+    skinSrc: payload?.skinSrc || '',
+  };
+}
+
+export function setupShareButton() {
+  const btnShare = document.getElementById('btn-share');
+  if (!btnShare) return;
+
+  btnShare.addEventListener('click', async () => {
+    const previousText = btnShare.textContent;
+    btnShare.disabled = true;
+    btnShare.textContent = 'Sharing...';
+
+    try {
+      const cardBlob = await generateShareCardBlob(sharePayload);
+      const safeName = String(sharePayload.username || 'Player')
+        .replace(/[^a-z0-9_-]+/gi, '_')
+        .slice(0, 24);
+      const filename = `flappy-apple-${safeName}-${sharePayload.score}.png`;
+      const shareText = `${sharePayload.username} scored ${sharePayload.score} in Flappy Apple!`;
+      const shareTitle = 'Flappy Apple';
+      const shareUrl = window.location.href;
+
+      if (navigator.share) {
+        const file = new File([cardBlob], filename, { type: 'image/png' });
+        const shareWithFile = { title: shareTitle, text: shareText, files: [file] };
+
+        if (navigator.canShare && navigator.canShare(shareWithFile)) {
+          await navigator.share(shareWithFile);
+          btnShare.textContent = 'Shared!';
+          return;
+        }
+
+        await navigator.share({ title: shareTitle, text: `${shareText} ${shareUrl}` });
+        btnShare.textContent = 'Shared!';
+        return;
+      }
+
+      triggerBlobDownload(cardBlob, filename);
+      const copied = await copyToClipboard(`${shareText} ${shareUrl}`);
+      btnShare.textContent = copied ? 'Downloaded + Copied' : 'Downloaded';
+    } catch {
+      btnShare.textContent = 'Share Failed';
+    } finally {
+      setTimeout(() => {
+        btnShare.disabled = false;
+        btnShare.textContent = previousText;
+      }, 1600);
+    }
+  });
+}
+
+async function generateShareCardBlob(payload) {
+  const width = 1080;
+  const height = 1350;
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+
+  const bg = ctx.createLinearGradient(0, 0, 0, height);
+  bg.addColorStop(0, '#3D4973');
+  bg.addColorStop(1, '#577DB5');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, width, height);
+
+  const panelX = 90;
+  const panelY = 170;
+  const panelW = width - panelX * 2;
+  const panelH = height - 260;
+
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+  roundRect(ctx, panelX, panelY, panelW, panelH, 42);
+  ctx.fill();
+
+  ctx.fillStyle = '#6e1d24';
+  ctx.font = '700 82px system-ui, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Flappy Apple', width / 2, 295);
+
+  if (payload.skinSrc) {
+    try {
+      const sprite = await loadImage(payload.skinSrc);
+      const maxW = 420;
+      const maxH = 420;
+      const scale = Math.min(maxW / sprite.width, maxH / sprite.height);
+      const drawW = Math.round(sprite.width * scale);
+      const drawH = Math.round(sprite.height * scale);
+      const drawX = Math.round((width - drawW) / 2);
+      const drawY = 380;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(sprite, drawX, drawY, drawW, drawH);
+    } catch {}
+  }
+
+  ctx.fillStyle = '#111111';
+  ctx.font = '600 58px system-ui, sans-serif';
+  ctx.fillText(payload.username || 'Player', width / 2, 890);
+
+  ctx.font = '700 98px system-ui, sans-serif';
+  ctx.fillStyle = '#c98512';
+  ctx.fillText(String(payload.score ?? 0), width / 2, 1010);
+
+  ctx.font = '500 38px system-ui, sans-serif';
+  ctx.fillStyle = 'rgba(17,17,17,0.8)';
+  ctx.fillText('Score', width / 2, 1070);
+
+  return await new Promise((resolve, reject) => {
+    canvas.toBlob(blob => {
+      if (blob) resolve(blob);
+      else reject(new Error('Failed to create share image'));
+    }, 'image/png');
+  });
+}
+
+function loadImage(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+function triggerBlobDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 800);
+}
+
+async function copyToClipboard(text) {
+  try {
+    if (!navigator.clipboard?.writeText) return false;
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  const radius = Math.min(r, w / 2, h / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.arcTo(x + w, y, x + w, y + h, radius);
+  ctx.arcTo(x + w, y + h, x, y + h, radius);
+  ctx.arcTo(x, y + h, x, y, radius);
+  ctx.arcTo(x, y, x + w, y, radius);
+  ctx.closePath();
 }
 
 export function startHomeAppleAnimation() {

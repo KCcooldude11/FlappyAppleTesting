@@ -73,7 +73,7 @@ img, picture, video, canvas, svg { max-width: 100%; height: auto; display: block
 
 pre, code, table, .table { max-width: 100%; overflow-x: auto; }
 
-#overlay button, #overlay input, #overlay .btn, #btn-play, #btn-try, #btn-restart {
+#overlay button, #overlay input, #overlay .btn, #btn-play, #btn-try, #btn-share, #btn-restart {
   min-height: var(--control-min);
   min-width:  var(--control-min);
   touch-action: manipulation;
@@ -805,11 +805,32 @@ body[data-state="ready"] #app::before { display: block; }
   pointer-events: auto;
 }
 
+#gameover .go-actions{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
 /* Button sizing stays fluid */
-#btn-try{
+#btn-try,
+#btn-share{
   min-width: calc(20 * var(--u));
   padding: var(--space-3) var(--space-4);
   font-size: var(--fs-2);
+}
+
+#btn-share{
+  border: 0;
+  background: #111;
+  color: #fff;
+  border-radius: 999rem;
+  cursor: pointer;
+}
+
+#btn-share:disabled{
+  opacity: .65;
+  cursor: wait;
 }
 /* =========================
    States: hide UI when home
@@ -906,6 +927,13 @@ body[data-state="ready"] #best{
    MOBILE UI SCALE BUMP
    ========================= */
 @media (max-width: 520px){
+  :root{
+    --fs-1: clamp(13px, 3.3vw, 15px);
+    --fs-2: clamp(16px, 4.1vw, 19px);
+    --fs-3: clamp(20px, 5.1vw, 24px);
+    --fs-4: clamp(24px, 6.1vw, 29px);
+  }
+
   /* ---------- HUD: restart + best bigger ---------- */
   #btn-restart{
     font-size: clamp(18px, 4.8vw, 22px);
@@ -993,13 +1021,15 @@ body[data-state="ready"] #best{
   }
 
   /* ---------- Try Again bigger ---------- */
-  button#btn-try{
+  button#btn-try,
+  button#btn-share{
     font-size: clamp(17px, 4.8vw, 21px);
     line-height: 1;
     min-height: 48px;
     padding: calc(0.9 * var(--space-3)) calc(1.2 * var(--space-4));
   }
-  button#btn-try *{
+  button#btn-try *,
+  button#btn-share *{
     font-size: inherit;
   }
   /* Bigger rank medallion/diamond */

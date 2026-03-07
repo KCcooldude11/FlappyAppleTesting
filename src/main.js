@@ -46,6 +46,7 @@ async function initializeApp() {
   // Setup rename modal
   uiOverlays.setupRenameModal(onRenameSubmitted);
   uiOverlays.setupSupportLink();
+  uiOverlays.setupShareButton();
 
   // UI overlay startup
   uiOverlays.showOverlay();
@@ -181,11 +182,19 @@ async function onGameOver() {
 
   // Show skin image
   const skin = cfg.getSkinById(state.gameState.currentSkinIndex);
+  let shareSkinSrc = '';
   if (skin?.flapReady && skin.flapImg.src) {
     uiOverlays.updateGameOverSkinImage(skin.flapImg.src, skin.name);
+    shareSkinSrc = skin.flapImg.src;
   } else {
     uiOverlays.updateGameOverSkinImage('');
   }
+
+  uiOverlays.setSharePayload({
+    username: name,
+    score,
+    skinSrc: shareSkinSrc,
+  });
 
   uiOverlays.showGameOver();
 }
