@@ -768,6 +768,12 @@ body:not([data-state="ready"]) #homeTitle{ display: none; }
 #app::before { display: none; }
 body[data-state="ready"] #app::before { display: block; }
 
+@media (max-width: 700px) {
+  #app::before {
+    --tile: calc(12.2 * var(--u));
+  }
+}
+
 /* =========================
    Gameover specifics: pinned Try Again
    ========================= */
