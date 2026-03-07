@@ -98,7 +98,7 @@ export const URLS = {
   SUBMIT_SCORE: '/.netlify/functions/submit-score',
   GET_LEADERBOARD: '/.netlify/functions/get-leaderboard',
   GET_MY_RANK: '/.netlify/functions/get-my-rank',
-  SUPPORT_CREATOR: '',
+  SUPPORT_CREATOR: 'https://ko-fi.com/kalidonia',
   FETCH_TIMEOUT_MS: 2000,
   NETLIFY_TIMEOUT_MS: 1500,
 };
