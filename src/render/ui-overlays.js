@@ -66,6 +66,13 @@ export function updateGameOverUsername(name) {
   }
 }
 
+export function updateGameOverScore(score) {
+  const goScoreEl = document.getElementById('go-score');
+  if (goScoreEl) {
+    goScoreEl.textContent = String(Number.isFinite(score) ? score : 0);
+  }
+}
+
 export async function renderLeaderboard(list) {
   const wrap = document.getElementById('leaderboard-rows');
   if (!wrap) return;
@@ -258,6 +265,8 @@ export function setupShareButton() {
 }
 
 async function generateShareCardBlob(payload) {
+  await ensureShareFontsReady();
+
   const width = 1080;
   const height = 1350;
   const canvas = document.createElement('canvas');
@@ -281,7 +290,7 @@ async function generateShareCardBlob(payload) {
   ctx.fill();
 
   ctx.fillStyle = '#6e1d24';
-  ctx.font = '700 82px system-ui, sans-serif';
+  ctx.font = `700 82px ${getShareFontFamily()}`;
   ctx.textAlign = 'center';
   ctx.fillText('Flappy Apple', width / 2, 295);
 
@@ -301,16 +310,14 @@ async function generateShareCardBlob(payload) {
   }
 
   ctx.fillStyle = '#111111';
-  ctx.font = '600 58px system-ui, sans-serif';
+  ctx.font = `600 58px ${getShareFontFamily()}`;
   ctx.fillText(payload.username || 'Player', width / 2, 890);
 
-  ctx.font = '700 98px system-ui, sans-serif';
-  ctx.fillStyle = '#c98512';
-  ctx.fillText(String(payload.score ?? 0), width / 2, 1010);
+  drawShareScoreBadge(ctx, width / 2, 1005, payload.score ?? 0);
 
-  ctx.font = '500 38px system-ui, sans-serif';
+  ctx.font = `500 38px ${getShareFontFamily()}`;
   ctx.fillStyle = 'rgba(17,17,17,0.8)';
-  ctx.fillText('Score', width / 2, 1070);
+  ctx.fillText('Score', width / 2, 1160);
 
   return await new Promise((resolve, reject) => {
     canvas.toBlob(blob => {
@@ -318,6 +325,59 @@ async function generateShareCardBlob(payload) {
       else reject(new Error('Failed to create share image'));
     }, 'image/png');
   });
+}
+
+async function ensureShareFontsReady() {
+  if (!document.fonts?.load) return;
+  try {
+    await Promise.all([
+      document.fonts.load('700 82px WitcherKnight'),
+      document.fonts.load('600 58px WitcherKnight'),
+      document.fonts.load('700 98px WitcherKnight'),
+      document.fonts.ready,
+    ]);
+  } catch {}
+}
+
+function getShareFontFamily() {
+  return "'WitcherKnight', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+}
+
+function drawShareScoreBadge(ctx, centerX, centerY, score) {
+  const digits = String(score).length;
+  let halfW = 90;
+  let halfH = 140;
+  if (digits > 2) {
+    const extra = (digits - 2) * 30;
+    halfW += extra;
+    halfH += Math.round(extra * 1.2);
+  }
+
+  ctx.save();
+  ctx.filter = 'drop-shadow(0 8px 18px rgba(0,0,0,0.18))';
+  ctx.fillStyle = '#f9c44a';
+
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY - halfH);
+  ctx.lineTo(centerX + halfW, centerY);
+  ctx.lineTo(centerX - halfW, centerY);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(centerX, centerY + halfH);
+  ctx.lineTo(centerX + halfW, centerY);
+  ctx.lineTo(centerX - halfW, centerY);
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+
+  ctx.fillStyle = '#111111';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = `700 ${Math.round(halfH * 0.78)}px ${getShareFontFamily()}`;
+  ctx.fillText(String(score), centerX, centerY);
+  ctx.textBaseline = 'alphabetic';
 }
 
 function loadImage(src) {

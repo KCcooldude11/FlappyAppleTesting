@@ -179,6 +179,7 @@ async function onGameOver() {
   // Update UI
   const name = storage.getSavedName() || 'Player';
   uiOverlays.updateGameOverUsername(name);
+  uiOverlays.updateGameOverScore(score);
 
   // Show skin image
   const skin = cfg.getSkinById(state.gameState.currentSkinIndex);

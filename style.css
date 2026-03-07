@@ -260,6 +260,17 @@ body {
   margin: 0;
 }
 
+#gameover .go-score-line{
+  font-size: var(--fs-2);
+  line-height: 1.1;
+  color: rgba(17,17,17,0.9);
+  text-align: center;
+}
+
+#gameover #go-score{
+  font-size: calc(var(--fs-2) * 1.15);
+}
+
 #gameover .profile-line{
   margin-top: calc(0.2 * var(--u));
   gap: var(--space-2);
