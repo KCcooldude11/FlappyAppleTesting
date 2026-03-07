@@ -119,6 +119,6 @@ export const ASSETS = {
 
 export const HOME_APPLE = {
   TOTAL_MS: 2400,
-  TO_REG_AT: Math.floor(2400 * 0.55),
+  TO_REG_AT: Math.floor(2400 * 0.52),
   TO_FLY_AT: Math.floor(2400 * 0.98),
 };
