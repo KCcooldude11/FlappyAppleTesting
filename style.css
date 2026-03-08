@@ -272,37 +272,22 @@ body {
 }
 
 #gameover #go-score.go-score-medallion{
-  --rw: calc(1.45 * var(--u));
-  --rh: calc(2.20 * var(--u));
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: calc(2 * var(--rw));
-  height: calc(2 * var(--rh));
-  overflow: visible;
+  width: calc(3.1 * var(--u));
+  height: calc(3.9 * var(--u));
   font-size: calc(var(--fs-1) * 1.08);
   font-weight: 700;
   color: #111;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  background: var(--c-amber);
+  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   filter: drop-shadow(0 calc(0.3 * var(--u)) calc(0.7 * var(--u)) rgba(0,0,0,.18));
-}
-
-#gameover #go-score.go-score-medallion::before,
-#gameover #go-score.go-score-medallion::after{
-  content:"";
-  position: absolute;
-  left: 50%;
-  border-left: var(--rw) solid transparent;
-  border-right: var(--rw) solid transparent;
-  transform: translateX(-50%);
-}
-
-#gameover #go-score.go-score-medallion::before{ border-bottom: var(--rh) solid var(--c-amber); }
-#gameover #go-score.go-score-medallion::after{
-  top: var(--rh);
-  border-top: var(--rh) solid var(--c-amber);
+  z-index: 0;
 }
 
 #gameover .profile-line{

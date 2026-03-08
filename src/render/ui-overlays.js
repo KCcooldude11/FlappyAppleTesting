@@ -281,16 +281,16 @@ async function generateShareCardBlob(payload) {
   ctx.fillRect(0, 0, width, height);
   drawShareMedallionPattern(ctx, width, height);
 
-  const panelX = 90;
-  const panelY = 170;
+  const panelX = 120;
+  const panelY = 260;
   const panelW = width - panelX * 2;
-  const panelH = height - 260;
+  const panelH = height - 360;
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
   roundRect(ctx, panelX, panelY, panelW, panelH, 42);
   ctx.fill();
 
-  drawShareTitle(ctx, 'Flappy Apple', width / 2, 300);
+  drawShareTitle(ctx, 'Flappy Apple', width / 2, 185);
 
   if (payload.skinSrc) {
     try {
@@ -301,7 +301,7 @@ async function generateShareCardBlob(payload) {
       const drawW = Math.round(sprite.width * scale);
       const drawH = Math.round(sprite.height * scale);
       const drawX = Math.round((width - drawW) / 2);
-      const drawY = 345;
+      const drawY = 430;
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(sprite, drawX, drawY, drawW, drawH);
     } catch {}
@@ -309,9 +309,11 @@ async function generateShareCardBlob(payload) {
 
   ctx.fillStyle = '#111111';
   ctx.font = `600 58px ${getShareFontFamily()}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'alphabetic';
   ctx.fillText(payload.username || 'Player', width / 2, 905);
 
-  drawShareScoreBadge(ctx, width / 2, 1115, payload.score ?? 0);
+  drawShareScoreBadge(ctx, width / 2, 1055, payload.score ?? 0);
 
   return await new Promise((resolve, reject) => {
     canvas.toBlob(blob => {
