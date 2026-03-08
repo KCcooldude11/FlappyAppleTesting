@@ -113,10 +113,12 @@ export function update(gameState, dt, scale) {
 
     if (!p.scored && p.x + physics_params.pipeWidth < gameState.bird.x) {
       p.scored = true;
+      const prevScore = gameState.score;
       gameState.score += 1;
 
       if (
         !gameState.post500AppleResetDone &&
+        prevScore < C.PROGRESSION.RESET_TO_APPLE_AT_SCORE &&
         gameState.score >= C.PROGRESSION.RESET_TO_APPLE_AT_SCORE
       ) {
         gameState.awaitingPost500AppleReset = true;
