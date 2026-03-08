@@ -631,7 +631,7 @@ kbd {
   padding: var(--space-1);
   font-size: var(--fs-2);
 }
-.leaderboard .row:nth-child(odd){ background: rgba(0,0,0,.04); border-radius: calc(0.6 * var(--u)); }
+.leaderboard .row:nth-child(odd){ background: rgba(0,0,0,.06); border-radius: calc(0.6 * var(--u)); }
 
 .leaderboard .lb-head .rank{
   position: static;
@@ -650,29 +650,22 @@ kbd {
   --rw: calc(0.8 * var(--u)); /* half-width */
   --rh: calc(1.2 * var(--u)); /* half-height */
   position: relative;
-  width: 0;
-  height: 0;
+  width: calc(2 * var(--rw));
+  height: calc(2 * var(--rh));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--c-amber);
+  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   overflow: visible;
   filter: drop-shadow(0 calc(0.3 * var(--u)) calc(0.6 * var(--u)) rgba(0,0,0,.18));
 }
-.leaderboard .rank::before{ border-bottom: var(--rh) solid var(--c-amber); }
-.leaderboard .rank::after { top: var(--rh); border-top: var(--rh) solid var(--c-amber); }
-.leaderboard .rank::before,
-.leaderboard .rank::after{
-  content:"";
-  position:absolute;
-  left: calc(-1 * var(--rw));
-  border-left:  var(--rw) solid transparent;
-  border-right: var(--rw) solid transparent;
-}
 .leaderboard .rank .rank-num,
 .leaderboard .rank .txt{
-  position:absolute;
-  z-index:1;
-  left:  calc(-1 * var(--rw));
-  width: calc(2 * var(--rw));
-  top:   var(--rh);
-  transform: translateY(-50%);
+  position: static;
+  z-index: 1;
+  width: auto;
   text-align:center;
   line-height:1;
   font-size: var(--fs-1);
