@@ -335,6 +335,16 @@ body {
   fill: currentColor;
 }
 
+#btn-share .share-icon{
+  width:calc(1.55 * var(--u));
+  height:calc(1.55 * var(--u));
+  fill:none;
+  stroke:currentColor;
+  stroke-width:2.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
 #rename-dlg{
   border:0; padding:0;
   border-radius:calc(1.4 * var(--u));

@@ -6,6 +6,8 @@ export function shouldTransitionTheme(currentTheme, score, bgReady) {
     return { from: 1, to: 2 };
   } else if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1] && bgReady[3]) {
     return { from: 2, to: 3 };
+  } else if (currentTheme === 3 && score >= C.THEME.THRESHOLDS[2] && bgReady[4]) {
+    return { from: 3, to: 4 };
   }
   return null;
 }

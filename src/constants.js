@@ -41,23 +41,26 @@ export const BIRD = {
 
 export const THEME = {
   FADE_MS: 800,
-  THRESHOLDS: [15, 20],
+  THRESHOLDS: [15, 20, 25],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
     3: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.38, cy: 0.50 } },
+    4: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
   },
   EXTRA_ZOOM: {
     1: { desktop: 1.00, mobile: 1.36 },
     2: { desktop: 1.00, mobile: 1.42 },
     3: { desktop: 1.00, mobile: 1.38 },
+    4: { desktop: 1.00, mobile: 1.36 },
   },
+  INVERT_THEME_ID: 4,
 };
 
 export const VISUAL = {
   TEMP_INVERT_THEME: {
     ENABLED: true,
-    ACTIVATE_AT_SCORE: 10,
+    ACTIVATE_AT_SCORE: 100,
   },
 };
 
@@ -116,11 +119,13 @@ export const ASSETS = {
     1: './assets/Untitled_Artwork.png',
     2: './assets/background2.png',
     3: './assets/background3.png',
+    4: './assets/Untitled_Artwork.png',
   },
   SPIRES: {
     1: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
     2: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' },
     3: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' },
+    4: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
   },
   MEDALLION: './assets/medallion.png',
   APPLE_HOME: { regular: './assets/apple_regular.png', fly: './assets/apple_fly.png' },

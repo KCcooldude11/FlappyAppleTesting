@@ -43,6 +43,7 @@ export function gameLoop(t) {
   const bgReady = {
     2: bgEntity.backgroundReady[2],
     3: bgEntity.backgroundReady[3],
+    4: bgEntity.backgroundReady[4],
   };
 
   const themeTransition = themeSys.shouldTransitionTheme(state.gameState.theme, state.gameState.score, bgReady);
@@ -71,10 +72,16 @@ export function render() {
   const ctx = renderer.getContext();
   const vw = renderer.getCanvasWidth();
   const vh = renderer.getCanvasHeight();
-  const invertGameplayTheme =
-    C.VISUAL.TEMP_INVERT_THEME.ENABLED &&
+  const invertByTheme =
     state.gameState.mode === 'playing' &&
-    state.gameState.score >= C.VISUAL.TEMP_INVERT_THEME.ACTIVATE_AT_SCORE;
+    state.gameState.theme === C.THEME.INVERT_THEME_ID;
+  const invertGameplayTheme =
+    invertByTheme ||
+    (
+      C.VISUAL.TEMP_INVERT_THEME.ENABLED &&
+      state.gameState.mode === 'playing' &&
+      state.gameState.score >= C.VISUAL.TEMP_INVERT_THEME.ACTIVATE_AT_SCORE
+    );
 
   renderer.startFrame();
 
