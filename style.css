@@ -874,6 +874,20 @@ body[data-state="ready"] #app::before { display: block; }
   opacity: .65;
   cursor: wait;
 }
+
+@media (max-width: 700px) {
+  #gameover #btn-share.icon-btn {
+    width: clamp(44px, 10vw, 56px);
+    height: clamp(44px, 10vw, 56px);
+    border-radius: clamp(12px, 2.4vw, 16px);
+  }
+
+  #gameover #btn-share .share-icon {
+    width: clamp(24px, 5.2vw, 30px);
+    height: clamp(24px, 5.2vw, 30px);
+    stroke-width: 2.4;
+  }
+}
 /* =========================
    States: hide UI when home
    ========================= */
