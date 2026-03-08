@@ -234,13 +234,23 @@ async function refreshLeaderboard() {
   await uiOverlays.renderLeaderboard(scores);
 
   const deviceId = storage.ensureDeviceId();
+  const myRank = await api.getMyRank(deviceId);
+
+  if (myRank?.hasScore && Number.isFinite(myRank.bestScore)) {
+    const serverBest = Math.max(0, Math.trunc(myRank.bestScore));
+    if (serverBest !== state.gameState.best) {
+      state.gameState.best = serverBest;
+      localStorage.setItem('flappy-best', String(serverBest));
+      hudRender.updateBestBadge(bestEl, state.gameState.best);
+    }
+  }
+
   const onBoard = Array.isArray(scores) && scores.some(r => r.device_id === deviceId);
 
   if (onBoard) {
     uiOverlays.hideYourRank();
   } else {
     uiOverlays.showYourRank();
-    const myRank = await api.getMyRank(deviceId);
     if (myRank) {
       uiOverlays.updateYourRank(myRank);
     }
