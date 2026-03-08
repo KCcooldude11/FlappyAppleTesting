@@ -545,7 +545,7 @@ function drawShareScoreWithMedallion(ctx, medallionImg, centerX, centerY, score,
   ctx.restore();
 
   const textX = centerX;
-  const textY = drawY + drawH * 0.50;
+  const textY = drawY + drawH * 0.485;
   const maxTextWidth = drawW * 0.68;
 
   fontPx = Math.round(drawH * 0.16);
