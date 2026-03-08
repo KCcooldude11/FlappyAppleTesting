@@ -181,17 +181,23 @@ async function onGameOver() {
 
   const playMs = Math.round(state.gameState.frameNow - state.gameState.runStartTime);
   const score = state.gameState.score;
-  const best = state.gameState.best;
+  const isDebugTestRun = Boolean(C.DEBUG?.TEST_START_NEAR_INVERT_ZONE?.ENABLED);
 
-  // Update best
-  state.updateBestScore(score);
+  // Update best (skip in debug test runs)
+  if (!isDebugTestRun) {
+    state.updateBestScore(score);
+  }
   hudRender.updateBestBadge(bestEl, state.gameState.best);
 
-  // Post score
-  const deviceId = storage.ensureDeviceId();
-  const result = await api.postScore(deviceId, score, playMs);
-  if (result?.error) {
-    console.warn('submit-score error:', result.error);
+  // Post score (skip in debug test runs)
+  if (!isDebugTestRun) {
+    const deviceId = storage.ensureDeviceId();
+    const result = await api.postScore(deviceId, score, playMs);
+    if (result?.error) {
+      console.warn('submit-score error:', result.error);
+    }
+  } else {
+    console.info('Debug test run: score submission and best-score update skipped.');
   }
 
   // Refresh leaderboard
