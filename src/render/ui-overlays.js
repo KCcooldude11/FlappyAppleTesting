@@ -72,7 +72,7 @@ export function updateGameOverScore(score) {
     const safeScore = Number.isFinite(score) ? score : 0;
     const scoreText = String(safeScore);
     const digits = scoreText.length;
-    const scale = 1 + Math.max(0, digits - 1) * 0.24;
+    const scale = 1.5 + Math.max(0, digits - 1) * 0.20;
 
     goScoreEl.textContent = scoreText;
     goScoreEl.style.setProperty('--score-scale', String(scale));
@@ -298,29 +298,28 @@ async function generateShareCardBlob(payload) {
 
   drawShareTitle(ctx, 'Flappy Apple', width / 2, 185);
 
-  const sectionTop = panelY + 140;
-  const sectionBottom = panelY + panelH - 120;
-  const sectionStep = (sectionBottom - sectionTop) / 2;
-  const scoreY = sectionTop;
-  const spriteCenterY = sectionTop + sectionStep;
-  const usernameY = sectionTop + sectionStep * 2;
-
-  drawShareScoreBadge(ctx, width / 2, scoreY, payload.score ?? 0);
+  const spriteTopY = panelY + 78;
+  const scoreY = panelY + Math.round(panelH * 0.60);
+  const usernameY = panelY + panelH - 92;
 
   if (payload.skinSrc) {
     try {
       const sprite = await loadImage(payload.skinSrc);
       const maxW = 520;
-      const maxH = 520;
-      const scale = Math.min(maxW / sprite.width, maxH / sprite.height);
+      const maxH = 420;
+      const maxSpriteBottom = scoreY - 150;
+      const availableH = Math.max(140, maxSpriteBottom - spriteTopY);
+      const scale = Math.min(maxW / sprite.width, maxH / sprite.height, availableH / sprite.height);
       const drawW = Math.round(sprite.width * scale);
       const drawH = Math.round(sprite.height * scale);
       const drawX = Math.round((width - drawW) / 2);
-      const drawY = Math.round(spriteCenterY - drawH / 2);
+      const drawY = Math.round(spriteTopY);
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(sprite, drawX, drawY, drawW, drawH);
     } catch {}
   }
+
+  drawShareScoreBadge(ctx, width / 2, scoreY, payload.score ?? 0);
 
   ctx.fillStyle = '#111111';
   ctx.font = `600 58px ${getShareFontFamily()}`;
