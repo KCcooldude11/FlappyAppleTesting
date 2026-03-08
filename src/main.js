@@ -148,6 +148,26 @@ function startGame(name) {
     skinSys.switchToSkin(state.gameState, appleIdx, C.PHYSICS.BIRD_RADIUS_RATIO);
   }
 
+  const testStartCfg = C.DEBUG.TEST_START_NEAR_INVERT_ZONE;
+  if (testStartCfg?.ENABLED) {
+    state.gameState.score = Math.max(0, Number(testStartCfg.START_SCORE) || 0);
+    state.gameState.columnsSpawned = Math.max(0, Number(testStartCfg.START_COLUMNS) || state.gameState.score);
+    state.gameState.theme = Number(testStartCfg.START_THEME) || 3;
+    state.gameState.themeTransition = null;
+    state.gameState.nextMedalColumn = Math.max(
+      state.gameState.columnsSpawned + 1,
+      Number(testStartCfg.NEXT_MEDAL_COLUMN) || state.gameState.columnsSpawned + 1
+    );
+
+    if (testStartCfg.START_AS_MERRIKH) {
+      state.gameState.merrikhUnlockedThisRun = true;
+      state.gameState.skinLocked = false;
+      skinSys.switchToSkin(state.gameState, cfg.SKIN_INDICES.MERRIKH, C.PHYSICS.BIRD_RADIUS_RATIO);
+    }
+
+    hudRender.updateScoreBadge(document.getElementById('score'), scoreTextEl, state.gameState.score);
+  }
+
   loop.start(onGameOver, onScoreUpdate);
 }
 

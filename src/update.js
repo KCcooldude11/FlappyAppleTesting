@@ -47,7 +47,7 @@ export function update(gameState, dt, scale) {
     gameState.columnsSpawned++;
 
     // Medallion spawning
-    if (medalEcon.shouldSpawnMerrikh(gameState.columnsSpawned) && !gameState.merrikhUnlockedThisRun) {
+    if (medalEcon.shouldSpawnMerrikh(gameState.columnsSpawned, gameState.merrikhUnlockedThisRun)) {
       const prevPipe = gameState.pipes[gameState.pipes.length - 2];
       const thisPipe = gameState.pipes[gameState.pipes.length - 1];
       const medal_m = medalEntity.spawnMedalForMerrikh(
@@ -114,6 +114,13 @@ export function update(gameState, dt, scale) {
     if (!p.scored && p.x + physics_params.pipeWidth < gameState.bird.x) {
       p.scored = true;
       gameState.score += 1;
+
+      if (
+        !gameState.post500AppleResetDone &&
+        gameState.score >= C.PROGRESSION.RESET_TO_APPLE_AT_SCORE
+      ) {
+        gameState.awaitingPost500AppleReset = true;
+      }
     }
   }
 
@@ -128,6 +135,18 @@ export function update(gameState, dt, scale) {
 
       if (!m.taken && dx * dx + dy * dy < rr * rr) {
         m.taken = true;
+
+        if (gameState.awaitingPost500AppleReset) {
+          skinSys.switchToSkin(
+            gameState,
+            cfg.SKIN_INDICES.APPLE,
+            C.PHYSICS.BIRD_RADIUS_RATIO
+          );
+          gameState.awaitingPost500AppleReset = false;
+          gameState.post500AppleResetDone = true;
+          gameState.skinLocked = false;
+          continue;
+        }
 
         if (m.type === 'merrikh') {
           gameState.merrikhUnlockedThisRun = true;

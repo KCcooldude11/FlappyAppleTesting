@@ -2,8 +2,9 @@ import * as C from '../constants.js';
 import * as pipe from '../entities/pipe.js';
 import * as medal from '../entities/medallion.js';
 
-export function shouldSpawnMerrikh(columnsSpawned) {
-  return columnsSpawned === C.MEDALS.MERRIKH_UNLOCK_COLUMN;
+export function shouldSpawnMerrikh(columnsSpawned, merrikhUnlockedThisRun = false) {
+  if (columnsSpawned === C.PROGRESSION.INVERTED_MERRIKH_AT_COLUMN) return true;
+  return columnsSpawned === C.MEDALS.MERRIKH_UNLOCK_COLUMN && !merrikhUnlockedThisRun;
 }
 
 export function shouldSpawnRegularMedal(columnsSpawned, nextMedalColumn, pipes) {

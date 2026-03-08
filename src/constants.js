@@ -41,7 +41,7 @@ export const BIRD = {
 
 export const THEME = {
   FADE_MS: 800,
-  THRESHOLDS: [15, 20, 25],
+  THRESHOLDS: [15, 20, 500],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
@@ -55,12 +55,30 @@ export const THEME = {
     4: { desktop: 1.00, mobile: 1.36 },
   },
   INVERT_THEME_ID: 4,
+  RESUME_THEME2_AT_SCORE: 900,
+  RESUME_THEME3_AT_SCORE: 1000,
 };
 
 export const VISUAL = {
   TEMP_INVERT_THEME: {
-    ENABLED: true,
+    ENABLED: false,
     ACTIVATE_AT_SCORE: 100,
+  },
+};
+
+export const PROGRESSION = {
+  RESET_TO_APPLE_AT_SCORE: 500,
+  INVERTED_MERRIKH_AT_COLUMN: 800,
+};
+
+export const DEBUG = {
+  TEST_START_NEAR_INVERT_ZONE: {
+    ENABLED: true,
+    START_SCORE: 490,
+    START_COLUMNS: 490,
+    START_THEME: 3,
+    START_AS_MERRIKH: true,
+    NEXT_MEDAL_COLUMN: 502,
   },
 };
 

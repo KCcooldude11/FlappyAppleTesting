@@ -4,10 +4,14 @@ import * as cfg from '../config.js';
 export function shouldTransitionTheme(currentTheme, score, bgReady) {
   if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[0] && bgReady[2]) {
     return { from: 1, to: 2 };
-  } else if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1] && bgReady[3]) {
+  } else if (currentTheme === 2 && score >= C.THEME.RESUME_THEME3_AT_SCORE && bgReady[3]) {
+    return { from: 2, to: 3 };
+  } else if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1] && score < C.THEME.THRESHOLDS[2] && bgReady[3]) {
     return { from: 2, to: 3 };
   } else if (currentTheme === 3 && score >= C.THEME.THRESHOLDS[2] && bgReady[4]) {
     return { from: 3, to: 4 };
+  } else if (currentTheme === 4 && score >= C.THEME.RESUME_THEME2_AT_SCORE && bgReady[2]) {
+    return { from: 4, to: 2 };
   }
   return null;
 }

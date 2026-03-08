@@ -51,6 +51,8 @@ export const gameState = {
   currentSkinIndex: 0,
   merrikhUnlockedThisRun: false,
   skinLocked: false,
+  awaitingPost500AppleReset: false,
+  post500AppleResetDone: false,
 
   // Timing
   runStartTime: 0,
@@ -86,6 +88,8 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
 
   gameState.merrikhUnlockedThisRun = false;
   gameState.skinLocked = false;
+  gameState.awaitingPost500AppleReset = false;
+  gameState.post500AppleResetDone = false;
 
   gameState.currentSkinIndex = cfg.findDefaultSkin();
 }
