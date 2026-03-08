@@ -69,7 +69,13 @@ export function updateGameOverUsername(name) {
 export function updateGameOverScore(score) {
   const goScoreEl = document.getElementById('go-score');
   if (goScoreEl) {
-    goScoreEl.textContent = String(Number.isFinite(score) ? score : 0);
+    const safeScore = Number.isFinite(score) ? score : 0;
+    const scoreText = String(safeScore);
+    const digits = scoreText.length;
+    const scale = 1 + Math.max(0, digits - 1) * 0.24;
+
+    goScoreEl.textContent = scoreText;
+    goScoreEl.style.setProperty('--score-scale', String(scale));
   }
 }
 
