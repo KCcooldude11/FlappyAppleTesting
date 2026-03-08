@@ -138,22 +138,29 @@ export function hideYourRank() {
 
 export function setupRenameModal(onSave) {
   const btnEditName = document.getElementById('btn-edit-name');
+  const usernameLabel = document.getElementById('go-username');
   const renameDlg = document.getElementById('rename-dlg');
   const renameForm = document.getElementById('rename-form');
   const renameInput = document.getElementById('rename-input');
   const renameSave = document.getElementById('rename-save');
 
+  const openRenameDialog = () => {
+    if (!renameDlg) return;
+    const current = (localStorage.getItem('playerName') || '').trim();
+    if (renameInput) {
+      renameInput.value = current || '';
+      renameInput.select();
+    }
+    refreshRenameUI();
+    renameDlg.showModal();
+  };
+
   if (btnEditName) {
-    btnEditName.addEventListener('click', () => {
-      if (!renameDlg) return;
-      const current = (localStorage.getItem('playerName') || '').trim();
-      if (renameInput) {
-        renameInput.value = current || '';
-        renameInput.select();
-      }
-      refreshRenameUI();
-      renameDlg.showModal();
-    });
+    btnEditName.addEventListener('click', openRenameDialog);
+  }
+
+  if (usernameLabel) {
+    usernameLabel.addEventListener('click', openRenameDialog);
   }
 
   if (renameInput) {
