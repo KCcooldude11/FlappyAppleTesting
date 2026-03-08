@@ -7,6 +7,8 @@ let sharePayload = {
   skinSrc: '',
 };
 
+const SHARE_SCORE_MEDALLION_SRC = './assets/medallion-1.png.png';
+
 let hasSupportLinks = false;
 
 export function hideOverlay() {
@@ -292,13 +294,13 @@ async function generateShareCardBlob(payload) {
   const panelW = width - panelX * 2;
   const panelH = height - 360;
 
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.92)';
+  ctx.fillStyle = '#ffffff';
   roundRect(ctx, panelX, panelY, panelW, panelH, 42);
   ctx.fill();
 
   drawShareTitle(ctx, 'Flappy Apple', width / 2, 185);
 
-  const spriteTopY = panelY + 78;
+  const spriteTopY = panelY + 56;
   const scoreY = panelY + Math.round(panelH * 0.60);
   const usernameY = panelY + panelH - 92;
 
@@ -325,7 +327,12 @@ async function generateShareCardBlob(payload) {
     } catch {}
   }
 
-  drawShareScoreBadge(ctx, width / 2, scoreY, payload.score ?? 0);
+  try {
+    const medallion = await loadImage(SHARE_SCORE_MEDALLION_SRC);
+    drawShareScoreWithMedallion(ctx, medallion, width / 2, scoreY, payload.score ?? 0);
+  } catch {
+    drawShareScoreBadge(ctx, width / 2, scoreY, payload.score ?? 0);
+  }
 
   ctx.fillStyle = '#111111';
   ctx.font = `600 66px ${getShareFontFamily()}`;
@@ -452,6 +459,41 @@ function drawShareScoreBadge(ctx, centerX, centerY, score) {
   ctx.textBaseline = 'middle';
   ctx.font = `700 ${Math.round(halfH * 0.78)}px ${getShareFontFamily()}`;
   ctx.fillText(String(score), centerX, centerY);
+  ctx.textBaseline = 'alphabetic';
+}
+
+function drawShareScoreWithMedallion(ctx, medallionImg, centerX, centerY, score) {
+  const digits = String(score).length;
+  const targetW = 350 + Math.max(0, digits - 2) * 34;
+  const scale = targetW / medallionImg.width;
+  const drawW = targetW;
+  const drawH = medallionImg.height * scale;
+  const drawX = Math.round(centerX - drawW / 2);
+  const drawY = Math.round(centerY - drawH * 0.52);
+
+  ctx.save();
+  ctx.filter = 'drop-shadow(0 8px 18px rgba(0,0,0,0.18))';
+  ctx.imageSmoothingEnabled = true;
+  ctx.drawImage(medallionImg, drawX, drawY, drawW, drawH);
+  ctx.restore();
+
+  const scoreText = String(score);
+  const textX = centerX;
+  const textY = drawY + drawH * 0.73;
+  const maxTextWidth = drawW * 0.52;
+
+  let fontPx = Math.round(drawH * 0.19);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#111111';
+
+  do {
+    ctx.font = `700 ${fontPx}px ${getShareFontFamily()}`;
+    if (ctx.measureText(scoreText).width <= maxTextWidth || fontPx <= 36) break;
+    fontPx -= 2;
+  } while (fontPx > 36);
+
+  ctx.fillText(scoreText, textX, textY);
   ctx.textBaseline = 'alphabetic';
 }
 
