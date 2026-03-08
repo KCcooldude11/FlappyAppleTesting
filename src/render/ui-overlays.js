@@ -7,7 +7,7 @@ let sharePayload = {
   skinSrc: '',
 };
 
-const SHARE_SCORE_MEDALLION_SRC = './assets/medallion-1.png.png';
+const SHARE_SCORE_MEDALLION_SRC = C.ASSETS.MEDALLION;
 
 let hasSupportLinks = false;
 
