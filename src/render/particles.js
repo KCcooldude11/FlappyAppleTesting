@@ -38,19 +38,25 @@ class Theme3Mote {
     this.r = Math.random() * (C.THEME3_MOTES.SIZE_MAX - C.THEME3_MOTES.SIZE_MIN) + C.THEME3_MOTES.SIZE_MIN;
     this.vx = Math.random() * (C.THEME3_MOTES.VX_MAX - C.THEME3_MOTES.VX_MIN) + C.THEME3_MOTES.VX_MIN;
     this.vy = Math.random() * (C.THEME3_MOTES.VY_MAX - C.THEME3_MOTES.VY_MIN) + C.THEME3_MOTES.VY_MIN;
-    this.baseOpacity = 0.35 + Math.random() * 0.45;
-    this.twinkle = Math.random() * (C.THEME3_MOTES.TWINKLE_MAX - C.THEME3_MOTES.TWINKLE_MIN) + C.THEME3_MOTES.TWINKLE_MIN;
+    this.baseOpacity =
+      Math.random() * (C.THEME3_MOTES.BASE_OPACITY_MAX - C.THEME3_MOTES.BASE_OPACITY_MIN) +
+      C.THEME3_MOTES.BASE_OPACITY_MIN;
+    this.drift = Math.random() * (C.THEME3_MOTES.DRIFT_MAX - C.THEME3_MOTES.DRIFT_MIN) + C.THEME3_MOTES.DRIFT_MIN;
+    this.growth = Math.random() * (C.THEME3_MOTES.GROWTH_MAX - C.THEME3_MOTES.GROWTH_MIN) + C.THEME3_MOTES.GROWTH_MIN;
+    this.life = 0;
+    this.maxLife = 140 + Math.random() * 180;
     this.ang = Math.random() * Math.PI * 2;
   }
 
   step(w, h) {
-    this.x += this.vx;
+    this.ang += this.drift;
+    this.x += this.vx + Math.sin(this.ang) * 0.22;
     this.y += this.vy;
-    this.ang += this.twinkle;
+    this.r += this.growth;
+    this.life += 1;
 
-    if (this.y < -this.r || this.x < -this.r || this.x > w + this.r) {
+    if (this.life >= this.maxLife || this.y < -this.r * 1.5 || this.x < -this.r * 2 || this.x > w + this.r * 2) {
       this.reset(w, h);
-      this.x = Math.min(w + this.r, Math.max(-this.r, this.x));
     }
   }
 }
@@ -115,15 +121,26 @@ export function drawTheme3Motes(particles, alpha = 1) {
 
   ctx.save();
   for (const p of particles) {
-    const pulse = 0.65 + 0.35 * Math.sin(p.ang);
-    const opacity = p.baseOpacity * pulse * a;
+    const lifeT = Math.max(0, Math.min(1, p.life / p.maxLife));
+    const fade = 1 - lifeT;
+    const opacity = p.baseOpacity * fade * a;
     const size = p.r;
 
     ctx.beginPath();
     ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,210,130,${opacity})`;
-    ctx.shadowColor = `rgba(255,150,70,${Math.min(1, opacity * 1.6)})`;
+    ctx.fillStyle = `rgba(225,230,235,${opacity})`;
+    ctx.shadowColor = `rgba(170,180,190,${Math.min(0.5, opacity)})`;
     ctx.shadowBlur = C.THEME3_MOTES.SHADOW_BLUR;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(p.x + size * 0.35, p.y - size * 0.2, size * 0.7, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(205,212,220,${opacity * 0.68})`;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(p.x - size * 0.28, p.y + size * 0.12, size * 0.55, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(235,240,245,${opacity * 0.55})`;
     ctx.fill();
   }
   ctx.restore();
