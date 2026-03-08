@@ -78,10 +78,14 @@ export function updateGameOverScore(score) {
     const safeScore = Number.isFinite(score) ? score : 0;
     const scoreText = String(safeScore);
     const digits = scoreText.length;
-    const scale = 1.5 + Math.max(0, digits - 1) * 0.20;
+    const scale = 1.5 + Math.max(0, digits - 1) * 0.16;
+    const widthScale = 1 + Math.max(0, digits - 2) * 0.26;
+    const fontScale = Math.max(0.78, 1 - Math.max(0, digits - 2) * 0.12);
 
     goScoreEl.textContent = scoreText;
     goScoreEl.style.setProperty('--score-scale', String(scale));
+    goScoreEl.style.setProperty('--score-width-scale', String(widthScale));
+    goScoreEl.style.setProperty('--score-font-scale', String(fontScale));
   }
 }
 

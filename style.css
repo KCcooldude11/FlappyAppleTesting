@@ -279,13 +279,15 @@ body {
 
 #gameover #go-score.go-score-medallion{
   --score-scale: 1.5;
+  --score-width-scale: 1;
+  --score-font-scale: 1;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: calc(3.1 * var(--u) * var(--score-scale));
+  width: calc(3.1 * var(--u) * var(--score-scale) * var(--score-width-scale));
   height: calc(3.9 * var(--u) * var(--score-scale));
-  font-size: calc(var(--fs-1) * (1.08 + (var(--score-scale) - 1) * 0.45));
+  font-size: calc(var(--fs-1) * (1.02 + (var(--score-scale) - 1) * 0.32) * var(--score-font-scale));
   font-weight: 700;
   color: #111;
   line-height: 1;
