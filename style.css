@@ -262,7 +262,7 @@ body {
   margin: calc(-1 * var(--space-3)) calc(-1 * var(--go-card-pad-x)) 0;
   width: calc(100% + (2 * var(--go-card-pad-x)));
   padding: calc(0.65 * var(--u)) calc(1.0 * var(--u));
-  background: rgba(0, 0, 0, 0.295);
+  background: #f9c44a;
   text-align: center;
 }
 

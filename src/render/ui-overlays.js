@@ -307,9 +307,15 @@ async function generateShareCardBlob(payload) {
       const sprite = await loadImage(payload.skinSrc);
       const maxW = 520;
       const maxH = 420;
-      const maxSpriteBottom = scoreY - 150;
+      const maxSpriteBottom = scoreY - 120;
       const availableH = Math.max(140, maxSpriteBottom - spriteTopY);
-      const scale = Math.min(maxW / sprite.width, maxH / sprite.height, availableH / sprite.height);
+      const baseScale = Math.min(maxW / sprite.width, maxH / sprite.height);
+      const boostedScale = baseScale * 1.5;
+      const scale = Math.min(
+        boostedScale,
+        (panelW - 120) / sprite.width,
+        availableH / sprite.height
+      );
       const drawW = Math.round(sprite.width * scale);
       const drawH = Math.round(sprite.height * scale);
       const drawX = Math.round((width - drawW) / 2);
@@ -322,7 +328,7 @@ async function generateShareCardBlob(payload) {
   drawShareScoreBadge(ctx, width / 2, scoreY, payload.score ?? 0);
 
   ctx.fillStyle = '#111111';
-  ctx.font = `600 58px ${getShareFontFamily()}`;
+  ctx.font = `600 66px ${getShareFontFamily()}`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillText(payload.username || 'Player', width / 2, usernameY);
