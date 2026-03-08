@@ -5,6 +5,7 @@ let sharePayload = {
   username: 'Player',
   score: 0,
   skinSrc: '',
+  invertSkin: false,
 };
 
 const SHARE_SCORE_MEDALLION_SRC = './assets/Medal.png';
@@ -47,15 +48,18 @@ export function hideGameOver() {
   updateSupportLinksVisibility();
 }
 
-export function updateGameOverSkinImage(skinImageSrc, skinName = 'Character') {
+export function updateGameOverSkinImage(skinImageSrc, skinName = 'Character', options = {}) {
   const goSkin = document.getElementById('gameover-skin');
   if (goSkin) {
+    const invertSkin = Boolean(options?.invertSkin);
     if (skinImageSrc) {
       goSkin.src = skinImageSrc;
       goSkin.alt = `${skinName} (Regular)`;
+      goSkin.style.filter = invertSkin ? 'invert(1)' : '';
       goSkin.classList.remove('hide');
     } else {
       goSkin.src = '';
+      goSkin.style.filter = '';
       goSkin.classList.add('hide');
     }
   }
@@ -221,6 +225,7 @@ export function setSharePayload(payload) {
     username: (payload?.username || 'Player').trim() || 'Player',
     score: Number.isFinite(payload?.score) ? payload.score : 0,
     skinSrc: payload?.skinSrc || '',
+    invertSkin: Boolean(payload?.invertSkin),
   };
 }
 
@@ -324,8 +329,13 @@ async function generateShareCardBlob(payload) {
       const drawX = Math.round((width - drawW) / 2);
       const drawY = Math.round(spriteTopY);
       spriteBottomY = drawY + drawH;
+      ctx.save();
+      if (payload.invertSkin) {
+        ctx.filter = 'invert(1)';
+      }
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(sprite, drawX, drawY, drawW, drawH);
+      ctx.restore();
     } catch {}
   }
 

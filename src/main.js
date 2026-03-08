@@ -183,9 +183,10 @@ async function onGameOver() {
 
   // Show skin image
   const skin = cfg.getSkinById(state.gameState.currentSkinIndex);
+  const useInvertedSkin = state.gameState.theme === C.THEME.INVERT_THEME_ID;
   let shareSkinSrc = '';
   if (skin?.flapReady && skin.flapImg.src) {
-    uiOverlays.updateGameOverSkinImage(skin.flapImg.src, skin.name);
+    uiOverlays.updateGameOverSkinImage(skin.flapImg.src, skin.name, { invertSkin: useInvertedSkin });
     shareSkinSrc = skin.flapImg.src;
   } else {
     uiOverlays.updateGameOverSkinImage('');
@@ -195,6 +196,7 @@ async function onGameOver() {
     username: name,
     score,
     skinSrc: shareSkinSrc,
+    invertSkin: useInvertedSkin,
   });
 
   uiOverlays.showGameOver();
