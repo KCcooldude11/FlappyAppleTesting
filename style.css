@@ -638,6 +638,9 @@ kbd {
   width: auto;
   height: auto;
   display: block;
+  background: none;
+  -webkit-clip-path: none;
+  clip-path: none;
   opacity: .7;
   filter: none;
 }
@@ -647,8 +650,8 @@ kbd {
 
 /* Rank diamond (fluid) */
 .leaderboard .rank{
-  --rw: calc(0.8 * var(--u)); /* half-width */
-  --rh: calc(1.2 * var(--u)); /* half-height */
+  --rw: calc(0.68 * var(--u)); /* half-width */
+  --rh: calc(1.02 * var(--u)); /* half-height */
   position: relative;
   width: calc(2 * var(--rw));
   height: calc(2 * var(--rh));
