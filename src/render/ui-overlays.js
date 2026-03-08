@@ -338,8 +338,8 @@ async function generateShareCardBlob(payload) {
       scoreY,
       payload.score ?? 0,
       {
-        minTop: spriteBottomY + 26,
-        maxBottom: usernameY - 44,
+        minTop: spriteBottomY + 18,
+        maxBottom: usernameY - 24,
       }
     );
   } catch {
@@ -476,7 +476,7 @@ function drawShareScoreBadge(ctx, centerX, centerY, score) {
 
 function drawShareScoreWithMedallion(ctx, medallionImg, centerX, centerY, score, limits = {}) {
   const digits = String(score).length;
-  let drawW = 290 + Math.max(0, digits - 2) * 24;
+  let drawW = (290 + Math.max(0, digits - 2) * 24) * 1.5;
   let scale = drawW / medallionImg.width;
   let drawH = medallionImg.height * scale;
 
