@@ -71,8 +71,17 @@ export function render() {
   const ctx = renderer.getContext();
   const vw = renderer.getCanvasWidth();
   const vh = renderer.getCanvasHeight();
+  const invertGameplayTheme =
+    C.VISUAL.TEMP_INVERT_THEME.ENABLED &&
+    state.gameState.mode === 'playing' &&
+    state.gameState.score >= C.VISUAL.TEMP_INVERT_THEME.ACTIVATE_AT_SCORE;
 
   renderer.startFrame();
+
+  if (invertGameplayTheme) {
+    ctx.save();
+    ctx.filter = 'invert(1)';
+  }
 
   // Background
   bgRender.drawBackground(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow);
@@ -80,7 +89,9 @@ export function render() {
   // Water particles (Theme 2)
   if (themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
     ctx.save();
-    ctx.filter = 'none';
+    if (!invertGameplayTheme) {
+      ctx.filter = 'none';
+    }
     particlesRender.drawParticles(
       state.gameState.waterParticles.particles,
       themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
@@ -90,6 +101,9 @@ export function render() {
 
   // Ready state shows overlay instead
   if (state.gameState.mode === 'ready') {
+    if (invertGameplayTheme) {
+      ctx.restore();
+    }
     return;
   }
 
@@ -105,6 +119,10 @@ export function render() {
     state.gameState.currentSkinIndex,
     state.gameState.bird.flapTimer > 0
   );
+
+  if (invertGameplayTheme) {
+    ctx.restore();
+  }
 
   renderer.endFrame();
 }

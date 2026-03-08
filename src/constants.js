@@ -54,6 +54,13 @@ export const THEME = {
   },
 };
 
+export const VISUAL = {
+  TEMP_INVERT_THEME: {
+    ENABLED: true,
+    ACTIVATE_AT_SCORE: 10,
+  },
+};
+
 export const MEDALS = {
   MERRIKH_UNLOCK_COLUMN: 301,
   LOCK_AFTER_MERRIKH: true,
