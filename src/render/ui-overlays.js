@@ -340,6 +340,8 @@ async function generateShareCardBlob(payload) {
       {
         minTop: spriteBottomY + 18,
         maxBottom: usernameY - 24,
+        minLeft: panelX + 30,
+        maxRight: panelX + panelW - 30,
       }
     );
   } catch {
@@ -476,12 +478,14 @@ function drawShareScoreBadge(ctx, centerX, centerY, score) {
 
 function drawShareScoreWithMedallion(ctx, medallionImg, centerX, centerY, score, limits = {}) {
   const digits = String(score).length;
-  let drawW = (290 + Math.max(0, digits - 2) * 24) * 2;
+  let drawW = (290 + Math.max(0, digits - 2) * 24) * 1.5;
   let scale = drawW / medallionImg.width;
   let drawH = medallionImg.height * scale;
 
   const minTop = Number.isFinite(limits.minTop) ? limits.minTop : -Infinity;
   const maxBottom = Number.isFinite(limits.maxBottom) ? limits.maxBottom : Infinity;
+  const minLeft = Number.isFinite(limits.minLeft) ? limits.minLeft : -Infinity;
+  const maxRight = Number.isFinite(limits.maxRight) ? limits.maxRight : Infinity;
 
   const availableH = maxBottom - minTop;
   if (Number.isFinite(availableH) && availableH > 0 && drawH > availableH) {
@@ -490,11 +494,48 @@ function drawShareScoreWithMedallion(ctx, medallionImg, centerX, centerY, score,
     drawW = medallionImg.width * scale;
   }
 
+  const availableW = maxRight - minLeft;
+  if (Number.isFinite(availableW) && availableW > 0 && drawW > availableW) {
+    scale = availableW / medallionImg.width;
+    drawW = availableW;
+    drawH = medallionImg.height * scale;
+  }
+
+  const scoreText = String(score);
+  let fontPx = Math.round(drawH * 0.16);
+  ctx.font = `700 ${fontPx}px ${getShareFontFamily()}`;
+  let textWidth = ctx.measureText(scoreText).width;
+  const textPadding = 34;
+
+  const desiredTextArea = textWidth + textPadding;
+  const currentTextArea = drawW * 0.68;
+  if (desiredTextArea > currentTextArea) {
+    const growFactor = desiredTextArea / currentTextArea;
+    drawW *= growFactor;
+    scale = drawW / medallionImg.width;
+    drawH = medallionImg.height * scale;
+
+    if (Number.isFinite(availableH) && availableH > 0 && drawH > availableH) {
+      scale = availableH / medallionImg.height;
+      drawH = availableH;
+      drawW = medallionImg.width * scale;
+    }
+    if (Number.isFinite(availableW) && availableW > 0 && drawW > availableW) {
+      scale = availableW / medallionImg.width;
+      drawW = availableW;
+      drawH = medallionImg.height * scale;
+    }
+  }
+
   let drawY = centerY - drawH * 0.52;
   if (drawY < minTop) drawY = minTop;
   if (drawY + drawH > maxBottom) drawY = maxBottom - drawH;
 
-  const drawX = Math.round(centerX - drawW / 2);
+  let drawX = centerX - drawW / 2;
+  if (drawX < minLeft) drawX = minLeft;
+  if (drawX + drawW > maxRight) drawX = maxRight - drawW;
+
+  drawX = Math.round(drawX);
   drawY = Math.round(drawY);
 
   ctx.save();
@@ -503,12 +544,11 @@ function drawShareScoreWithMedallion(ctx, medallionImg, centerX, centerY, score,
   ctx.drawImage(medallionImg, drawX, drawY, drawW, drawH);
   ctx.restore();
 
-  const scoreText = String(score);
   const textX = centerX;
-  const textY = drawY + drawH * 0.74;
-  const maxTextWidth = drawW * 0.52;
+  const textY = drawY + drawH * 0.50;
+  const maxTextWidth = drawW * 0.68;
 
-  let fontPx = Math.round(drawH * 0.16);
+  fontPx = Math.round(drawH * 0.16);
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   ctx.fillStyle = '#111111';
