@@ -107,6 +107,21 @@ export const WATER_PARTICLES = {
   SHADOW_BLUR: 10,
 };
 
+export const THEME3_MOTES = {
+  DENSITY_DIVISOR: 36000,
+  TARGET_MIN: 48,
+  TARGET_MAX: 110,
+  SIZE_MIN: 1.8,
+  SIZE_MAX: 4.8,
+  VX_MIN: -0.35,
+  VX_MAX: 0.2,
+  VY_MIN: -0.55,
+  VY_MAX: -0.2,
+  TWINKLE_MIN: 0.018,
+  TWINKLE_MAX: 0.05,
+  SHADOW_BLUR: 12,
+};
+
 export const UI = {
   HUD_TOP: 8,
   HUD_LEFT: 8,

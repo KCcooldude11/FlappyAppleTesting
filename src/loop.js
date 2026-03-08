@@ -106,6 +106,19 @@ export function render() {
     ctx.restore();
   }
 
+  // Theme 3 ambient motes
+  if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
+    ctx.save();
+    if (!invertGameplayTheme) {
+      ctx.filter = 'none';
+    }
+    particlesRender.drawTheme3Motes(
+      state.gameState.theme3Motes.particles,
+      themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
+    );
+    ctx.restore();
+  }
+
   // Ready state shows overlay instead
   if (state.gameState.mode === 'ready') {
     if (invertGameplayTheme) {

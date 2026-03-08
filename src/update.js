@@ -170,5 +170,10 @@ export function update(gameState, dt, scale) {
     particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 
+  // Theme 3 ambient motes
+  if (gameState.theme === 3) {
+    particlesRender.updateTheme3Motes(gameState.theme3Motes.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
+  }
+
   return null; // no collision
 }

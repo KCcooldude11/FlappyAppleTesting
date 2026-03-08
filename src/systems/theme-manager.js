@@ -40,6 +40,15 @@ export function getTheme2Alpha(theme, transition, frameNow) {
   return 0;
 }
 
+export function getTheme3Alpha(theme, transition, frameNow) {
+  if (!transition) return theme === 3 ? 1 : 0;
+
+  const a = Math.min(1, Math.max(0, (frameNow - transition.start) / C.THEME.FADE_MS));
+  if (transition.to === 3) return a;
+  if (transition.from === 3) return 1 - a;
+  return 0;
+}
+
 export function getBgFocusPoint(theme) {
   const mobile = cfg.isMobileish();
   return C.THEME.FOCUS[theme]

@@ -78,6 +78,7 @@ function onCanvasResize() {
 
   // Update water particles
   particlesRender.ensureParticleCount(state.gameState.waterParticles.particles, vw, vh);
+  particlesRender.ensureTheme3MoteCount(state.gameState.theme3Motes.particles, vw, vh);
 
   // Reset bird position if not playing
   if (state.gameState.mode !== 'playing') {

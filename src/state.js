@@ -65,6 +65,13 @@ export const gameState = {
     lastW: 0,
     lastH: 0,
   },
+
+  theme3Motes: {
+    particles: [],
+    target: 72,
+    lastW: 0,
+    lastH: 0,
+  },
 };
 
 export function resetGameState(newBirdX, newBirdY, birdRadius) {
