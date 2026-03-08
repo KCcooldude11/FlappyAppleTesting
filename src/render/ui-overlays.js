@@ -476,7 +476,7 @@ function drawShareScoreBadge(ctx, centerX, centerY, score) {
 
 function drawShareScoreWithMedallion(ctx, medallionImg, centerX, centerY, score, limits = {}) {
   const digits = String(score).length;
-  let drawW = (290 + Math.max(0, digits - 2) * 24) * 1.5;
+  let drawW = (290 + Math.max(0, digits - 2) * 24) * 2;
   let scale = drawW / medallionImg.width;
   let drawH = medallionImg.height * scale;
 
