@@ -237,10 +237,16 @@ export function setupShareButton() {
   const btnShare = document.getElementById('btn-share');
   if (!btnShare) return;
 
+  const defaultA11yLabel = btnShare.getAttribute('aria-label') || 'Share score';
+  const defaultTitle = btnShare.getAttribute('title') || defaultA11yLabel;
+  const setShareStatus = (label) => {
+    btnShare.setAttribute('aria-label', label);
+    btnShare.setAttribute('title', label);
+  };
+
   btnShare.addEventListener('click', async () => {
-    const previousText = btnShare.textContent;
     btnShare.disabled = true;
-    btnShare.textContent = 'Sharing...';
+    setShareStatus('Sharing...');
 
     try {
       const cardBlob = await generateShareCardBlob(sharePayload);
@@ -258,24 +264,25 @@ export function setupShareButton() {
 
         if (navigator.canShare && navigator.canShare(shareWithFile)) {
           await navigator.share(shareWithFile);
-          btnShare.textContent = 'Shared!';
+          setShareStatus('Shared!');
           return;
         }
 
         await navigator.share({ title: shareTitle, text: `${shareText} ${shareUrl}` });
-        btnShare.textContent = 'Shared!';
+        setShareStatus('Shared!');
         return;
       }
 
       triggerBlobDownload(cardBlob, filename);
       const copied = await copyToClipboard(`${shareText} ${shareUrl}`);
-      btnShare.textContent = copied ? 'Downloaded + Copied' : 'Downloaded';
+      setShareStatus(copied ? 'Downloaded + Copied' : 'Downloaded');
     } catch {
-      btnShare.textContent = 'Share Failed';
+      setShareStatus('Share Failed');
     } finally {
       setTimeout(() => {
         btnShare.disabled = false;
-        btnShare.textContent = previousText;
+        btnShare.setAttribute('aria-label', defaultA11yLabel);
+        btnShare.setAttribute('title', defaultTitle);
       }, 1600);
     }
   });
