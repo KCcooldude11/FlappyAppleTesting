@@ -28,35 +28,54 @@ class WaterParticle {
 
 class Theme3Mote {
   constructor(w, h) {
-    this.reset(w, h);
-    this.y = Math.random() * h;
+    this.splatLife = 0;
+    this.splatX = 0;
+    this.splatY = 0;
+    this.reset(w, h, true);
   }
 
-  reset(w, h) {
+  reset(w, h, initial = false) {
+    const isBack = Math.random() < C.THEME3_MOTES.BACKROW_RATIO;
+    const speedBase = Math.random() * (C.THEME3_MOTES.SPEED_MAX - C.THEME3_MOTES.SPEED_MIN) + C.THEME3_MOTES.SPEED_MIN;
+    const lenBase = Math.random() * (C.THEME3_MOTES.LENGTH_MAX - C.THEME3_MOTES.LENGTH_MIN) + C.THEME3_MOTES.LENGTH_MIN;
+    const opacityBase =
+      Math.random() * (C.THEME3_MOTES.OPACITY_MAX - C.THEME3_MOTES.OPACITY_MIN) + C.THEME3_MOTES.OPACITY_MIN;
+
+    this.isBackRow = isBack;
     this.x = Math.random() * w;
-    this.y = h + Math.random() * Math.max(40, h * 0.2);
-    this.r = Math.random() * (C.THEME3_MOTES.SIZE_MAX - C.THEME3_MOTES.SIZE_MIN) + C.THEME3_MOTES.SIZE_MIN;
-    this.vx = Math.random() * (C.THEME3_MOTES.VX_MAX - C.THEME3_MOTES.VX_MIN) + C.THEME3_MOTES.VX_MIN;
-    this.vy = Math.random() * (C.THEME3_MOTES.VY_MAX - C.THEME3_MOTES.VY_MIN) + C.THEME3_MOTES.VY_MIN;
-    this.baseOpacity =
-      Math.random() * (C.THEME3_MOTES.BASE_OPACITY_MAX - C.THEME3_MOTES.BASE_OPACITY_MIN) +
-      C.THEME3_MOTES.BASE_OPACITY_MIN;
-    this.drift = Math.random() * (C.THEME3_MOTES.DRIFT_MAX - C.THEME3_MOTES.DRIFT_MIN) + C.THEME3_MOTES.DRIFT_MIN;
-    this.growth = Math.random() * (C.THEME3_MOTES.GROWTH_MAX - C.THEME3_MOTES.GROWTH_MIN) + C.THEME3_MOTES.GROWTH_MIN;
-    this.life = 0;
-    this.maxLife = 140 + Math.random() * 180;
-    this.ang = Math.random() * Math.PI * 2;
+    this.y = initial ? Math.random() * h : -(Math.random() * h * 0.35 + 8);
+    this.len = isBack ? lenBase * C.THEME3_MOTES.BACKROW_LENGTH_MULT : lenBase;
+    this.vy = isBack ? speedBase * C.THEME3_MOTES.BACKROW_SPEED_MULT : speedBase;
+    this.vx = Math.random() * (C.THEME3_MOTES.DRIFT_X_MAX - C.THEME3_MOTES.DRIFT_X_MIN) + C.THEME3_MOTES.DRIFT_X_MIN;
+    this.opacity = isBack ? opacityBase * C.THEME3_MOTES.BACKROW_OPACITY_MULT : opacityBase;
+    this.thickness =
+      Math.random() * (C.THEME3_MOTES.THICKNESS_MAX - C.THEME3_MOTES.THICKNESS_MIN) +
+      C.THEME3_MOTES.THICKNESS_MIN;
+    this.splatSize =
+      Math.random() * (C.THEME3_MOTES.SPLAT_SIZE_MAX - C.THEME3_MOTES.SPLAT_SIZE_MIN) +
+      C.THEME3_MOTES.SPLAT_SIZE_MIN;
   }
 
-  step(w, h) {
-    this.ang += this.drift;
-    this.x += this.vx + Math.sin(this.ang) * 0.22;
-    this.y += this.vy;
-    this.r += this.growth;
-    this.life += 1;
+  step(w, h, dt) {
+    const dts = Math.max(0.001, dt || 0.016);
+    this.y += this.vy * dts;
+    this.x -= this.vx * dts;
 
-    if (this.life >= this.maxLife || this.y < -this.r * 1.5 || this.x < -this.r * 2 || this.x > w + this.r * 2) {
+    if (this.x < -20) this.x = w + 20;
+    if (this.x > w + 20) this.x = -20;
+
+    const groundY = h * (this.isBackRow ? C.THEME3_MOTES.BACKROW_GROUND_Y_RATIO : C.THEME3_MOTES.GROUND_Y_RATIO);
+    if (this.y >= groundY) {
+      if (Math.random() < C.THEME3_MOTES.SPLAT_PROBABILITY) {
+        this.splatX = this.x;
+        this.splatY = groundY;
+        this.splatLife = 1;
+      }
       this.reset(w, h);
+    }
+
+    if (this.splatLife > 0) {
+      this.splatLife = Math.max(0, this.splatLife - C.THEME3_MOTES.SPLAT_FADE_PER_SEC * dts);
     }
   }
 }
@@ -91,7 +110,7 @@ export function ensureTheme3MoteCount(particles, w, h) {
 
 export function updateTheme3Motes(particles, w, h, dt) {
   for (let i = 0; i < particles.length; i++) {
-    particles[i].step(w, h);
+    particles[i].step(w, h, dt);
   }
 }
 
@@ -121,27 +140,36 @@ export function drawTheme3Motes(particles, alpha = 1) {
 
   ctx.save();
   for (const p of particles) {
-    const lifeT = Math.max(0, Math.min(1, p.life / p.maxLife));
-    const fade = 1 - lifeT;
-    const opacity = p.baseOpacity * fade * a;
-    const size = p.r;
+    const opacity = p.opacity * a;
+    const dx = p.len * 0.16;
 
     ctx.beginPath();
-    ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(225,230,235,${opacity})`;
-    ctx.shadowColor = `rgba(170,180,190,${Math.min(0.5, opacity)})`;
+    ctx.moveTo(p.x, p.y - p.len);
+    ctx.lineTo(p.x - dx, p.y);
+    ctx.lineWidth = p.thickness;
+    ctx.strokeStyle = `rgba(210,220,255,${opacity})`;
+    ctx.shadowColor = `rgba(185,200,255,${opacity * 0.8})`;
     ctx.shadowBlur = C.THEME3_MOTES.SHADOW_BLUR;
-    ctx.fill();
+    ctx.stroke();
 
-    ctx.beginPath();
-    ctx.arc(p.x + size * 0.35, p.y - size * 0.2, size * 0.7, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(205,212,220,${opacity * 0.68})`;
-    ctx.fill();
-
-    ctx.beginPath();
-    ctx.arc(p.x - size * 0.28, p.y + size * 0.12, size * 0.55, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(235,240,245,${opacity * 0.55})`;
-    ctx.fill();
+    if (p.splatLife > 0) {
+      const splatOpacity = p.splatLife * opacity;
+      ctx.beginPath();
+      ctx.ellipse(
+        p.splatX,
+        p.splatY,
+        p.splatSize * (1 + (1 - p.splatLife)),
+        Math.max(0.8, p.splatSize * 0.42),
+        0,
+        0,
+        Math.PI,
+        true
+      );
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = `rgba(235,240,255,${splatOpacity * 0.85})`;
+      ctx.shadowBlur = 0;
+      ctx.stroke();
+    }
   }
   ctx.restore();
 }
