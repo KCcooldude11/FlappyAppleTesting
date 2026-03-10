@@ -8,7 +8,8 @@ export function shouldSpawnMerrikh(columnsSpawned, merrikhUnlockedThisRun = fals
 }
 
 export function shouldSpawnRegularMedal(columnsSpawned, nextMedalColumn, pipes) {
-  if (columnsSpawned !== nextMedalColumn) return false;
+  // Use >= so a missed exact tick (e.g., not enough pipes yet) can recover next column.
+  if (columnsSpawned < nextMedalColumn) return false;
   return pipes.length >= 2;
 }
 

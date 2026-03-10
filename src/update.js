@@ -69,7 +69,7 @@ export function update(gameState, dt, scale) {
         scale
       );
       gameState.medallions.push(medal_r);
-      gameState.nextMedalColumn += medalEntity.nextMedalJump();
+      gameState.nextMedalColumn = gameState.columnsSpawned + medalEntity.nextMedalJump();
     }
 
     gameState.lastPipeAt = C.PHYSICS.PIPE_INTERVAL_MS;

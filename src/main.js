@@ -156,7 +156,8 @@ function startGame(name) {
     state.gameState.theme = Number(testStartCfg.START_THEME) || 3;
     state.gameState.themeTransition = null;
     if (testStartCfg.FORCE_MEDAL_EVERY_PIPE) {
-      state.gameState.nextMedalColumn = state.gameState.columnsSpawned + 1;
+      // Regular medals require at least two pipes; start at +2 for deterministic first spawn.
+      state.gameState.nextMedalColumn = state.gameState.columnsSpawned + 2;
     } else {
       state.gameState.nextMedalColumn = Math.max(
         state.gameState.columnsSpawned + 1,
