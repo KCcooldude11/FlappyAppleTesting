@@ -41,7 +41,7 @@ export const BIRD = {
 
 export const THEME = {
   FADE_MS: 800,
-  THRESHOLDS: [15, 20, 500],
+  THRESHOLDS: [100, 200, 500],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
@@ -73,11 +73,11 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: false,
-    START_SCORE: 990,
-    START_COLUMNS: 990,
+    ENABLED: true,
+    START_SCORE: 90,
+    START_COLUMNS: 90,
     START_THEME: 2,
-    START_AS_MERRIKH: true,
+    START_AS_MERRIKH: false,
     NEXT_MEDAL_COLUMN: 502,
   },
 };
