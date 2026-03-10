@@ -78,7 +78,7 @@ export const DEBUG = {
     START_COLUMNS: 90,
     START_THEME: 1,
     START_AS_MERRIKH: false,
-    // NEXT_MEDAL_COLUMN: 502,
+    NEXT_MEDAL_COLUMN: 92,
   },
 };
 
