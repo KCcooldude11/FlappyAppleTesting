@@ -13,6 +13,9 @@ export function createMedallion(x, y, size, special = false) {
 }
 
 export function nextMedalJump() {
+  if (C.DEBUG?.TEST_START_NEAR_INVERT_ZONE?.ENABLED && C.DEBUG.TEST_START_NEAR_INVERT_ZONE.FORCE_MEDAL_EVERY_PIPE) {
+    return 1;
+  }
   return 13 + Math.floor(Math.random() * 8); // [13..20]
 }
 

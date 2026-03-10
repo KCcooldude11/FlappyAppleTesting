@@ -155,10 +155,14 @@ function startGame(name) {
     state.gameState.columnsSpawned = Math.max(0, Number(testStartCfg.START_COLUMNS) || state.gameState.score);
     state.gameState.theme = Number(testStartCfg.START_THEME) || 3;
     state.gameState.themeTransition = null;
-    state.gameState.nextMedalColumn = Math.max(
-      state.gameState.columnsSpawned + 1,
-      Number(testStartCfg.NEXT_MEDAL_COLUMN) || state.gameState.columnsSpawned + 1
-    );
+    if (testStartCfg.FORCE_MEDAL_EVERY_PIPE) {
+      state.gameState.nextMedalColumn = state.gameState.columnsSpawned + 1;
+    } else {
+      state.gameState.nextMedalColumn = Math.max(
+        state.gameState.columnsSpawned + 1,
+        Number(testStartCfg.NEXT_MEDAL_COLUMN) || state.gameState.columnsSpawned + 1
+      );
+    }
 
     if (testStartCfg.START_AS_MERRIKH) {
       state.gameState.merrikhUnlockedThisRun = true;
