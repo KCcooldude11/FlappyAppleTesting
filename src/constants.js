@@ -76,7 +76,7 @@ export const DEBUG = {
     ENABLED: true,
     START_SCORE: 90,
     START_COLUMNS: 90,
-    START_THEME: 2,
+    START_THEME: 1,
     START_AS_MERRIKH: false,
     NEXT_MEDAL_COLUMN: 502,
   },
