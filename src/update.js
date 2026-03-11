@@ -13,6 +13,10 @@ import * as cfg from './config.js';
 export function update(gameState, dt, scale) {
   if (gameState.mode !== 'playing') return null;
 
+  const noDeathDebug = C.DEBUG?.NO_DEATH_RUN;
+  const ignorePipeCollisions = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_PIPE_COLLISIONS);
+  const ignoreWorldBounds = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_WORLD_BOUNDS);
+
   const physics_params = {
     gravity: C.PHYSICS.GRAVITY * scale,
     jumpVy: C.PHYSICS.JUMP_VY * scale,
@@ -89,7 +93,7 @@ export function update(gameState, dt, scale) {
 
   // World bounds
   const screenHeight = renderer.getCanvasHeight();
-  if (gameState.bird.y - gameState.bird.r <= 0 || gameState.bird.y + gameState.bird.r >= screenHeight) {
+  if (!ignoreWorldBounds && (gameState.bird.y - gameState.bird.r <= 0 || gameState.bird.y + gameState.bird.r >= screenHeight)) {
     return { collision: true, type: 'bounds' };
   }
 
@@ -99,6 +103,7 @@ export function update(gameState, dt, scale) {
 
   for (let p of gameState.pipes) {
     if (
+      !ignorePipeCollisions &&
       physics.checkPipeCollision(
         gameState.bird,
         p,

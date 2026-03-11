@@ -254,6 +254,8 @@ body {
   flex-direction: column;
   align-items: center;
   gap: var(--space-2);
+  width: min(92vw, clamp(320px, calc(32 * var(--u)), 480px));
+  max-width: 100%;
   overflow: hidden;
 }
 #gameover .go-card h2 { 
@@ -303,11 +305,11 @@ body {
 
 #gameover .profile-line{
   margin-top: calc(0.35 * var(--u));
-  gap: var(--space-2);
   font-size: var(--fs-2);
-  display:flex;
+  display:grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items:center;
-  justify-content:center;
+  column-gap: var(--space-2);
   width: calc(100% + (2 * var(--go-card-pad-x)));
   margin-left: calc(-1 * var(--go-card-pad-x));
   margin-right: calc(-1 * var(--go-card-pad-x));
@@ -317,13 +319,19 @@ body {
   background: rgb(249, 196, 74, 0.7);
 }
 .username-label{
+  min-width: 0;
+  width: 100%;
   text-align:center;
   font-weight:700;
   cursor:pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .icon-btn{
   display:inline-flex;
+  flex-shrink: 0;
   align-items:center;
   justify-content:center;
   width:calc(2.4 * var(--u));
@@ -1093,7 +1101,7 @@ body[data-state="ready"] #best{
   /* profile row text smaller */
   #gameover .profile-line{
     font-size: clamp(16px, 4.6vw, 19px); /* bigger username line */
-    gap: var(--space-1);
+    column-gap: var(--space-1);
   }
   /* slightly smaller skin image */
   #gameover-skin,

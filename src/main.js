@@ -181,12 +181,19 @@ function onScoreUpdate(newScore) {
   hudRender.updateScoreBadge(document.getElementById('score'), scoreTextEl, newScore);
 }
 
+function isNonScoringDebugRun() {
+  return Boolean(
+    C.DEBUG?.TEST_START_NEAR_INVERT_ZONE?.ENABLED ||
+    C.DEBUG?.NO_DEATH_RUN?.ENABLED
+  );
+}
+
 async function onGameOver() {
   state.setGameMode('gameover');
 
   const playMs = Math.round(state.gameState.frameNow - state.gameState.runStartTime);
   const score = state.gameState.score;
-  const isDebugTestRun = Boolean(C.DEBUG?.TEST_START_NEAR_INVERT_ZONE?.ENABLED);
+  const isDebugTestRun = isNonScoringDebugRun();
 
   // Update best (skip in debug test runs)
   if (!isDebugTestRun) {
@@ -202,7 +209,7 @@ async function onGameOver() {
       console.warn('submit-score error:', result.error);
     }
   } else {
-    console.info('Debug test run: score submission and best-score update skipped.');
+    console.info('Debug run: score submission and best-score update skipped.');
   }
 
   // Refresh leaderboard
