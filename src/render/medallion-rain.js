@@ -44,7 +44,6 @@ export function updateMedallionRain(rain, vw, vh, dt) {
 }
 
 export function drawMedallionRain(rain, alpha = 1) {
-  if (!medalReady) return;
   const ctx = renderer.getContext();
   ctx.save();
   ctx.globalAlpha = alpha;
@@ -52,7 +51,15 @@ export function drawMedallionRain(rain, alpha = 1) {
     ctx.save();
     ctx.translate(m.x, m.y);
     ctx.rotate(m.rot);
-    ctx.drawImage(medalImg, -m.size / 2, -m.size / 2, m.size, m.size);
+    if (medalReady) {
+      ctx.drawImage(medalImg, -m.size / 2, -m.size / 2, m.size, m.size);
+    } else {
+      // fallback: draw gold circle
+      ctx.beginPath();
+      ctx.arc(0, 0, m.size / 2, 0, Math.PI * 2);
+      ctx.fillStyle = 'gold';
+      ctx.fill();
+    }
     ctx.restore();
   }
   ctx.restore();
