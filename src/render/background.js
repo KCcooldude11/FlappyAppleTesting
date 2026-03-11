@@ -87,16 +87,17 @@ export function drawBackground(theme, transition, frameNow) {
     return;
   }
 
-  // Crossfade
+  // Crossfade, but delay new background until transition is complete
   const a = Math.min(1, Math.max(0, (frameNow - transition.start) / C.THEME.FADE_MS));
   const fromCan = ensureBgCached(transition.from, vw, vh);
   const toCan = ensureBgCached(transition.to, vw, vh);
 
-  if (fromCan) ctx.drawImage(fromCan, 0, 0, vw, vh);
-  if (toCan) {
-    ctx.save();
-    ctx.globalAlpha = a;
+  // For most of the transition, show only the old background
+  if (a < 1) {
+    if (fromCan) ctx.drawImage(fromCan, 0, 0, vw, vh);
+  }
+  // Only at the very end, swap to the new background
+  if (a >= 1 && toCan) {
     ctx.drawImage(toCan, 0, 0, vw, vh);
-    ctx.restore();
   }
 }
