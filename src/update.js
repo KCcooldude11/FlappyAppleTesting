@@ -85,6 +85,22 @@ export function update(gameState, dt, scale) {
         scale
       );
       gameState.medallions.push(medal_m);
+    } else if (
+      gameState.score === C.PROGRESSION.RESET_TO_APPLE_AT_SCORE + 1 &&
+      !gameState.post500AppleResetDone
+    ) {
+      // Force a medallion at 501 for apple/invert reset
+      const prevPipe = gameState.pipes[gameState.pipes.length - 2];
+      const thisPipe = gameState.pipes[gameState.pipes.length - 1];
+      const medal_r = medalEntity.spawnRegularMedal(
+        prevPipe,
+        thisPipe,
+        renderer.getCanvasHeight(),
+        physics_params.pipeGap,
+        scale
+      );
+      medal_r.type = 'apple_invert_reset';
+      gameState.medallions.push(medal_r);
     } else if (medalEcon.shouldSpawnRegularMedal(gameState.columnsSpawned, gameState.nextMedalColumn, gameState.pipes)) {
       const prevPipe = gameState.pipes[gameState.pipes.length - 2];
       const thisPipe = gameState.pipes[gameState.pipes.length - 1];
@@ -95,6 +111,10 @@ export function update(gameState, dt, scale) {
         physics_params.pipeGap,
         scale
       );
+      // If apple/invert reset is still pending, mark this and all subsequent medallions until reset is done
+      if (!gameState.post500AppleResetDone && gameState.score > C.PROGRESSION.RESET_TO_APPLE_AT_SCORE && gameState.theme < C.THEME.THRESHOLDS[3]) {
+        medal_r.type = 'apple_invert_reset';
+      }
       gameState.medallions.push(medal_r);
       gameState.nextMedalColumn = gameState.columnsSpawned + medalEntity.nextMedalJump();
     }
@@ -165,6 +185,19 @@ export function update(gameState, dt, scale) {
 
       if (!m.taken && dx * dx + dy * dy < rr * rr) {
         m.taken = true;
+
+        if (m.type === 'apple_invert_reset') {
+          skinSys.switchToSkin(
+            gameState,
+            cfg.SKIN_INDICES.APPLE,
+            C.PHYSICS.BIRD_RADIUS_RATIO
+          );
+          gameState.theme = C.THEME.INVERT_THEME2_ID; // Switch to inverted theme 1 (theme 4)
+          gameState.awaitingPost500AppleReset = false;
+          gameState.post500AppleResetDone = true;
+          gameState.skinLocked = false;
+          continue;
+        }
 
         if (gameState.awaitingPost500AppleReset) {
           skinSys.switchToSkin(
