@@ -79,6 +79,13 @@ export const gameState = {
     lastW: 0,
     lastH: 0,
   },
+
+  // Medallion rain effect (Theme 3 at 1000+)
+  medallionRain: {
+    particles: [],
+    active: false,
+    startTime: 0,
+  },
 };
 
 export function resetGameState(newBirdX, newBirdY, birdRadius) {

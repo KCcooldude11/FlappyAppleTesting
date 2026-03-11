@@ -198,8 +198,28 @@ export function update(gameState, dt, scale) {
     particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 
-  // Theme 3 ambient motes
-  if (gameState.theme === 3) {
+  // Theme 3: medallion rain effect at 1000+
+  if (gameState.theme === 3 && gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE) {
+    if (!gameState.medallionRain.active) {
+      gameState.medallionRain.active = true;
+      gameState.medallionRain.startTime = performance.now();
+    }
+    // Update medallion rain
+    const vw = renderer.getCanvasWidth();
+    const vh = renderer.getCanvasHeight();
+    const rain = gameState.medallionRain.particles;
+    // Dynamically import to avoid circular deps
+    import('./render/medallion-rain.js').then(rainMod => {
+      rainMod.ensureMedallionRain(rain, vw, vh, 32);
+      rainMod.updateMedallionRain(rain, vw, vh, dt);
+    });
+    // End effect after duration
+    if (performance.now() - gameState.medallionRain.startTime > C.THEME.MEDALLION_RAIN_EFFECT_DURATION_MS) {
+      gameState.medallionRain.active = false;
+      gameState.medallionRain.startTime = 0;
+      gameState.medallionRain.particles = [];
+    }
+  } else if (gameState.theme === 3) {
     particlesRender.updateTheme3Motes(gameState.theme3Motes.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 

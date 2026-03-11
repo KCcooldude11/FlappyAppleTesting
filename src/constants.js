@@ -41,7 +41,15 @@ export const BIRD = {
 
 export const THEME = {
   FADE_MS: 800,
-  THRESHOLDS: [100, 200, 500],
+  // Theme switching points:
+  // 1: default
+  // 2: at 100
+  // 4 (inverted 2): at 600
+  // 5 (inverted 3): at 700
+  // 1: back at 850
+  // 2: at 900
+  // 3: at 1000
+  THRESHOLDS: [100, 600, 700, 850, 900, 1000],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
@@ -54,9 +62,13 @@ export const THEME = {
     3: { desktop: 1.00, mobile: 1.38 },
     4: { desktop: 1.00, mobile: 1.36 },
   },
-  INVERT_THEME_ID: 4,
+  INVERT_THEME2_ID: 4, // inverted theme 2
+  INVERT_THEME3_ID: 5, // inverted theme 3
+  RESUME_THEME1_AT_SCORE: 850,
   RESUME_THEME2_AT_SCORE: 900,
   RESUME_THEME3_AT_SCORE: 1000,
+  MEDALLION_RAIN_EFFECT_SCORE: 1000,
+  MEDALLION_RAIN_EFFECT_DURATION_MS: 30000, // 30 seconds
 };
 
 export const VISUAL = {
@@ -73,13 +85,13 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: false,
-    START_SCORE: 790,
-    START_COLUMNS: 790,
+    ENABLED: true,
+    START_SCORE: 990,
+    START_COLUMNS: 990,
     START_THEME: 1,
     START_AS_MERRIKH: false,
     FORCE_MEDAL_EVERY_PIPE: true,
-    NEXT_MEDAL_COLUMN: 792,
+    NEXT_MEDAL_COLUMN: 992,
     MERRIKH_UNLOCK_COLUMN: 301,
   },
   NO_DEATH_RUN: {

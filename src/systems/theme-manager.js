@@ -2,21 +2,29 @@ import * as C from '../constants.js';
 import * as cfg from '../config.js';
 
 export function shouldTransitionTheme(currentTheme, score, bgReady) {
+  // 1 -> 2 at 100
   if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[0] && bgReady[2]) {
     return { from: 1, to: 2 };
-  } else if (currentTheme === 2 && score >= C.THEME.RESUME_THEME3_AT_SCORE && bgReady[3]) {
+  }
+  // 2 -> inverted 2 (4) at 600
+  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1] && bgReady[C.THEME.INVERT_THEME2_ID]) {
+    return { from: 2, to: C.THEME.INVERT_THEME2_ID };
+  }
+  // inverted 2 (4) -> inverted 3 (5) at 700
+  if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[2] && bgReady[C.THEME.INVERT_THEME3_ID]) {
+    return { from: C.THEME.INVERT_THEME2_ID, to: C.THEME.INVERT_THEME3_ID };
+  }
+  // inverted 3 (5) -> 1 at 850
+  if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[3] && bgReady[1]) {
+    return { from: C.THEME.INVERT_THEME3_ID, to: 1 };
+  }
+  // 1 -> 2 at 900
+  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[4] && bgReady[2]) {
+    return { from: 1, to: 2 };
+  }
+  // 2 -> 3 at 1000
+  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[5] && bgReady[3]) {
     return { from: 2, to: 3 };
-  } else if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1] && score < C.THEME.THRESHOLDS[2] && bgReady[3]) {
-    return { from: 2, to: 3 };
-  } else if (
-    currentTheme === 3 &&
-    score >= C.THEME.THRESHOLDS[2] &&
-    score < C.THEME.RESUME_THEME2_AT_SCORE &&
-    bgReady[4]
-  ) {
-    return { from: 3, to: 4 };
-  } else if (currentTheme === 4 && score >= C.THEME.RESUME_THEME2_AT_SCORE && bgReady[2]) {
-    return { from: 4, to: 2 };
   }
   return null;
 }

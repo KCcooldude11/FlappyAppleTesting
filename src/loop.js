@@ -158,8 +158,16 @@ export function render() {
       sceneCtx.restore();
     }
 
-    // Theme 3 ambient motes
-    if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
+    // Theme 3: medallion rain effect at 1000+
+    if (
+      state.gameState.theme === 3 &&
+      state.gameState.medallionRain.active &&
+      state.gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE
+    ) {
+      import('./render/medallion-rain.js').then(rainMod => {
+        rainMod.drawMedallionRain(state.gameState.medallionRain.particles, 1);
+      });
+    } else if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
       sceneCtx.save();
       particlesRender.drawTheme3Motes(
         state.gameState.theme3Motes.particles,
