@@ -14,6 +14,62 @@ let lastTime = 0;
 let onGameOverCallback = null;
 let onScoreUpdateCallback = null;
 let lastDisplayedScore = 0;
+const sceneSurface = {
+  canvas: null,
+  ctx: null,
+  w: 0,
+  h: 0,
+  dpr: 0,
+};
+
+function ensureSceneSurface(vw, vh) {
+  const dpr = renderer.DPR || 1;
+  const needRebuild =
+    !sceneSurface.canvas ||
+    !sceneSurface.ctx ||
+    sceneSurface.w !== vw ||
+    sceneSurface.h !== vh ||
+    sceneSurface.dpr !== dpr;
+
+  if (!needRebuild) return sceneSurface;
+
+  sceneSurface.canvas = document.createElement('canvas');
+  sceneSurface.canvas.width = Math.max(1, Math.round(vw * dpr));
+  sceneSurface.canvas.height = Math.max(1, Math.round(vh * dpr));
+  sceneSurface.ctx = sceneSurface.canvas.getContext('2d');
+  sceneSurface.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  sceneSurface.w = vw;
+  sceneSurface.h = vh;
+  sceneSurface.dpr = dpr;
+
+  return sceneSurface;
+}
+
+function drawCompositedScene(outputCtx, sceneCanvas, vw, vh, invertAlpha) {
+  if (invertAlpha <= 0) {
+    outputCtx.drawImage(sceneCanvas, 0, 0, vw, vh);
+    return;
+  }
+
+  if (invertAlpha >= 1) {
+    outputCtx.save();
+    outputCtx.filter = 'invert(1)';
+    outputCtx.drawImage(sceneCanvas, 0, 0, vw, vh);
+    outputCtx.restore();
+    return;
+  }
+
+  outputCtx.save();
+  outputCtx.globalAlpha = 1 - invertAlpha;
+  outputCtx.drawImage(sceneCanvas, 0, 0, vw, vh);
+  outputCtx.restore();
+
+  outputCtx.save();
+  outputCtx.globalAlpha = invertAlpha;
+  outputCtx.filter = 'invert(1)';
+  outputCtx.drawImage(sceneCanvas, 0, 0, vw, vh);
+  outputCtx.restore();
+}
 
 export function gameLoop(t) {
   state.updateFrameTimestamp(t);
@@ -69,80 +125,69 @@ export function gameLoop(t) {
 }
 
 export function render() {
-  const ctx = renderer.getContext();
+  const outputCtx = renderer.getBaseContext();
   const vw = renderer.getCanvasWidth();
   const vh = renderer.getCanvasHeight();
-  const invertByTheme =
+  const temporaryInvertEnabled =
+    C.VISUAL.TEMP_INVERT_THEME.ENABLED &&
     state.gameState.mode === 'playing' &&
-    state.gameState.theme === C.THEME.INVERT_THEME_ID;
-  const invertGameplayTheme =
-    invertByTheme ||
-    (
-      C.VISUAL.TEMP_INVERT_THEME.ENABLED &&
-      state.gameState.mode === 'playing' &&
-      state.gameState.score >= C.VISUAL.TEMP_INVERT_THEME.ACTIVATE_AT_SCORE
-    );
+    state.gameState.score >= C.VISUAL.TEMP_INVERT_THEME.ACTIVATE_AT_SCORE;
+  const themeInvertAlpha =
+    state.gameState.mode === 'playing'
+      ? themeSys.getInvertThemeAlpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
+      : 0;
+  const invertAlpha = Math.max(themeInvertAlpha, temporaryInvertEnabled ? 1 : 0);
+  const scene = ensureSceneSurface(vw, vh);
+  const sceneCtx = scene.ctx;
 
   renderer.startFrame();
+  sceneCtx.clearRect(0, 0, vw, vh);
+  renderer.setActiveContext(sceneCtx);
 
-  if (invertGameplayTheme) {
-    ctx.save();
-    ctx.filter = 'invert(1)';
-  }
+  try {
+    // Background
+    bgRender.drawBackground(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow);
 
-  // Background
-  bgRender.drawBackground(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow);
-
-  // Water particles (Theme 2)
-  if (themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
-    ctx.save();
-    if (!invertGameplayTheme) {
-      ctx.filter = 'none';
+    // Water particles (Theme 2)
+    if (themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
+      sceneCtx.save();
+      particlesRender.drawParticles(
+        state.gameState.waterParticles.particles,
+        themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
+      );
+      sceneCtx.restore();
     }
-    particlesRender.drawParticles(
-      state.gameState.waterParticles.particles,
-      themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
-    );
-    ctx.restore();
-  }
 
-  // Theme 3 ambient motes
-  if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
-    ctx.save();
-    if (!invertGameplayTheme) {
-      ctx.filter = 'none';
+    // Theme 3 ambient motes
+    if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
+      sceneCtx.save();
+      particlesRender.drawTheme3Motes(
+        state.gameState.theme3Motes.particles,
+        themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
+      );
+      sceneCtx.restore();
     }
-    particlesRender.drawTheme3Motes(
-      state.gameState.theme3Motes.particles,
-      themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
-    );
-    ctx.restore();
-  }
 
-  // Ready state shows overlay instead
-  if (state.gameState.mode === 'ready') {
-    if (invertGameplayTheme) {
-      ctx.restore();
+    // Ready state shows overlay instead
+    if (state.gameState.mode !== 'ready') {
+      // Pipes
+      spiresRender.drawAllPipes(state.gameState.pipes, state.gameState.theme, vh);
+
+      // Medallions
+      medallionsRender.drawMedallions(state.gameState.medallions);
+
+      // Bird
+      birdRender.drawBird(
+        state.gameState.bird,
+        state.gameState.currentSkinIndex,
+        state.gameState.bird.flapTimer > 0
+      );
     }
-    return;
+  } finally {
+    renderer.setActiveContext(null);
   }
 
-  // Pipes
-  spiresRender.drawAllPipes(state.gameState.pipes, state.gameState.theme, vh);
-
-  // Medallions
-  medallionsRender.drawMedallions(state.gameState.medallions);
-
-  // Bird
-  birdRender.drawBird(
-    state.gameState.bird,
-    state.gameState.currentSkinIndex,
-    state.gameState.bird.flapTimer > 0
-  );
-
-  if (invertGameplayTheme) {
-    ctx.restore();
-  }
+  drawCompositedScene(outputCtx, scene.canvas, vw, vh, invertAlpha);
 
   renderer.endFrame();
 }

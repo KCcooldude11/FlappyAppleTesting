@@ -5,10 +5,12 @@ export let canvas;
 export let ctx;
 export let DPR;
 export let scale;
+let activeCtx = null;
 
 export function initializeCanvas() {
   canvas = document.getElementById('game');
   ctx = canvas.getContext('2d');
+  activeCtx = ctx;
 
   DPR = C.CANVAS.DPR;
   resizeCanvas();
@@ -38,7 +40,15 @@ export function getCanvasHeight() {
 }
 
 export function getContext() {
+  return activeCtx || ctx;
+}
+
+export function getBaseContext() {
   return ctx;
+}
+
+export function setActiveContext(nextCtx) {
+  activeCtx = nextCtx || ctx;
 }
 
 export function getScale() {

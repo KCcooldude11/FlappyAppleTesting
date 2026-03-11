@@ -49,6 +49,15 @@ export function getTheme3Alpha(theme, transition, frameNow) {
   return 0;
 }
 
+export function getInvertThemeAlpha(theme, transition, frameNow) {
+  if (!transition) return theme === C.THEME.INVERT_THEME_ID ? 1 : 0;
+
+  const a = Math.min(1, Math.max(0, (frameNow - transition.start) / C.THEME.FADE_MS));
+  if (transition.to === C.THEME.INVERT_THEME_ID) return a;
+  if (transition.from === C.THEME.INVERT_THEME_ID) return 1 - a;
+  return theme === C.THEME.INVERT_THEME_ID ? 1 : 0;
+}
+
 export function getBgFocusPoint(theme) {
   const mobile = cfg.isMobileish();
   return C.THEME.FOCUS[theme]
