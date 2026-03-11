@@ -85,7 +85,7 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: true,
+    ENABLED: false,
     START_SCORE: 990,
     START_COLUMNS: 990,
     START_THEME: 2,
@@ -95,7 +95,7 @@ export const DEBUG = {
     MERRIKH_UNLOCK_COLUMN: 301,
   },
   // Force bgReady for themes in debug mode (array of theme numbers)
-  FORCE_BG_READY: [2, 3, 4, 5],
+  // FORCE_BG_READY: [2, 3, 4, 5],
   NO_DEATH_RUN: {
     ENABLED: true,
     IGNORE_PIPE_COLLISIONS: true,
