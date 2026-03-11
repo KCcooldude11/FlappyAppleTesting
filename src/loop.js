@@ -104,6 +104,7 @@ export function gameLoop(t) {
     8: bgEntity.backgroundReady[8],
     9: bgEntity.backgroundReady[9],
     10: bgEntity.backgroundReady[10],
+    11: bgEntity.backgroundReady[11],
   };
   // Debug: force bgReady for selected themes and stub backgrounds if missing
   if (C.DEBUG.FORCE_BG_READY && Array.isArray(C.DEBUG.FORCE_BG_READY)) {
@@ -258,6 +259,28 @@ export function render() {
   }
 
   // ...existing code...
+
+  // Theme 11: spotlight/darkness overlay
+  if (state.gameState.theme === 11) {
+    // Shrink spotlight from 400px to 80px as score goes from 1100 to 1200
+    const minRadius = 80;
+    const maxRadius = 400;
+    const s = Math.max(0, Math.min(1, (1200 - state.gameState.score) / 100));
+    const radius = minRadius + (maxRadius - minRadius) * s;
+    const ctx = renderer.getBaseContext();
+    const cx = state.gameState.bird.x || vw / 2;
+    const cy = state.gameState.bird.y || vh / 2;
+    ctx.save();
+    ctx.globalAlpha = 0.85;
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.beginPath();
+    ctx.rect(0, 0, vw, vh);
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2, true);
+    ctx.closePath();
+    ctx.fillStyle = 'black';
+    ctx.fill('evenodd');
+    ctx.restore();
+  }
 
   renderer.endFrame();
 }

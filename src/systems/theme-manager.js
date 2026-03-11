@@ -2,6 +2,10 @@ import * as C from '../constants.js';
 import * as cfg from '../config.js';
 
 export function shouldTransitionTheme(currentTheme, score, bgReady) {
+    // 10 -> 11 at 1100
+    if (currentTheme === 10 && score >= C.THEME.THRESHOLDS[8]) {
+      return { from: 10, to: 11 };
+    }
   // 1 -> 2 at 100
   if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[0]) {
     return { from: 1, to: 2 };

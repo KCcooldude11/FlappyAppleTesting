@@ -13,6 +13,7 @@ const bgCache = {
   8: { w: 0, h: 0, dpr: 0, canvas: null },
   9: { w: 0, h: 0, dpr: 0, canvas: null },
   10: { w: 0, h: 0, dpr: 0, canvas: null },
+  11: { w: 0, h: 0, dpr: 0, canvas: null },
 };
 
 export function invalidateBgCache() {

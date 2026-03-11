@@ -51,7 +51,8 @@ export const THEME = {
   // 8: at 850 (clone of 1)
   // 9: at 900 (clone of 2)
   // 10: at 1000 (clone of 3)
-  THRESHOLDS: [100, 200, 500, 600, 700, 850, 900, 1000],
+  // 11: at 1100 (spotlight/darkness)
+  THRESHOLDS: [100, 200, 500, 600, 700, 850, 900, 1000, 1100],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
@@ -203,6 +204,7 @@ export const ASSETS = {
     8: './assets/Untitled_Artwork.png', // theme 8 uses theme 1's background
     9: './assets/background2.png',    // theme 9 uses theme 2's background
     10: './assets/background3.png',   // theme 10 uses theme 3's background
+    11: './assets/Untitled_Artwork.png', // theme 11 uses theme 1's background (for now)
   },
   SPIRES: {
     1: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
@@ -214,6 +216,7 @@ export const ASSETS = {
     8: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' }, // theme 8 uses theme 1's spires
     9: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' }, // theme 9 uses theme 2's spires
     10: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' }, // theme 10 uses theme 3's spires
+    11: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' }, // theme 11 uses theme 1's spires (for now)
   },
   MEDALLION: './assets/medallion.png',
   APPLE_HOME: { regular: './assets/apple_regular.png', fly: './assets/apple_fly.png' },
