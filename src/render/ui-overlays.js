@@ -48,10 +48,16 @@ export function hideGameOver() {
   updateSupportLinksVisibility();
 }
 
+import * as state from '../state.js';
+import * as C from '../constants.js';
+
 export function updateGameOverSkinImage(skinImageSrc, skinName = 'Character', options = {}) {
   const goSkin = document.getElementById('gameover-skin');
   if (goSkin) {
-    const invertSkin = Boolean(options?.invertSkin);
+    // Determine if the current theme is inverted
+    const theme = state.gameState?.theme;
+    const isInverted = theme === C.THEME.INVERT_THEME2_ID || theme === C.THEME.INVERT_THEME3_ID;
+    const invertSkin = isInverted || Boolean(options?.invertSkin);
     if (skinImageSrc) {
       goSkin.src = skinImageSrc;
       goSkin.alt = `${skinName} (Regular)`;
@@ -299,6 +305,7 @@ export function setupShareButton() {
   });
 }
 
+
 async function generateShareCardBlob(payload) {
   await ensureShareFontsReady();
 
@@ -332,6 +339,10 @@ async function generateShareCardBlob(payload) {
   const usernameY = panelY + panelH - 92;
   let spriteBottomY = spriteTopY;
 
+  // Determine if the current theme is inverted
+  const theme = state.gameState?.theme;
+  const isInverted = theme === C.THEME.INVERT_THEME2_ID || theme === C.THEME.INVERT_THEME3_ID;
+
   if (payload.skinSrc) {
     try {
       const sprite = await loadImage(payload.skinSrc);
@@ -352,7 +363,7 @@ async function generateShareCardBlob(payload) {
       const drawY = Math.round(spriteTopY);
       spriteBottomY = drawY + drawH;
       ctx.save();
-      if (payload.invertSkin) {
+      if (isInverted || payload.invertSkin) {
         ctx.filter = 'invert(1)';
       }
       ctx.imageSmoothingEnabled = false;

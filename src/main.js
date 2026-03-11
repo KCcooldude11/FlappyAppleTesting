@@ -48,13 +48,7 @@ async function initializeApp() {
   uiOverlays.setupSupportLink();
   uiOverlays.setupShareButton();
 
-  // Patch: ensure game over skin image is inverted if last theme was inverted
-  const origUpdateGameOverSkinImage = uiOverlays.updateGameOverSkinImage;
-  uiOverlays.updateGameOverSkinImage = function(skinImageSrc, skinName, options = {}) {
-    const theme = state.gameState.theme;
-    const isInverted = theme === C.THEME.INVERT_THEME2_ID || theme === C.THEME.INVERT_THEME3_ID;
-    return origUpdateGameOverSkinImage(skinImageSrc, skinName, { ...options, invertSkin: isInverted });
-  };
+  // ...existing code...
 
   // UI overlay startup
   uiOverlays.showOverlay();
