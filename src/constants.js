@@ -44,12 +44,13 @@ export const THEME = {
   // Theme switching points:
   // 1: default
   // 2: at 100
+  // 3: at 200
   // 4 (inverted 2): at 600
   // 5 (inverted 3): at 700
   // 1: back at 850
   // 2: at 900
   // 3: at 1000
-  THRESHOLDS: [100, 600, 700, 850, 900, 1000],
+  THRESHOLDS: [100, 200, 600, 700, 850, 900, 1000],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
