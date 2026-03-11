@@ -30,6 +30,12 @@ export const gameState = {
     burstIntensity: 0,
   },
 
+  debug: {
+    autoJumpEnabled: false,
+    autoJumpTargetY: 0,
+    autoJumpCooldownMs: 0,
+  },
+
   // Pipes and collision
   pipes: [],
   lastPipeAt: 0,
@@ -75,6 +81,9 @@ export const gameState = {
 };
 
 export function resetGameState(newBirdX, newBirdY, birdRadius) {
+  const autoJumpPreset = Boolean(C.DEBUG?.NO_DEATH_RUN?.AUTO_JUMP_START_ENABLED);
+  const keepAutoJumpEnabled = Boolean(C.DEBUG?.NO_DEATH_RUN?.ENABLED && gameState.debug.autoJumpEnabled);
+
   gameState.bird.x = newBirdX;
   gameState.bird.y = newBirdY;
   gameState.bird.vy = 0;
@@ -97,6 +106,10 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
   gameState.skinLocked = false;
   gameState.awaitingPost500AppleReset = false;
   gameState.post500AppleResetDone = false;
+
+  gameState.debug.autoJumpEnabled = keepAutoJumpEnabled || autoJumpPreset;
+  gameState.debug.autoJumpTargetY = newBirdY;
+  gameState.debug.autoJumpCooldownMs = 0;
 
   gameState.currentSkinIndex = cfg.findDefaultSkin();
 }

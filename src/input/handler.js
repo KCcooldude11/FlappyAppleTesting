@@ -14,7 +14,7 @@ function preventDefaultGestures(canvas) {
   canvas.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
 }
 
-export function initializeInputHandlers(flappingCallback, startingCallback, renamingCallback) {
+export function initializeInputHandlers(flappingCallback, startingCallback, renamingCallback, autoJumpToggleCallback) {
    const canvas = document.getElementById('game');
   
   preventDefaultGestures(canvas);
@@ -28,10 +28,14 @@ export function initializeInputHandlers(flappingCallback, startingCallback, rena
   window.addEventListener('keydown', e => {
     const tag = e.target?.tagName?.toLowerCase();
     if (tag === 'input' || tag === 'textarea') return;
+    const autoJumpKey = C.DEBUG?.NO_DEATH_RUN?.AUTO_JUMP_TOGGLE_KEY || 'KeyQ';
 
     if (e.code === 'Space' || e.code === 'ArrowUp') {
       e.preventDefault();
       flappingCallback();
+    } else if (e.code === autoJumpKey && !e.repeat) {
+      e.preventDefault();
+      autoJumpToggleCallback?.();
     } else if (e.code === 'Enter') {
       e.preventDefault();
       // Only start game if the play button is enabled

@@ -61,7 +61,7 @@ export const THEME = {
 
 export const VISUAL = {
   TEMP_INVERT_THEME: {
-    ENABLED: true,
+    ENABLED: false,
     ACTIVATE_AT_SCORE: 100,
   },
 };
@@ -73,7 +73,7 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: true,
+    ENABLED: false,
     START_SCORE: 790,
     START_COLUMNS: 790,
     START_THEME: 1,
@@ -83,9 +83,14 @@ export const DEBUG = {
     MERRIKH_UNLOCK_COLUMN: 301,
   },
   NO_DEATH_RUN: {
-    ENABLED: false,
+    ENABLED: true,
     IGNORE_PIPE_COLLISIONS: true,
     IGNORE_WORLD_BOUNDS: false,
+    AUTO_JUMP_TOGGLE_KEY: 'KeyQ',
+    AUTO_JUMP_START_ENABLED: false,
+    AUTO_JUMP_TOLERANCE_PX: 18,
+    AUTO_JUMP_MIN_DESCENT_VY: 30,
+    AUTO_JUMP_COOLDOWN_MS: 120,
   },
 };
 

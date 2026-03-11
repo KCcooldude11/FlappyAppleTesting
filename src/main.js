@@ -41,7 +41,7 @@ async function initializeApp() {
   }
 
   // Setup input handlers
-  input.initializeInputHandlers(onFlapped, onStartClicked, onNameInputChanged);
+  input.initializeInputHandlers(onFlapped, onStartClicked, onNameInputChanged, onAutoJumpToggleRequested);
 
   // Setup rename modal
   uiOverlays.setupRenameModal(onRenameSubmitted);
@@ -86,6 +86,7 @@ function onCanvasResize() {
     const birdY = Math.round(vh / 2 - 80 * renderer.getScale());
     state.gameState.bird.x = birdX;
     state.gameState.bird.y = birdY;
+    state.gameState.debug.autoJumpTargetY = birdY;
   }
 
   bgRender.invalidateBgCache();
@@ -97,6 +98,20 @@ function onFlapped() {
   if (state.gameState.mode === 'playing') {
     dynPhysics.flap(state.gameState.bird, C.PHYSICS.JUMP_VY * renderer.getScale());
   }
+}
+
+function onAutoJumpToggleRequested() {
+  const noDeathCfg = C.DEBUG?.NO_DEATH_RUN;
+  if (!noDeathCfg?.ENABLED) return;
+
+  state.gameState.debug.autoJumpEnabled = !state.gameState.debug.autoJumpEnabled;
+  state.gameState.debug.autoJumpCooldownMs = 0;
+
+  if (!Number.isFinite(state.gameState.debug.autoJumpTargetY) || state.gameState.debug.autoJumpTargetY <= 0) {
+    state.gameState.debug.autoJumpTargetY = Math.round(renderer.getCanvasHeight() / 2 - 80 * renderer.getScale());
+  }
+
+  console.info(`No-death auto jump ${state.gameState.debug.autoJumpEnabled ? 'enabled' : 'disabled'}.`);
 }
 
 async function onStartClicked() {

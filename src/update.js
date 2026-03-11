@@ -16,6 +16,7 @@ export function update(gameState, dt, scale) {
   const noDeathDebug = C.DEBUG?.NO_DEATH_RUN;
   const ignorePipeCollisions = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_PIPE_COLLISIONS);
   const ignoreWorldBounds = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_WORLD_BOUNDS);
+  const autoJumpEnabled = Boolean(noDeathDebug?.ENABLED && gameState.debug.autoJumpEnabled);
 
   const physics_params = {
     gravity: C.PHYSICS.GRAVITY * scale,
@@ -24,6 +25,27 @@ export function update(gameState, dt, scale) {
     pipeGap: Math.round(C.PHYSICS.PIPE_GAP * scale),
     pipeWidth: Math.round(C.PHYSICS.PIPE_WIDTH * scale),
   };
+
+  if (gameState.debug.autoJumpCooldownMs > 0) {
+    gameState.debug.autoJumpCooldownMs = Math.max(0, gameState.debug.autoJumpCooldownMs - dt * 1000);
+  }
+
+  if (autoJumpEnabled) {
+    const targetY = Number.isFinite(gameState.debug.autoJumpTargetY) ? gameState.debug.autoJumpTargetY : gameState.bird.y;
+    const tolerancePx = Math.max(8 * scale, (Number(noDeathDebug?.AUTO_JUMP_TOLERANCE_PX) || 18) * scale);
+    const minDescentVy = (Number(noDeathDebug?.AUTO_JUMP_MIN_DESCENT_VY) || 30) * scale;
+    const cooldownMs = Math.max(0, Number(noDeathDebug?.AUTO_JUMP_COOLDOWN_MS) || 120);
+
+    if (
+      gameState.debug.autoJumpCooldownMs <= 0 &&
+      gameState.bird.y >= targetY + tolerancePx &&
+      gameState.bird.vy >= minDescentVy
+    ) {
+      gameState.bird.vy = physics_params.jumpVy;
+      gameState.bird.flapTimer = C.BIRD.FLAP_TIMER_MS;
+      gameState.debug.autoJumpCooldownMs = cooldownMs;
+    }
+  }
 
   // Bird physics
   gameState.bird.vy += physics_params.gravity * dt;
