@@ -48,9 +48,9 @@ export const THEME = {
   // 6 (inverted 1): at 500
   // 4 (inverted 2): at 600
   // 5 (inverted 3): at 700
-  // 1: back at 850
-  // 2: at 900
-  // 3: at 1000
+  // 8: at 850 (clone of 1)
+  // 9: at 900 (clone of 2)
+  // 10: at 1000 (clone of 3)
   THRESHOLDS: [100, 200, 500, 600, 700, 850, 900, 1000],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
@@ -71,9 +71,9 @@ export const THEME = {
   INVERT_THEME1_ID: 6, // inverted theme 1
   INVERT_THEME2_ID: 4, // inverted theme 2
   INVERT_THEME3_ID: 5, // inverted theme 3
-  RESUME_THEME1_AT_SCORE: 850,
-  RESUME_THEME2_AT_SCORE: 900,
-  RESUME_THEME3_AT_SCORE: 1000,
+  RESUME_THEME8_AT_SCORE: 850,
+  RESUME_THEME9_AT_SCORE: 900,
+  RESUME_THEME10_AT_SCORE: 1000,
   MEDALLION_RAIN_EFFECT_SCORE: 1000,
   MEDALLION_RAIN_EFFECT_DURATION_MS: 30000, // 30 seconds
 };
@@ -200,6 +200,9 @@ export const ASSETS = {
     4: './assets/background2.png', // theme 4 uses theme 2's background
     5: './assets/background3.png', // theme 5 uses theme 3's background
     6: './assets/Untitled_Artwork.png', // theme 6 (inverted 1) uses theme 1's background
+    8: './assets/Untitled_Artwork.png', // theme 8 uses theme 1's background
+    9: './assets/background2.png',    // theme 9 uses theme 2's background
+    10: './assets/background3.png',   // theme 10 uses theme 3's background
   },
   SPIRES: {
     1: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
@@ -208,6 +211,9 @@ export const ASSETS = {
     4: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' }, // theme 4 uses theme 2's spires
     5: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' }, // theme 5 uses theme 3's spires
     6: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' }, // theme 6 (inverted 1) uses theme 1's spires
+    8: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' }, // theme 8 uses theme 1's spires
+    9: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' }, // theme 9 uses theme 2's spires
+    10: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' }, // theme 10 uses theme 3's spires
   },
   MEDALLION: './assets/medallion.png',
   APPLE_HOME: { regular: './assets/apple_regular.png', fly: './assets/apple_fly.png' },

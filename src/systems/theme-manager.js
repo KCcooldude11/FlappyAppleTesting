@@ -18,17 +18,17 @@ export function shouldTransitionTheme(currentTheme, score, bgReady) {
   if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[4]) {
     return { from: C.THEME.INVERT_THEME2_ID, to: C.THEME.INVERT_THEME3_ID };
   }
-  // inverted 3 (5) -> 1 at 850
+  // inverted 3 (5) -> 8 at 850
   if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[5]) {
-    return { from: C.THEME.INVERT_THEME3_ID, to: 1 };
+    return { from: C.THEME.INVERT_THEME3_ID, to: 8 };
   }
-  // 1 -> 2 at 900
-  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[6]) {
-    return { from: 1, to: 2 };
+  // 8 -> 9 at 900
+  if (currentTheme === 8 && score >= C.THEME.THRESHOLDS[6]) {
+    return { from: 8, to: 9 };
   }
-  // 2 -> 3 at 1000
-  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[7]) {
-    return { from: 2, to: 3 };
+  // 9 -> 10 at 1000
+  if (currentTheme === 9 && score >= C.THEME.THRESHOLDS[7]) {
+    return { from: 9, to: 10 };
   }
   return null;
 }

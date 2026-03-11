@@ -101,6 +101,9 @@ export function gameLoop(t) {
     3: bgEntity.backgroundReady[3],
     4: bgEntity.backgroundReady[4],
     5: bgEntity.backgroundReady[5],
+    8: bgEntity.backgroundReady[8],
+    9: bgEntity.backgroundReady[9],
+    10: bgEntity.backgroundReady[10],
   };
   // Debug: force bgReady for selected themes and stub backgrounds if missing
   if (C.DEBUG.FORCE_BG_READY && Array.isArray(C.DEBUG.FORCE_BG_READY)) {
@@ -125,9 +128,19 @@ export function gameLoop(t) {
   if (!state.gameState.themeTransition) {
     const themeTransition = themeSys.shouldTransitionTheme(state.gameState.theme, state.gameState.score, bgReady);
     if (themeTransition) {
+      console.debug('[ThemeTransition] Triggered:', {
+        score: state.gameState.score,
+        currentTheme: state.gameState.theme,
+        transition: themeTransition
+      });
       state.gameState.themeTransition = { ...themeTransition, start: t };
     }
   } else if (themeSys.isTransitionComplete(state.gameState.themeTransition, t)) {
+    console.debug('[ThemeTransition] Completed:', {
+      score: state.gameState.score,
+      from: state.gameState.theme,
+      to: state.gameState.themeTransition.to
+    });
     state.gameState.theme = state.gameState.themeTransition.to;
     state.gameState.themeTransition = null;
     bgRender.invalidateBgCache();
@@ -158,9 +171,14 @@ export function render() {
       : 0;
   // Apply special filter for themes 4 and 5, invert for 6
   let filterType = null;
-  if (state.gameState.theme === C.THEME.INVERT_THEME2_ID) filterType = 'sepia';
-  else if (state.gameState.theme === C.THEME.INVERT_THEME3_ID) filterType = 'dream';
-  else if (state.gameState.theme === C.THEME.INVERT_THEME1_ID) filterType = 'invert';
+  // Treat 8, 9, 10 as clones of 1, 2, 3 for filterType
+  let themeForFilter = state.gameState.theme;
+  if (themeForFilter === 8) themeForFilter = 1;
+  if (themeForFilter === 9) themeForFilter = 2;
+  if (themeForFilter === 10) themeForFilter = 3;
+  if (themeForFilter === C.THEME.INVERT_THEME2_ID) filterType = 'sepia';
+  else if (themeForFilter === C.THEME.INVERT_THEME3_ID) filterType = 'dream';
+  else if (themeForFilter === C.THEME.INVERT_THEME1_ID) filterType = 'invert';
   const invertAlpha = Math.max(themeInvertAlpha, temporaryInvertEnabled ? 1 : 0, filterType ? 1 : 0);
   const scene = ensureSceneSurface(vw, vh);
   const sceneCtx = scene.ctx;
@@ -173,30 +191,32 @@ export function render() {
     // Background
     bgRender.drawBackground(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow);
 
-    // Water particles (Theme 2)
-    if (themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
+    // Water particles (Theme 2 and 9)
+    let themeForParticles = state.gameState.theme === 9 ? 2 : state.gameState.theme;
+    if (themeSys.getTheme2Alpha(themeForParticles, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
       sceneCtx.save();
       particlesRender.drawParticles(
         state.gameState.waterParticles.particles,
-        themeSys.getTheme2Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
+        themeSys.getTheme2Alpha(themeForParticles, state.gameState.themeTransition, state.gameState.frameNow)
       );
       sceneCtx.restore();
     }
 
-    // Theme 3: medallion rain effect at 1000+
+    // Theme 3/10: medallion rain effect at 1000+
+    let themeForRain = state.gameState.theme === 10 ? 3 : state.gameState.theme;
     if (
-      state.gameState.theme === 3 &&
+      themeForRain === 3 &&
       state.gameState.medallionRain.active &&
       state.gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE
     ) {
       import('./render/medallion-rain.js').then(rainMod => {
         rainMod.drawMedallionRain(state.gameState.medallionRain.particles, 1);
       });
-    } else if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
+    } else if (themeSys.getTheme3Alpha(themeForRain, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
       sceneCtx.save();
       particlesRender.drawTheme3Motes(
         state.gameState.theme3Motes.particles,
-        themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
+        themeSys.getTheme3Alpha(themeForRain, state.gameState.themeTransition, state.gameState.frameNow)
       );
       sceneCtx.restore();
     }
