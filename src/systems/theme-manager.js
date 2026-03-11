@@ -22,13 +22,13 @@ export function shouldTransitionTheme(currentTheme, score, bgReady) {
   if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[5]) {
     return { from: C.THEME.INVERT_THEME3_ID, to: 1 };
   }
-  // inverted 3 (5) -> 1 at 900
-  if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[6]) {
-    return { from: C.THEME.INVERT_THEME3_ID, to: 1 };
-  }
-  // 1 -> 2 at 1000
-  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[7]) {
+  // 1 -> 2 at 900
+  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[6]) {
     return { from: 1, to: 2 };
+  }
+  // 2 -> 3 at 1000
+  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[7]) {
+    return { from: 2, to: 3 };
   }
   return null;
 }

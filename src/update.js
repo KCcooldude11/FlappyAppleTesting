@@ -228,7 +228,7 @@ export function update(gameState, dt, scale) {
   }
 
   // Water particles
-  if (gameState.theme === 2) {
+  if (gameState.theme === 2 || gameState.theme === C.THEME.INVERT_THEME2_ID) {
     particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 
