@@ -122,7 +122,14 @@ export function gameLoop(t) {
   }
 
   const themeTransition = themeSys.shouldTransitionTheme(state.gameState.theme, state.gameState.score, bgReady);
-  if (themeTransition && !state.gameState.themeTransition) {
+  if (themeTransition) {
+    // If a transition is in progress, immediately complete it
+    if (state.gameState.themeTransition) {
+      state.gameState.theme = state.gameState.themeTransition.to;
+      state.gameState.themeTransition = null;
+      bgRender.invalidateBgCache();
+    }
+    // Start the new transition
     state.gameState.themeTransition = { ...themeTransition, start: t };
   }
 
