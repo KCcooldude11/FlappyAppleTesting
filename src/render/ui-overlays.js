@@ -1,4 +1,4 @@
-import * as C from '../constants.js';
+// ...existing code...
 import * as fmt from '../utils/formatters.js';
 
 let sharePayload = {
@@ -49,7 +49,6 @@ export function hideGameOver() {
 }
 
 import * as state from '../state.js';
-import * as C from '../constants.js';
 
 export function updateGameOverSkinImage(skinImageSrc, skinName = 'Character', options = {}) {
   const goSkin = document.getElementById('gameover-skin');
