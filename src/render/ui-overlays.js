@@ -56,7 +56,10 @@ export function updateGameOverSkinImage(skinImageSrc, skinName = 'Character', op
   if (goSkin) {
     // Determine if the current theme is inverted
     const theme = state.gameState?.theme;
-    const isInverted = theme === C.THEME.INVERT_THEME2_ID || theme === C.THEME.INVERT_THEME3_ID;
+    const isInverted =
+      theme === C.THEME.INVERT_THEME1_ID ||
+      theme === C.THEME.INVERT_THEME2_ID ||
+      theme === C.THEME.INVERT_THEME3_ID;
     const invertSkin = isInverted || Boolean(options?.invertSkin);
     if (skinImageSrc) {
       goSkin.src = skinImageSrc;
@@ -341,7 +344,10 @@ async function generateShareCardBlob(payload) {
 
   // Determine if the current theme is inverted
   const theme = state.gameState?.theme;
-  const isInverted = theme === C.THEME.INVERT_THEME2_ID || theme === C.THEME.INVERT_THEME3_ID;
+  const isInverted =
+    theme === C.THEME.INVERT_THEME1_ID ||
+    theme === C.THEME.INVERT_THEME2_ID ||
+    theme === C.THEME.INVERT_THEME3_ID;
 
   if (payload.skinSrc) {
     try {

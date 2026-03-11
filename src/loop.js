@@ -162,8 +162,11 @@ export function render() {
     state.gameState.mode === 'playing'
       ? themeSys.getInvertThemeAlpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
       : 0;
-  // Invert for inverted themes (4 and 5)
-  const isInvertedTheme = state.gameState.theme === C.THEME.INVERT_THEME2_ID || state.gameState.theme === C.THEME.INVERT_THEME3_ID;
+  // Invert for inverted themes (4, 5, 6)
+  const isInvertedTheme =
+    state.gameState.theme === C.THEME.INVERT_THEME1_ID ||
+    state.gameState.theme === C.THEME.INVERT_THEME2_ID ||
+    state.gameState.theme === C.THEME.INVERT_THEME3_ID;
   const invertAlpha = Math.max(themeInvertAlpha, temporaryInvertEnabled ? 1 : 0, isInvertedTheme ? 1 : 0);
   const scene = ensureSceneSurface(vw, vh);
   const sceneCtx = scene.ctx;
