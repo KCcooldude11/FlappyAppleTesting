@@ -10,25 +10,29 @@ export function shouldTransitionTheme(currentTheme, score, bgReady) {
   if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1]) {
     return { from: 2, to: 3 };
   }
-  // 2 -> inverted 2 (4) at 600
-  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[2]) {
+  // 3 -> inverted 1 (6) at 500
+  if (currentTheme === 3 && score >= C.THEME.THRESHOLDS[2]) {
+    return { from: 3, to: C.THEME.INVERT_THEME1_ID };
+  }
+  // inverted 1 (6) -> 2 at 600
+  if (currentTheme === C.THEME.INVERT_THEME1_ID && score >= C.THEME.THRESHOLDS[3]) {
+    return { from: C.THEME.INVERT_THEME1_ID, to: 2 };
+  }
+  // 2 -> inverted 2 (4) at 700
+  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[4]) {
     return { from: 2, to: C.THEME.INVERT_THEME2_ID };
   }
-  // inverted 2 (4) -> inverted 3 (5) at 700
-  if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[3]) {
+  // inverted 2 (4) -> inverted 3 (5) at 850
+  if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[5]) {
     return { from: C.THEME.INVERT_THEME2_ID, to: C.THEME.INVERT_THEME3_ID };
   }
-  // inverted 3 (5) -> 1 at 850
-  if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[4]) {
+  // inverted 3 (5) -> 1 at 900
+  if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[6]) {
     return { from: C.THEME.INVERT_THEME3_ID, to: 1 };
   }
-  // 1 -> 2 at 900
-  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[5]) {
+  // 1 -> 2 at 1000
+  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[7]) {
     return { from: 1, to: 2 };
-  }
-  // 2 -> 3 at 1000
-  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[6]) {
-    return { from: 2, to: 3 };
   }
   return null;
 }

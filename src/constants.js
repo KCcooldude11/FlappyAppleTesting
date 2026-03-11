@@ -45,24 +45,30 @@ export const THEME = {
   // 1: default
   // 2: at 100
   // 3: at 200
+  // 6 (inverted 1): at 500
   // 4 (inverted 2): at 600
   // 5 (inverted 3): at 700
   // 1: back at 850
   // 2: at 900
   // 3: at 1000
-  THRESHOLDS: [100, 200, 600, 700, 850, 900, 1000],
+  THRESHOLDS: [100, 200, 500, 600, 700, 850, 900, 1000],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
     3: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.38, cy: 0.50 } },
     4: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
+    5: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
+    6: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
   },
   EXTRA_ZOOM: {
     1: { desktop: 1.00, mobile: 1.36 },
     2: { desktop: 1.00, mobile: 1.42 },
     3: { desktop: 1.00, mobile: 1.38 },
     4: { desktop: 1.00, mobile: 1.36 },
+    5: { desktop: 1.00, mobile: 1.36 },
+    6: { desktop: 1.00, mobile: 1.36 },
   },
+  INVERT_THEME1_ID: 6, // inverted theme 1
   INVERT_THEME2_ID: 4, // inverted theme 2
   INVERT_THEME3_ID: 5, // inverted theme 3
   RESUME_THEME1_AT_SCORE: 850,
@@ -193,6 +199,7 @@ export const ASSETS = {
     3: './assets/background3.png',
     4: './assets/background2.png', // theme 4 uses theme 2's background
     5: './assets/background3.png', // theme 5 uses theme 3's background
+    6: './assets/Untitled_Artwork.png', // theme 6 (inverted 1) uses theme 1's background
   },
   SPIRES: {
     1: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
@@ -200,6 +207,7 @@ export const ASSETS = {
     3: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' },
     4: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' }, // theme 4 uses theme 2's spires
     5: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' }, // theme 5 uses theme 3's spires
+    6: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' }, // theme 6 (inverted 1) uses theme 1's spires
   },
   MEDALLION: './assets/medallion.png',
   APPLE_HOME: { regular: './assets/apple_regular.png', fly: './assets/apple_fly.png' },

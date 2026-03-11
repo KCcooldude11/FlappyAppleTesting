@@ -6,6 +6,7 @@ export const backgrounds = {
   3: new Image(),
   4: new Image(),
   5: new Image(),
+  6: new Image(),
 };
 
 export const backgroundReady = {
@@ -14,6 +15,7 @@ export const backgroundReady = {
   3: false,
   4: false,
   5: false,
+  6: false,
 };
 
 export const spires = {
@@ -22,6 +24,7 @@ export const spires = {
   3: { tile: new Image(), cap: new Image() },
   4: { tile: new Image(), cap: new Image() },
   5: { tile: new Image(), cap: new Image() },
+  6: { tile: new Image(), cap: new Image() },
 };
 
 export const spiresReady = {
@@ -30,6 +33,7 @@ export const spiresReady = {
   3: { tile: false, cap: false },
   4: { tile: false, cap: false },
   5: { tile: false, cap: false },
+  6: { tile: false, cap: false },
 };
 
 export function initializeBackgrounds() {
