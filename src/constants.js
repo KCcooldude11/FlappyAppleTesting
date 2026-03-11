@@ -94,6 +94,8 @@ export const DEBUG = {
     NEXT_MEDAL_COLUMN: 992,
     MERRIKH_UNLOCK_COLUMN: 301,
   },
+  // Force bgReady for themes in debug mode (array of theme numbers)
+  FORCE_BG_READY: [2, 3, 4, 5],
   NO_DEATH_RUN: {
     ENABLED: true,
     IGNORE_PIPE_COLLISIONS: true,

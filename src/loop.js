@@ -96,11 +96,18 @@ export function gameLoop(t) {
   }
 
   // Check theme transitions
-  const bgReady = {
+  let bgReady = {
     2: bgEntity.backgroundReady[2],
     3: bgEntity.backgroundReady[3],
     4: bgEntity.backgroundReady[4],
+    5: bgEntity.backgroundReady[5],
   };
+  // Debug: force bgReady for selected themes
+  if (C.DEBUG.FORCE_BG_READY && Array.isArray(C.DEBUG.FORCE_BG_READY)) {
+    for (const tid of C.DEBUG.FORCE_BG_READY) {
+      bgReady[tid] = true;
+    }
+  }
 
   const themeTransition = themeSys.shouldTransitionTheme(state.gameState.theme, state.gameState.score, bgReady);
   if (themeTransition && !state.gameState.themeTransition) {
