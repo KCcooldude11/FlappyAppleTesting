@@ -44,6 +44,10 @@ export function initializeInputHandlers(flappingCallback, startingCallback, rena
         e.preventDefault();
         speedMultCallback?.(mult);
       }
+    } else if (!e.repeat && e.code === 'KeyF' && C.DEBUG?.NO_DEATH_RUN?.ENABLED) {
+      // Super fast debug speed: F key sets speed to 30x
+      e.preventDefault();
+      speedMultCallback?.(30);
     } else if (e.code === 'Enter') {
       e.preventDefault();
       // Only start game if the play button is enabled
