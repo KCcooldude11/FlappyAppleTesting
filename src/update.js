@@ -17,11 +17,12 @@ export function update(gameState, dt, scale) {
   const ignorePipeCollisions = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_PIPE_COLLISIONS);
   const ignoreWorldBounds = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_WORLD_BOUNDS);
   const autoJumpEnabled = Boolean(noDeathDebug?.ENABLED && gameState.debug.autoJumpEnabled);
+  const speedMult = noDeathDebug?.ENABLED ? Math.max(1, gameState.debug.speedMultiplier || 1) : 1;
 
   const physics_params = {
     gravity: C.PHYSICS.GRAVITY * scale,
     jumpVy: C.PHYSICS.JUMP_VY * scale,
-    pipeSpeed: C.PHYSICS.PIPE_SPEED * scale,
+    pipeSpeed: C.PHYSICS.PIPE_SPEED * scale * speedMult,
     pipeGap: Math.round(C.PHYSICS.PIPE_GAP * scale),
     pipeWidth: Math.round(C.PHYSICS.PIPE_WIDTH * scale),
   };
@@ -100,7 +101,7 @@ export function update(gameState, dt, scale) {
 
     gameState.lastPipeAt = C.PHYSICS.PIPE_INTERVAL_MS;
   } else {
-    gameState.lastPipeAt -= dt * 1000;
+    gameState.lastPipeAt -= dt * 1000 * speedMult;
   }
 
   // Move pipes

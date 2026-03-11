@@ -41,7 +41,7 @@ async function initializeApp() {
   }
 
   // Setup input handlers
-  input.initializeInputHandlers(onFlapped, onStartClicked, onNameInputChanged, onAutoJumpToggleRequested);
+  input.initializeInputHandlers(onFlapped, onStartClicked, onNameInputChanged, onAutoJumpToggleRequested, onSpeedMultRequested);
 
   // Setup rename modal
   uiOverlays.setupRenameModal(onRenameSubmitted);
@@ -98,6 +98,12 @@ function onFlapped() {
   if (state.gameState.mode === 'playing') {
     dynPhysics.flap(state.gameState.bird, C.PHYSICS.JUMP_VY * renderer.getScale());
   }
+}
+
+function onSpeedMultRequested(mult) {
+  if (!C.DEBUG?.NO_DEATH_RUN?.ENABLED) return;
+  state.gameState.debug.speedMultiplier = mult;
+  console.info(`No-death speed: ${mult}x`);
 }
 
 function onAutoJumpToggleRequested() {

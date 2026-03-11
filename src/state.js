@@ -34,6 +34,7 @@ export const gameState = {
     autoJumpEnabled: false,
     autoJumpTargetY: 0,
     autoJumpCooldownMs: 0,
+    speedMultiplier: 1,
   },
 
   // Pipes and collision
@@ -110,6 +111,7 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
   gameState.debug.autoJumpEnabled = keepAutoJumpEnabled || autoJumpPreset;
   gameState.debug.autoJumpTargetY = newBirdY;
   gameState.debug.autoJumpCooldownMs = 0;
+  gameState.debug.speedMultiplier = 1;
 
   gameState.currentSkinIndex = cfg.findDefaultSkin();
 }

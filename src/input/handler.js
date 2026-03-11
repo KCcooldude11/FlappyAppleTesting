@@ -14,7 +14,7 @@ function preventDefaultGestures(canvas) {
   canvas.addEventListener('dblclick', e => e.preventDefault(), { passive: false });
 }
 
-export function initializeInputHandlers(flappingCallback, startingCallback, renamingCallback, autoJumpToggleCallback) {
+export function initializeInputHandlers(flappingCallback, startingCallback, renamingCallback, autoJumpToggleCallback, speedMultCallback) {
    const canvas = document.getElementById('game');
   
   preventDefaultGestures(canvas);
@@ -36,6 +36,14 @@ export function initializeInputHandlers(flappingCallback, startingCallback, rena
     } else if (e.code === autoJumpKey && !e.repeat) {
       e.preventDefault();
       autoJumpToggleCallback?.();
+    } else if (!e.repeat && e.code >= 'Digit1' && e.code <= 'Digit9') {
+      const mult = parseInt(e.code.replace('Digit', ''), 10);
+      const min = C.DEBUG?.NO_DEATH_RUN?.SPEED_MULT_MIN ?? 1;
+      const max = C.DEBUG?.NO_DEATH_RUN?.SPEED_MULT_MAX ?? 9;
+      if (Number.isFinite(mult) && mult >= min && mult <= max) {
+        e.preventDefault();
+        speedMultCallback?.(mult);
+      }
     } else if (e.code === 'Enter') {
       e.preventDefault();
       // Only start game if the play button is enabled

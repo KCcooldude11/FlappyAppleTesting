@@ -90,8 +90,8 @@ export const DEBUG = {
     AUTO_JUMP_START_ENABLED: false,
     AUTO_JUMP_TOLERANCE_PX: 18,
     AUTO_JUMP_MIN_DESCENT_VY: 30,
-    AUTO_JUMP_COOLDOWN_MS: 120,
-  },
+    AUTO_JUMP_COOLDOWN_MS: 120,    SPEED_MULT_MIN: 1,
+    SPEED_MULT_MAX: 9,  },
 };
 
 export const MEDALS = {
