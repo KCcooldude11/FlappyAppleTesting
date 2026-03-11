@@ -215,16 +215,19 @@ export function render() {
       // Medallions
       medallionsRender.drawMedallions(state.gameState.medallions);
 
-      // Bird
-      birdRender.drawBird(
-        state.gameState.bird,
-        state.gameState.currentSkinIndex,
-        state.gameState.bird.flapTimer > 0
-      );
+      // Bird: for theme 5, skip drawing here (draw after filter)
+      if (state.gameState.theme !== C.THEME.INVERT_THEME3_ID) {
+        birdRender.drawBird(
+          state.gameState.bird,
+          state.gameState.currentSkinIndex,
+          state.gameState.bird.flapTimer > 0
+        );
+      }
     }
   } finally {
     renderer.setActiveContext(null);
   }
+
 
   // Apply filter for special themes
   if (invertAlpha > 0 && filterType) {
@@ -240,6 +243,23 @@ export function render() {
     outputCtx.restore();
   } else {
     outputCtx.drawImage(scene.canvas, 0, 0, vw, vh);
+  }
+
+  // For theme 5 (dream combo), draw the bird/avatar on top with a red tint
+  if (
+    state.gameState.theme === C.THEME.INVERT_THEME3_ID &&
+    state.gameState.mode !== 'ready'
+  ) {
+    // Draw bird with red filter
+    outputCtx.save();
+    outputCtx.filter = 'hue-rotate(-45deg) saturate(2) brightness(1.1)';
+    birdRender.drawBird(
+      state.gameState.bird,
+      state.gameState.currentSkinIndex,
+      state.gameState.bird.flapTimer > 0,
+      outputCtx // pass context override
+    );
+    outputCtx.restore();
   }
 
   renderer.endFrame();
