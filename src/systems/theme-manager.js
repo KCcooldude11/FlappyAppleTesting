@@ -10,9 +10,9 @@ export function shouldTransitionTheme(currentTheme, score, bgReady) {
   if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1]) {
     return { from: 2, to: 3 };
   }
-  // inverted 1 (6) -> inverted 2 (4) at 600
-  if (currentTheme === C.THEME.INVERT_THEME1_ID && score >= C.THEME.THRESHOLDS[3]) {
-    return { from: C.THEME.INVERT_THEME1_ID, to: C.THEME.INVERT_THEME2_ID };
+  // 2 or inverted 1 (6) -> inverted 2 (4) at 600
+  if ((currentTheme === 2 || currentTheme === C.THEME.INVERT_THEME1_ID) && score >= C.THEME.THRESHOLDS[3]) {
+    return { from: currentTheme, to: C.THEME.INVERT_THEME2_ID };
   }
   // 2 -> inverted 2 (4) at 700
   if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[4]) {
