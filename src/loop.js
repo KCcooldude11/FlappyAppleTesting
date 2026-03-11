@@ -215,8 +215,10 @@ export function render() {
       // Medallions
       medallionsRender.drawMedallions(state.gameState.medallions);
 
-      // Bird: for theme 5, skip drawing here (draw after filter)
-      if (state.gameState.theme !== C.THEME.INVERT_THEME3_ID) {
+      // Bird: for theme 5 (INVERT_THEME3_ID), skip drawing here (draw after filter). For all other themes, always draw.
+      if (state.gameState.theme === C.THEME.INVERT_THEME3_ID) {
+        // skip here, draw after filter
+      } else {
         birdRender.drawBird(
           state.gameState.bird,
           state.gameState.currentSkinIndex,
