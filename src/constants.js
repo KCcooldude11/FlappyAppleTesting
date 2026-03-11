@@ -88,7 +88,7 @@ export const DEBUG = {
     ENABLED: true,
     START_SCORE: 990,
     START_COLUMNS: 990,
-    START_THEME: 1,
+    // START_THEME: 1,
     START_AS_MERRIKH: false,
     FORCE_MEDAL_EVERY_PIPE: true,
     NEXT_MEDAL_COLUMN: 992,
