@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Background Filter Demo</title>
+  <style>
+    body { background: #222; color: #fff; font-family: sans-serif; }
+    .row { display: flex; align-items: center; margin-bottom: 32px; }
+    .label { width: 180px; text-align: right; margin-right: 16px; font-size: 1.1em; }
+    .img-wrap { display: flex; gap: 16px; }
+    .img-wrap {
+      position: relative;
+    }
+    .img-stack {
+      position: relative;
+      display: inline-block;
+      width: 320px;
+      height: 180px;
+      margin-right: 16px;
+    }
+    .img-stack img.bg {
+      width: 320px;
+      height: 180px;
+      border-radius: 8px;
+      box-shadow: 0 2px 12px #000a;
+      display: block;
+    }
+    .img-stack img.apple {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 80px;
+      height: 80px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0.95;
+    }
+    h2 { margin-top: 2em; }
+  </style>
+</head>
+<body>
+  <h1>Background Filter Demo</h1>
+  <p>Preview of <b>background2.png</b> and <b>background3.png</b> with various CSS filters.</p>
+  <div id="demo"></div>
+  <script>
+    const filters = [
+      { name: 'Original', filter: 'none' },
+      { name: 'Hue Rotate 120°', filter: 'hue-rotate(120deg)' },
+      { name: 'Hue Rotate 240°', filter: 'hue-rotate(240deg)' },
+      { name: 'Saturate 2x', filter: 'saturate(2)' },
+      { name: 'Desaturate 0.2x', filter: 'saturate(0.2)' },
+      { name: 'Sepia', filter: 'sepia(0.8)' },
+      { name: 'Blur 2px', filter: 'blur(2px)' },
+      { name: 'Brightness/Contrast', filter: 'brightness(1.3) contrast(1.5)' },
+      { name: 'Grayscale', filter: 'grayscale(1)' },
+      { name: 'Dream Combo', filter: 'hue-rotate(90deg) saturate(1.5) brightness(1.2)' },
+    ];
+    const images = [
+      { src: './assets/background2.png', label: 'background2.png' },
+      { src: './assets/background3.png', label: 'background3.png' },
+    ];
+    const demo = document.getElementById('demo');
+    filters.forEach(f => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const label = document.createElement('div');
+      label.className = 'label';
+      label.textContent = f.name;
+      row.appendChild(label);
+      const wrap = document.createElement('div');
+      wrap.className = 'img-wrap';
+      images.forEach(imgInfo => {
+        const stack = document.createElement('div');
+        stack.className = 'img-stack';
+        // Background image
+        const bg = document.createElement('img');
+        bg.src = imgInfo.src;
+        bg.alt = imgInfo.label + ' - ' + f.name;
+        bg.className = 'bg';
+        bg.style.filter = f.filter;
+        stack.appendChild(bg);
+        // Apple overlay
+        const apple = document.createElement('img');
+        apple.src = './assets/Apple_Fly.png';
+        apple.alt = 'Apple_Fly.png';
+        apple.className = 'apple';
+        apple.style.filter = f.filter;
+        stack.appendChild(apple);
+        wrap.appendChild(stack);
+      });
+      row.appendChild(wrap);
+      demo.appendChild(row);
+    });
+  </script>
+</body>
+</html>

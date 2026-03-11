@@ -162,12 +162,12 @@ export function render() {
     state.gameState.mode === 'playing'
       ? themeSys.getInvertThemeAlpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
       : 0;
-  // Invert for inverted themes (4, 5, 6)
-  const isInvertedTheme =
-    state.gameState.theme === C.THEME.INVERT_THEME1_ID ||
-    state.gameState.theme === C.THEME.INVERT_THEME2_ID ||
-    state.gameState.theme === C.THEME.INVERT_THEME3_ID;
-  const invertAlpha = Math.max(themeInvertAlpha, temporaryInvertEnabled ? 1 : 0, isInvertedTheme ? 1 : 0);
+  // Apply special filter for themes 4 and 5, invert for 6
+  let filterType = null;
+  if (state.gameState.theme === C.THEME.INVERT_THEME2_ID) filterType = 'sepia';
+  else if (state.gameState.theme === C.THEME.INVERT_THEME3_ID) filterType = 'dream';
+  else if (state.gameState.theme === C.THEME.INVERT_THEME1_ID) filterType = 'invert';
+  const invertAlpha = Math.max(themeInvertAlpha, temporaryInvertEnabled ? 1 : 0, filterType ? 1 : 0);
   const scene = ensureSceneSurface(vw, vh);
   const sceneCtx = scene.ctx;
 
@@ -226,10 +226,16 @@ export function render() {
     renderer.setActiveContext(null);
   }
 
-  // Invert the entire scene for inverted themes (4 and 5)
-  if (invertAlpha > 0) {
+  // Apply filter for special themes
+  if (invertAlpha > 0 && filterType) {
     outputCtx.save();
-    outputCtx.filter = 'invert(1)';
+    if (filterType === 'sepia') {
+      outputCtx.filter = 'sepia(0.8)';
+    } else if (filterType === 'dream') {
+      outputCtx.filter = 'hue-rotate(90deg) saturate(1.5) brightness(1.2)';
+    } else if (filterType === 'invert') {
+      outputCtx.filter = 'invert(1)';
+    }
     outputCtx.drawImage(scene.canvas, 0, 0, vw, vh);
     outputCtx.restore();
   } else {

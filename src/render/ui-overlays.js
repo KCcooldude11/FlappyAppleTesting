@@ -56,15 +56,15 @@ export function updateGameOverSkinImage(skinImageSrc, skinName = 'Character', op
   if (goSkin) {
     // Determine if the current theme is inverted
     const theme = state.gameState?.theme;
-    const isInverted =
-      theme === C.THEME.INVERT_THEME1_ID ||
-      theme === C.THEME.INVERT_THEME2_ID ||
-      theme === C.THEME.INVERT_THEME3_ID;
-    const invertSkin = isInverted || Boolean(options?.invertSkin);
+    let filter = '';
+    if (theme === C.THEME.INVERT_THEME2_ID) filter = 'sepia(0.8)';
+    else if (theme === C.THEME.INVERT_THEME3_ID) filter = 'hue-rotate(90deg) saturate(1.5) brightness(1.2)';
+    else if (theme === C.THEME.INVERT_THEME1_ID) filter = 'invert(1)';
+    const invertSkin = Boolean(options?.invertSkin);
     if (skinImageSrc) {
       goSkin.src = skinImageSrc;
       goSkin.alt = `${skinName} (Regular)`;
-      goSkin.style.filter = invertSkin ? 'invert(1)' : '';
+      goSkin.style.filter = filter;
       goSkin.classList.remove('hide');
     } else {
       goSkin.src = '';
@@ -344,10 +344,10 @@ async function generateShareCardBlob(payload) {
 
   // Determine if the current theme is inverted
   const theme = state.gameState?.theme;
-  const isInverted =
-    theme === C.THEME.INVERT_THEME1_ID ||
-    theme === C.THEME.INVERT_THEME2_ID ||
-    theme === C.THEME.INVERT_THEME3_ID;
+  let filter = '';
+  if (theme === C.THEME.INVERT_THEME2_ID) filter = 'sepia(0.8)';
+  else if (theme === C.THEME.INVERT_THEME3_ID) filter = 'hue-rotate(90deg) saturate(1.5) brightness(1.2)';
+  else if (theme === C.THEME.INVERT_THEME1_ID) filter = 'invert(1)';
 
   if (payload.skinSrc) {
     try {
@@ -369,8 +369,8 @@ async function generateShareCardBlob(payload) {
       const drawY = Math.round(spriteTopY);
       spriteBottomY = drawY + drawH;
       ctx.save();
-      if (isInverted || payload.invertSkin) {
-        ctx.filter = 'invert(1)';
+      if (filter || payload.invertSkin) {
+        ctx.filter = filter || 'invert(1)';
       }
       ctx.imageSmoothingEnabled = false;
       ctx.drawImage(sprite, drawX, drawY, drawW, drawH);
