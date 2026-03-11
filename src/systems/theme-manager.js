@@ -14,13 +14,13 @@ export function shouldTransitionTheme(currentTheme, score, bgReady) {
   if ((currentTheme === 2 || currentTheme === C.THEME.INVERT_THEME1_ID) && score >= C.THEME.THRESHOLDS[3]) {
     return { from: currentTheme, to: C.THEME.INVERT_THEME2_ID };
   }
-  // 2 -> inverted 2 (4) at 700
-  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[4]) {
-    return { from: 2, to: C.THEME.INVERT_THEME2_ID };
-  }
-  // inverted 2 (4) -> inverted 3 (5) at 850
-  if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[5]) {
+  // inverted 2 (4) -> inverted 3 (5) at 700
+  if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[4]) {
     return { from: C.THEME.INVERT_THEME2_ID, to: C.THEME.INVERT_THEME3_ID };
+  }
+  // inverted 3 (5) -> 1 at 850
+  if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[5]) {
+    return { from: C.THEME.INVERT_THEME3_ID, to: 1 };
   }
   // inverted 3 (5) -> 1 at 900
   if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[6]) {
@@ -44,11 +44,12 @@ export function getThemeTransitionAlpha(transition, frameNow) {
 }
 
 export function getTheme2Alpha(theme, transition, frameNow) {
-  if (!transition) return theme === 2 ? 1 : 0;
+  // Treat theme 4 (inverted 2) as theme 2 for animation
+  if (!transition) return (theme === 2 || theme === C.THEME.INVERT_THEME2_ID) ? 1 : 0;
 
   const a = Math.min(1, Math.max(0, (frameNow - transition.start) / C.THEME.FADE_MS));
-  if (transition.to === 2) return a;
-  if (transition.from === 2) return 1 - a;
+  if (transition.to === 2 || transition.to === C.THEME.INVERT_THEME2_ID) return a;
+  if (transition.from === 2 || transition.from === C.THEME.INVERT_THEME2_ID) return 1 - a;
   return 0;
 }
 
