@@ -42,7 +42,164 @@
   <h1>Background Filter Demo</h1>
   <p>Preview of <b>background2.png</b> and <b>background3.png</b> with various CSS filters.</p>
   <div id="demo"></div>
+
+  <h2>CRT/VCR Effect (Full Demo)</h2>
+  <div id="screen">
+    <img id="crt-image" src="./assets/background2.png" class="image" alt="CRT Demo" />
+  </div>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.css" />
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: sans-serif;
+    }
+    #screen {
+      width: 640px;
+      height: 360px;
+      background: transparent linear-gradient(to bottom, #85908c 0%, #323431 100%) repeat scroll 0 0;
+      background-size: cover;
+      position: relative;
+      margin-bottom: 2em;
+    }
+    .screen-container {
+      width: 640px;
+      height: 360px;
+      overflow: hidden;
+      position: relative;
+    }
+    .screen-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .image {
+      width: 100%;
+      height: 100%;
+      filter: blur(1.2px);
+      display: block;
+    }
+    .vignette {
+      position: absolute;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/86186/crt.png');
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      z-index: 10000;
+      pointer-events: none;
+    }
+    .scanlines {
+      position: absolute;
+      left: 0; top: 0; width: 100%; height: 100%;
+      z-index: 9999;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(18,16,16,0) 0px,
+        rgba(18,16,16,0) 1px,
+        rgba(18,16,16,0.75) 2px,
+        rgba(18,16,16,0.75) 3px
+      );
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+    canvas.snow {
+      position: absolute;
+      left: 0; top: 0; width: 100%; height: 100%;
+      background-color: #aaa;
+      opacity: 0.2;
+      z-index: 9998;
+      pointer-events: none;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
   <script>
+        // --- CRT/VCR EFFECT DEMO ---
+        // Based on the provided CodePen code, adapted for this demo
+        function getRandomInt(min, max) {
+          min = Math.ceil(min);
+          max = Math.floor(max);
+          return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        // Snow effect
+        function createSnow(canvas) {
+          const ctx = canvas.getContext('2d');
+          function animate() {
+            var w = canvas.width, h = canvas.height;
+            var d = ctx.createImageData(w, h);
+            var b = new Uint32Array(d.data.buffer), len = b.length;
+            for (var i = 0; i < len; i++) {
+              b[i] = ((255 * Math.random()) | 0) << 24;
+            }
+            ctx.putImageData(d, 0, 0);
+            requestAnimationFrame(animate);
+          }
+          animate();
+        }
+
+        // VCR noise effect
+        function createVCR(canvas, config) {
+          const ctx = canvas.getContext('2d');
+          function renderTrackingNoise(radius = 2, xmax, ymax) {
+            let posy1 = config.miny || 0;
+            let posy2 = config.maxy || canvas.height;
+            let posy3 = config.miny2 || 0;
+            const num = config.num || 20;
+            if (xmax === undefined) xmax = canvas.width;
+            if (ymax === undefined) ymax = canvas.height;
+            canvas.style.filter = `blur(${config.blur || 1}px)`;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = `#fff`;
+            ctx.beginPath();
+            for (var i = 0; i <= num; i++) {
+              var x = Math.random(i) * xmax;
+              var y1 = getRandomInt(posy1+=3, posy2);
+              var y2 = getRandomInt(0, posy3-=3);
+              ctx.fillRect(x, y1, radius, radius);
+              ctx.fillRect(x, y2, radius, radius);
+            }
+            ctx.closePath();
+          }
+          function animate() {
+            renderTrackingNoise();
+            requestAnimationFrame(animate);
+          }
+          animate();
+        }
+
+        // Setup overlays for CRT/VCR effect
+        window.addEventListener('DOMContentLoaded', () => {
+          const screen = document.getElementById('screen');
+          // Add scanlines
+          const scanlines = document.createElement('div');
+          scanlines.className = 'scanlines';
+          screen.appendChild(scanlines);
+          // Add vignette
+          const vignette = document.createElement('div');
+          vignette.className = 'vignette';
+          screen.appendChild(vignette);
+          // Add snow
+          const snow = document.createElement('canvas');
+          snow.className = 'snow';
+          snow.width = 640;
+          snow.height = 360;
+          screen.appendChild(snow);
+          createSnow(snow);
+          // Add VCR noise
+          const vcr = document.createElement('canvas');
+          vcr.width = 640;
+          vcr.height = 360;
+          vcr.style.position = 'absolute';
+          vcr.style.left = '0';
+          vcr.style.top = '0';
+          vcr.style.width = '100%';
+          vcr.style.height = '100%';
+          vcr.style.zIndex = '9997';
+          vcr.style.pointerEvents = 'none';
+          screen.appendChild(vcr);
+          createVCR(vcr, { blur: 1, miny: 220, miny2: 220, num: 70 });
+        });
     const filters = [
       { name: 'Original', filter: 'none' },
       { name: 'Hue Rotate 120°', filter: 'hue-rotate(120deg)' },

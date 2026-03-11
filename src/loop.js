@@ -121,19 +121,13 @@ export function gameLoop(t) {
     }
   }
 
-  const themeTransition = themeSys.shouldTransitionTheme(state.gameState.theme, state.gameState.score, bgReady);
-  if (themeTransition) {
-    // If a transition is in progress, immediately complete it
-    if (state.gameState.themeTransition) {
-      state.gameState.theme = state.gameState.themeTransition.to;
-      state.gameState.themeTransition = null;
-      bgRender.invalidateBgCache();
+  // Only allow one theme transition at a time
+  if (!state.gameState.themeTransition) {
+    const themeTransition = themeSys.shouldTransitionTheme(state.gameState.theme, state.gameState.score, bgReady);
+    if (themeTransition) {
+      state.gameState.themeTransition = { ...themeTransition, start: t };
     }
-    // Start the new transition
-    state.gameState.themeTransition = { ...themeTransition, start: t };
-  }
-
-  if (themeSys.isTransitionComplete(state.gameState.themeTransition, t)) {
+  } else if (themeSys.isTransitionComplete(state.gameState.themeTransition, t)) {
     state.gameState.theme = state.gameState.themeTransition.to;
     state.gameState.themeTransition = null;
     bgRender.invalidateBgCache();
