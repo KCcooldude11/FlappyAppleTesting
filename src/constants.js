@@ -61,7 +61,7 @@ export const THEME = {
 
 export const VISUAL = {
   TEMP_INVERT_THEME: {
-    ENABLED: false,
+    ENABLED: true,
     ACTIVATE_AT_SCORE: 100,
   },
 };
