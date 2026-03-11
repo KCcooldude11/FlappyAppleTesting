@@ -102,10 +102,22 @@ export function gameLoop(t) {
     4: bgEntity.backgroundReady[4],
     5: bgEntity.backgroundReady[5],
   };
-  // Debug: force bgReady for selected themes
+  // Debug: force bgReady for selected themes and stub backgrounds if missing
   if (C.DEBUG.FORCE_BG_READY && Array.isArray(C.DEBUG.FORCE_BG_READY)) {
     for (const tid of C.DEBUG.FORCE_BG_READY) {
       bgReady[tid] = true;
+      // If background object is missing, create a stub to prevent crashes
+      if (!bgEntity.backgrounds) bgEntity.backgrounds = {};
+      if (!bgEntity.backgrounds[tid]) {
+        // Create a minimal stub with a dummy canvas
+        const dummyCanvas = document.createElement('canvas');
+        dummyCanvas.width = 32;
+        dummyCanvas.height = 32;
+        const ctx = dummyCanvas.getContext('2d');
+        ctx.fillStyle = '#222';
+        ctx.fillRect(0, 0, 32, 32);
+        bgEntity.backgrounds[tid] = { canvas: dummyCanvas, w: 32, h: 32 };
+      }
     }
   }
 
