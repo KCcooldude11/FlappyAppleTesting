@@ -186,13 +186,14 @@ export function update(gameState, dt, scale) {
       if (!m.taken && dx * dx + dy * dy < rr * rr) {
         m.taken = true;
 
+
         if (m.type === 'apple_invert_reset') {
           skinSys.switchToSkin(
             gameState,
             cfg.SKIN_INDICES.APPLE,
             C.PHYSICS.BIRD_RADIUS_RATIO
           );
-          gameState.theme = C.THEME.INVERT_THEME2_ID; // Switch to inverted theme 1 (theme 4)
+          gameState.theme = C.THEME.INVERT_THEME1_ID; // Switch to inverted theme 1 (theme 6)
           gameState.awaitingPost500AppleReset = false;
           gameState.post500AppleResetDone = true;
           gameState.skinLocked = false;
