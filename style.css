@@ -280,17 +280,19 @@ body {
 #gameover #go-score.go-score-medallion{
   --score-scale: 1.5;
   --score-width-scale: 1;
+  --score-height-scale: 1;
   --score-font-scale: 1;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: calc(3.1 * var(--u) * var(--score-scale) * var(--score-width-scale));
-  height: calc(3.9 * var(--u) * var(--score-scale));
-  font-size: calc(var(--fs-1) * (1.02 + (var(--score-scale) - 1) * 0.32) * var(--score-font-scale));
+  width: calc(3.05 * var(--u) * var(--score-scale) * var(--score-width-scale));
+  height: calc(4.6 * var(--u) * var(--score-scale) * var(--score-height-scale));
+  font-size: calc(var(--fs-1) * (1 + (var(--score-scale) - 1) * 0.26) * var(--score-font-scale));
   font-weight: 700;
   color: #111;
   line-height: 1;
+  padding-inline: calc(0.18 * var(--u));
   font-variant-numeric: tabular-nums;
   background: var(--c-amber);
   -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
