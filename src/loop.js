@@ -204,9 +204,10 @@ export function render() {
     }
 
     // Theme 3/10: medallion rain effect at 1000+
-    let themeForRain = state.gameState.theme === 10 ? 3 : state.gameState.theme;
+    // Theme 3/10/11: medallion rain effect at 1000+
+    let themeForRain = (state.gameState.theme === 10 || state.gameState.theme === 11) ? 3 : state.gameState.theme;
     if (
-      themeForRain === 3 &&
+      (state.gameState.theme === 10 || state.gameState.theme === 11 || themeForRain === 3) &&
       state.gameState.medallionRain.active &&
       state.gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE
     ) {
@@ -262,8 +263,8 @@ export function render() {
 
   // Theme 11: spotlight/darkness overlay
   if (state.gameState.theme === 11) {
-    // Shrink spotlight from 400px to 80px as score goes from 1100 to 1200
-    const minRadius = 80;
+    // Shrink spotlight from 400px to 250px as score goes from 1100 to 1200
+    const minRadius = 250;
     const maxRadius = 400;
     const s = Math.max(0, Math.min(1, (1200 - state.gameState.score) / 100));
     const radius = minRadius + (maxRadius - minRadius) * s;
@@ -271,14 +272,23 @@ export function render() {
     const cx = state.gameState.bird.x || vw / 2;
     const cy = state.gameState.bird.y || vh / 2;
     ctx.save();
-    ctx.globalAlpha = 0.85;
+    ctx.globalAlpha = 1.0;
     ctx.globalCompositeOperation = 'source-over';
+    // Create a radial gradient for soft edge
+    const edge = Math.max(32, Math.round(radius * 0.25));
+    const grad = ctx.createRadialGradient(cx, cy, radius - edge, cx, cy, radius);
+    grad.addColorStop(0, 'rgba(0,0,0,0)');
+    grad.addColorStop(1, 'rgba(0,0,0,1)');
+    // Fill full darkness
+    ctx.fillStyle = 'rgba(0,0,0,0.98)';
+    ctx.fillRect(0, 0, vw, vh);
+    // Punch out spotlight with gradient
+    ctx.globalCompositeOperation = 'destination-out';
     ctx.beginPath();
-    ctx.rect(0, 0, vw, vh);
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2, true);
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
     ctx.closePath();
-    ctx.fillStyle = 'black';
-    ctx.fill('evenodd');
+    ctx.fillStyle = grad;
+    ctx.fill();
     ctx.restore();
   }
 
