@@ -78,16 +78,7 @@ export function drawBackground(theme, transition, frameNow) {
 
   if (!transition) {
     const can = ensureBgCached(theme, vw, vh);
-    if (can) {
-      if (theme === C.THEME.INVERT_THEME2_ID) {
-        ctx.save();
-        ctx.filter = 'invert(1)';
-        ctx.drawImage(can, 0, 0, vw, vh);
-        ctx.restore();
-      } else {
-        ctx.drawImage(can, 0, 0, vw, vh);
-      }
-    }
+    if (can) ctx.drawImage(can, 0, 0, vw, vh);
     return;
   }
 
@@ -96,22 +87,10 @@ export function drawBackground(theme, transition, frameNow) {
   const fromCan = ensureBgCached(transition.from, vw, vh);
   const toCan = ensureBgCached(transition.to, vw, vh);
 
-  if (fromCan) {
-    if (transition.from === C.THEME.INVERT_THEME2_ID) {
-      ctx.save();
-      ctx.filter = 'invert(1)';
-      ctx.drawImage(fromCan, 0, 0, vw, vh);
-      ctx.restore();
-    } else {
-      ctx.drawImage(fromCan, 0, 0, vw, vh);
-    }
-  }
+  if (fromCan) ctx.drawImage(fromCan, 0, 0, vw, vh);
   if (toCan) {
     ctx.save();
     ctx.globalAlpha = a;
-    if (transition.to === C.THEME.INVERT_THEME2_ID) {
-      ctx.filter = 'invert(1)';
-    }
     ctx.drawImage(toCan, 0, 0, vw, vh);
     ctx.restore();
   }
