@@ -191,13 +191,15 @@ export const ASSETS = {
     1: './assets/Untitled_Artwork.png',
     2: './assets/background2.png',
     3: './assets/background3.png',
-    4: './assets/Untitled_Artwork.png',
+    4: './assets/background2.png', // theme 4 uses theme 2's background
+    5: './assets/background3.png', // theme 5 uses theme 3's background
   },
   SPIRES: {
     1: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
     2: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' },
     3: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' },
-    4: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
+    4: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' }, // theme 4 uses theme 2's spires
+    5: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' }, // theme 5 uses theme 3's spires
   },
   MEDALLION: './assets/medallion.png',
   APPLE_HOME: { regular: './assets/apple_regular.png', fly: './assets/apple_fly.png' },
