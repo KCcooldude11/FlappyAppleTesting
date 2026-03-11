@@ -155,7 +155,9 @@ export function render() {
     state.gameState.mode === 'playing'
       ? themeSys.getInvertThemeAlpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
       : 0;
-  const invertAlpha = Math.max(themeInvertAlpha, temporaryInvertEnabled ? 1 : 0);
+  // Invert for inverted themes (4 and 5)
+  const isInvertedTheme = state.gameState.theme === C.THEME.INVERT_THEME2_ID || state.gameState.theme === C.THEME.INVERT_THEME3_ID;
+  const invertAlpha = Math.max(themeInvertAlpha, temporaryInvertEnabled ? 1 : 0, isInvertedTheme ? 1 : 0);
   const scene = ensureSceneSurface(vw, vh);
   const sceneCtx = scene.ctx;
 
@@ -214,7 +216,15 @@ export function render() {
     renderer.setActiveContext(null);
   }
 
-  drawCompositedScene(outputCtx, scene.canvas, vw, vh, invertAlpha);
+  // Invert the entire scene for inverted themes (4 and 5)
+  if (invertAlpha > 0) {
+    outputCtx.save();
+    outputCtx.filter = 'invert(1)';
+    outputCtx.drawImage(scene.canvas, 0, 0, vw, vh);
+    outputCtx.restore();
+  } else {
+    outputCtx.drawImage(scene.canvas, 0, 0, vw, vh);
+  }
 
   renderer.endFrame();
 }
