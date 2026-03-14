@@ -1,6 +1,7 @@
 
 import * as C from '../constants.js';
 import * as renderer from './index.js';
+import * as state from '../state.js';
 import * as skin from '../systems/skin-manager.js';
 import { glitchBirdImage } from './bird-glitch.js';
 
@@ -30,7 +31,7 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
   ctx.drawImage(img, -birdW / 2, -birdH / 2, birdW, birdH);
 
   // Theme 11: glitch overlay
-  if (window?.state?.gameState?.theme === 11) {
+  if (state.gameState.theme === 11) {
     const bands = 4 + Math.floor(Math.random() * 2); // 4–5 glitch slices
     const maxOffset = 4 + Math.floor(Math.random() * 2); // small horizontal shift
     const rgb = Math.random() < 0.3; // occasional RGB split

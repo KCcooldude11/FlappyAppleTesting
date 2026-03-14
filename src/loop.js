@@ -195,8 +195,8 @@ export function render() {
     // Background
     bgRender.drawBackground(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow);
 
-    // --- Theme 3: Lightning overlay (draw behind spires) ---
-    if (state.gameState.theme === 3) {
+    // --- Theme 3 & 10: Lightning overlay (draw behind spires) ---
+    if (state.gameState.theme === 3 || state.gameState.theme === 10) {
       if (!window._theme3Lightning) {
         window._theme3Lightning = {
           effect: new LightningEffect(),
