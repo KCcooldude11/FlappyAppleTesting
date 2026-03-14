@@ -289,10 +289,10 @@ export function render() {
   // Theme 11: CRT/VCR effect overlay
   if (state.gameState.theme === 11) {
     const ctx = renderer.getBaseContext();
-    // 1. Apply CRT/VCR filter to the whole frame (less bright/contrast)
+    // 1. Apply CRT/Arcade Glow filter to the whole frame
     ctx.save();
     ctx.globalAlpha = 1.0;
-    ctx.filter = 'blur(1.2px) brightness(1.05) contrast(1.08) grayscale(0.08)';
+    ctx.filter = 'brightness(1.18) contrast(1.12) saturate(1.25) blur(0.7px) drop-shadow(0 0 8px #0ff8) drop-shadow(0 0 8px #f0f8) drop-shadow(0 0 8px #08f8)';
     ctx.drawImage(scene.canvas, 0, 0, vw, vh);
     ctx.filter = 'none';
     ctx.restore();
@@ -315,32 +315,7 @@ export function render() {
     ctx.fillRect(0, 0, vw, vh);
     ctx.restore();
 
-    // 4. Overlay snow/static
-    ctx.save();
-    const snowDensity = 0.13;
-    const snowAlpha = 0.18;
-    for (let i = 0; i < vw * vh * snowDensity * 0.001; i++) {
-      const x = Math.random() * vw;
-      const y = Math.random() * vh;
-      const s = Math.random() * 1.2 + 0.3;
-      ctx.globalAlpha = snowAlpha * Math.random();
-      ctx.fillStyle = '#fff';
-      ctx.fillRect(x, y, s, s);
-    }
-    ctx.restore();
-
-    // 5. Overlay VCR noise (random white streaks, more obvious)
-    ctx.save();
-    ctx.globalAlpha = 0.22;
-    for (let i = 0; i < 32; i++) {
-      const y = Math.random() * vh;
-      const h = Math.random() * 4 + 2;
-      ctx.fillStyle = 'rgba(255,255,255,0.22)';
-      ctx.fillRect(0, y, vw, h);
-    }
-    ctx.restore();
-
-    // 6. Overlay rounded glass pane
+    // 4. Overlay rounded glass pane (unchanged)
     ctx.save();
     const paneW = vw * 0.92;
     const paneH = vh * 0.92;

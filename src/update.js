@@ -254,21 +254,20 @@ export function update(gameState, dt, scale) {
       showMotes = true;
     }
   } else if (gameState.theme === 3 && gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE) {
-    // Theme 3 original rain logic
+    // Theme 3: always show rain above 1000
     if (!gameState.medallionRain.active) {
       gameState.medallionRain.active = true;
-      gameState.medallionRain.startTime = performance.now();
     }
-    if (gameState.medallionRain.active && (performance.now() - gameState.medallionRain.startTime <= C.THEME.MEDALLION_RAIN_EFFECT_DURATION_MS)) {
-      medallionRainActive = true;
-    } else {
+    medallionRainActive = true;
+  } else if (gameState.theme === 10) {
+    showMotes = true;
+  } else {
+    // If leaving theme 10, forcibly clear medallion rain
+    if (gameState.medallionRain.active || gameState.medallionRain.particles.length > 0) {
       gameState.medallionRain.active = false;
       gameState.medallionRain.startTime = 0;
       gameState.medallionRain.particles = [];
-      showMotes = true;
     }
-  } else if (gameState.theme === 10) {
-    showMotes = true;
   }
 
   if (medallionRainActive) {
