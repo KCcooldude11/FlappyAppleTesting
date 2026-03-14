@@ -39,9 +39,56 @@
   </style>
 </head>
 <body>
+
   <h1>Background Filter Demo</h1>
   <p>Preview of <b>background2.png</b> and <b>background3.png</b> with various CSS filters.</p>
   <div id="demo"></div>
+
+  <h2>Apple Glitch Effect Demo</h2>
+  <div class="row">
+    <div class="label">Original</div>
+    <div class="img-wrap">
+      <img id="apple-original" src="./assets/Apple_Fly.png" style="width:80px;height:80px;background:#111;border-radius:8px;box-shadow:0 2px 12px #000a;" alt="Original Apple" />
+    </div>
+    <div class="label">Glitch Effect (Animated)</div>
+    <div class="img-wrap" style="min-width:80px;min-height:80px;">
+      <canvas id="apple-glitch-canvas" width="80" height="80" style="background:#111;border-radius:8px;box-shadow:0 2px 12px #000a;"></canvas>
+    </div>
+  </div>
+  <script type="module">
+    import { glitchBirdImage } from './src/render/bird-glitch.js';
+    const appleImg = new window.Image();
+    appleImg.src = './assets/Apple_Fly.png';
+    const canvas = document.getElementById('apple-glitch-canvas');
+    const ctx = canvas.getContext('2d');
+    let frame = 0;
+    let lastGlitched = null;
+    function animateGlitch() {
+      frame++;
+      if (appleImg.complete && appleImg.naturalWidth) {
+        // Only update the glitch every 15 frames for a much slower effect
+        if (frame % 15 === 0 || !lastGlitched) {
+          // Randomly pick which bands to glitch by using a random seed
+          lastGlitched = glitchBirdImage(appleImg, 80, 80, {
+            bands: 4 + Math.floor(Math.random() * 2), // 4-5 bands
+            maxOffset: 3 + Math.floor(Math.random() * 3), // 3-5 px
+            rgb: Math.random() < 0.3, // Only 30% chance of RGB split
+            seed: Math.random() * 100000 // More randomness for band selection
+          });
+        }
+       ctx.clearRect(0, 0, 80, 80);
+
+/* draw the original image first */
+ctx.drawImage(appleImg, 0, 0, 80, 80);
+
+/* then draw the glitched bands */
+ctx.drawImage(lastGlitched, 0, 0, 80, 80);
+      }
+      requestAnimationFrame(animateGlitch);
+    }
+    appleImg.onload = animateGlitch;
+    if (appleImg.complete) animateGlitch();
+  </script>
 
     <h2>Matrix Green/Black Effect</h2>
     <div class="row">

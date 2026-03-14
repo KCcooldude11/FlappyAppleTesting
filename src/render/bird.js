@@ -22,11 +22,15 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
   // Theme 11: glitch effect
   let drawImg = img;
   if (window?.state?.gameState?.theme === 11) {
-    drawImg = glitchBirdImage(img, birdW, birdH, { bands: 6, maxOffset: 8, rgb: true });
+    // Make the glitch more obvious and animated
+    const bands = 12 + Math.floor(Math.random() * 6); // 12-17 bands
+    const maxOffset = 18 + Math.floor(Math.random() * 10); // 18-27 px
+    drawImg = glitchBirdImage(img, birdW, birdH, { bands, maxOffset, rgb: true });
   }
   ctx.save();
   ctx.translate(bird.x, bird.y);
   ctx.rotate(bird.rot * C.BIRD.ROTATION_FACTOR);
   ctx.drawImage(drawImg, -birdW / 2, -birdH / 2, birdW, birdH);
   ctx.restore();
+}
 }

@@ -1,37 +1,59 @@
-// Glitch effect for bird sprite (canvas only)
-// Usage: glitchBirdImage(img, w, h, options) => returns a glitched offscreen canvas
 export function glitchBirdImage(img, w, h, options = {}) {
   const {
-    bands = 6,
-    maxOffset = 8,
+    bands = 3,          // fewer tear bands
+    maxOffset = 2,      // smaller horizontal shifts
     rgb = true,
-    seed = Math.random() * 10000
+    glitchChance = 0.1  // only glitch ~10% of frames
   } = options;
-  const out = document.createElement('canvas');
+
+  // Most frames: return clean sprite
+  if (Math.random() > glitchChance) {
+    const clean = document.createElement("canvas");
+    clean.width = w;
+    clean.height = h;
+    const cctx = clean.getContext("2d");
+    cctx.drawImage(img, 0, 0, w, h);
+    return clean;
+  }
+
+  const source = document.createElement("canvas");
+  source.width = w;
+  source.height = h;
+  const sctx = source.getContext("2d");
+
+  const out = document.createElement("canvas");
   out.width = w;
   out.height = h;
-  const ctx = out.getContext('2d');
-  // Draw base
-  ctx.drawImage(img, 0, 0, w, h);
-  // Glitch bands
+  const ctx = out.getContext("2d");
+
+  // draw original sprite once
+  sctx.drawImage(img, 0, 0, w, h);
+
+  const bandHeight = Math.floor(h / bands);
+
   for (let i = 0; i < bands; i++) {
-    const bandH = Math.floor(h / bands * (0.7 + Math.random() * 0.6));
-    const y = Math.floor((h / bands) * i + Math.random() * 2);
+    const y = i * bandHeight;
     const offset = Math.floor((Math.random() - 0.5) * maxOffset * 2);
-    if (rgb && Math.random() < 0.7) {
-      // RGB split
-      for (const [dx, color] of [[-1, 'red'], [1, 'lime'], [0, 'white']]) {
-        ctx.globalCompositeOperation = 'lighter';
-        ctx.globalAlpha = color === 'white' ? 0.7 : 0.5;
-        ctx.filter = color === 'white' ? 'none' : `drop-shadow(${dx * 2}px 0 ${color})`;
-        ctx.drawImage(img, offset + dx * 2, y, w, bandH, 0, y, w, bandH);
-      }
+
+    if (rgb && Math.random() < 0.15) {
+
+      ctx.globalAlpha = 0.5;
+      ctx.drawImage(source, 0, y, w, bandHeight, offset - 1, y, w, bandHeight);
+
+      ctx.globalAlpha = 0.5;
+      ctx.drawImage(source, 0, y, w, bandHeight, offset + 1, y, w, bandHeight);
+
       ctx.globalAlpha = 1;
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.filter = 'none';
+      ctx.drawImage(source, 0, y, w, bandHeight, offset, y, w, bandHeight);
+
     } else {
-      ctx.drawImage(img, offset, y, w, bandH, 0, y, w, bandH);
+
+      ctx.globalAlpha = 1;
+      ctx.drawImage(source, 0, y, w, bandHeight, offset, y, w, bandHeight);
+
     }
   }
+
+  ctx.globalAlpha = 1;
   return out;
 }
