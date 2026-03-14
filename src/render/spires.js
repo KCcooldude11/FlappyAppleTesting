@@ -2,7 +2,14 @@ import * as C from '../constants.js';
 import * as renderer from './index.js';
 import * as bg from '../entities/background.js';
 import * as pipe from '../entities/pipe.js';
+import * as state from '../state.js';
+import { glitchBirdImage } from './bird-glitch.js';
 
+// Glitch state for spires in theme 11
+let spireGlitchBurst = false;
+let spireGlitchTimer = 0;
+let cachedGlitchTile = null;
+let cachedGlitchCap = null;
 export function drawSpireSegmented(x, y, w, h, theme, orientation = 'up') {
   const ctx = renderer.getContext();
   const imgTile = bg.getSpireSet(theme).tile;
@@ -37,6 +44,30 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
   const clipW = Math.ceil(w) + pad * 2;
   const clipH = Math.ceil(clipBottom - clipTop) + pad * 2;
 
+  // Theme 11: glitch burst logic (less frequent than bird)
+  let useGlitch = false;
+  if (state.gameState.theme === 11) {
+    spireGlitchTimer -= 1 / 60;
+    if (spireGlitchTimer <= 0) {
+      if (!spireGlitchBurst) {
+        // start glitch burst
+        spireGlitchBurst = true;
+        spireGlitchTimer = 0.4 + Math.random() * 0.5; // burst lasts 0.4–0.9s
+      } else {
+        // return to calm
+        spireGlitchBurst = false;
+        cachedGlitchTile = null;
+        cachedGlitchCap = null;
+        spireGlitchTimer = 5 + Math.random() * 7; // calm for 5–12s
+      }
+    }
+    useGlitch = spireGlitchBurst;
+  } else {
+    spireGlitchBurst = false;
+    cachedGlitchTile = null;
+    cachedGlitchCap = null;
+  }
+
   ctx.save();
   ctx.beginPath();
   ctx.rect(clipX, clipY, clipW, clipH);
@@ -55,14 +86,46 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
 
     let cursorY = y + h - tileH;
     while (cursorY + tileH > limit) {
-      ctx.drawImage(imgTile, x, cursorY, drawW, tileH);
+      let tileToDraw = imgTile;
+      if (useGlitch) {
+        if (!cachedGlitchTile || Math.random() < 0.18) {
+          const bigGlitch = Math.random() < 0.18;
+          const bands = bigGlitch ? 7 + Math.floor(Math.random() * 6) : 3 + Math.floor(Math.random() * 4);
+          const maxOffset = bigGlitch ? 10 + Math.random() * 12 : 2 + Math.random() * 6;
+          const rgb = Math.random() < 0.35;
+          cachedGlitchTile = glitchBirdImage(imgTile, imgTile.width, imgTile.height, {
+            bands,
+            maxOffset,
+            rgb,
+            glitchChance: 1
+          });
+        }
+        tileToDraw = cachedGlitchTile;
+      }
+      ctx.drawImage(tileToDraw, x, cursorY, drawW, tileH);
       cursorY -= tileH - C.SPIRE.TILE_OVERLAP;
     }
 
     ctx.restore();
   }
 
-  if (ready.cap) ctx.drawImage(imgCap, x, capY, drawW, capH);
+  let capToDraw = imgCap;
+  if (useGlitch && ready.cap) {
+    if (!cachedGlitchCap || Math.random() < 0.18) {
+      const bigGlitch = Math.random() < 0.18;
+      const bands = bigGlitch ? 7 + Math.floor(Math.random() * 6) : 3 + Math.floor(Math.random() * 4);
+      const maxOffset = bigGlitch ? 10 + Math.random() * 12 : 2 + Math.random() * 6;
+      const rgb = Math.random() < 0.35;
+      cachedGlitchCap = glitchBirdImage(imgCap, imgCap.width, imgCap.height, {
+        bands,
+        maxOffset,
+        rgb,
+        glitchChance: 1
+      });
+    }
+    capToDraw = cachedGlitchCap;
+  }
+  if (ready.cap) ctx.drawImage(capToDraw, x, capY, drawW, capH);
   ctx.restore();
 }
 
