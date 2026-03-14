@@ -11,7 +11,6 @@ export function getBirdDrawSize(skinIndex) {
   const img = idle || flap;
   const aspect = img && img.width && img.height ? img.width / img.height : 1;
   return { w: Math.round(baseH * aspect), h: Math.round(baseH) };
-}
 
 export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
   const ctx = ctxOverride || renderer.getContext();
