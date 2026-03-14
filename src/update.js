@@ -229,31 +229,37 @@ export function update(gameState, dt, scale) {
     gameState.medallions = gameState.medallions.filter(m => !m.taken && m.x + m.size > -40 * scale);
   }
 
-  // Water particles (Theme 2 and 9)
-  const themeForParticles = (gameState.theme === 9) ? 2 : gameState.theme;
-  if (themeForParticles === 2 || themeForParticles === C.THEME.INVERT_THEME2_ID) {
-    particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
-  }
+  // // Water particles (Theme 2 and 9)
+  // const themeForParticles = (gameState.theme === 9) ? 2 : gameState.theme;
+  // if (themeForParticles === 2 || themeForParticles === C.THEME.INVERT_THEME2_ID) {
+  //   particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
+  // }
 
 
-  // Rain effect for theme 3 and theme 10 only
-  let rainActive = false;
+    // Theme 3 rain motes
   if (gameState.theme === 3 || gameState.theme === 10) {
-    rainActive = true;
-  }
-  const vw = renderer.getCanvasWidth();
-  const vh = renderer.getCanvasHeight();
-  const rain = gameState.medallionRain.particles;
-  if (rainActive) {
-    if (rainActive) {
-      rainMod.ensureMedallionRain(rain, vw, vh, 32);
-      rainMod.updateMedallionRain(rain, vw, vh, dt);
-    }
+    const vw = renderer.getCanvasWidth();
+    const vh = renderer.getCanvasHeight();
 
+    particlesRender.ensureTheme3MoteCount(
+      gameState.theme3Motes.particles,
+      vw,
+      vh
+    );
+
+    particlesRender.updateTheme3Motes(
+      gameState.theme3Motes.particles,
+      vw,
+      vh,
+      dt
+    );
   } else {
-    // Clear rain when not in theme 3 or 10
-    if (rain.length > 0) rain.length = 0;
+    // clear particles when leaving theme
+    if (gameState.theme3Motes.particles.length > 0) {
+      gameState.theme3Motes.particles.length = 0;
+    }
   }
+
 
   return null; // no collision
 }
