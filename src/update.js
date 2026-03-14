@@ -11,6 +11,7 @@ import * as particlesRender from './render/particles.js';
 import * as cfg from './config.js';
 
 export function update(gameState, dt, scale) {
+  console.debug('[Rain] update() called, mode:', gameState.mode, 'theme:', gameState.theme);
   if (gameState.mode !== 'playing') return null;
 
   const noDeathDebug = C.DEBUG?.NO_DEATH_RUN;
