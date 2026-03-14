@@ -93,7 +93,7 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: true,
+    ENABLED: false,
     START_SCORE: 1090,
     START_COLUMNS: 1090,
     START_THEME: 2,
