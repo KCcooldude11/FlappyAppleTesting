@@ -1,3 +1,4 @@
+import { LightningEffect } from './render/lightning.js';
 import * as C from './constants.js';
 import * as state from './state.js';
 import * as renderer from './render/index.js';
@@ -262,9 +263,8 @@ export function render() {
   // --- Theme 3: Lightning overlay ---
   if (state.gameState.theme === 3) {
     if (!window._theme3Lightning) {
-      // Lazy-load and persist the effect instance and offscreen canvas
       window._theme3Lightning = {
-        effect: new (require('./render/lightning.js').LightningEffect)(),
+        effect: new LightningEffect(),
         canvas: document.createElement('canvas'),
         ctx: null,
         lastW: 0,
