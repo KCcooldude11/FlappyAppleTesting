@@ -2,6 +2,8 @@
 // Simple rain effect for Theme 3 and 10
 import * as renderer from './index.js';
 
+// Ensure the rain array has the right number of particles
+export function ensureMedallionRain(rain, vw, vh, count) {
   while (rain.length < count) {
     rain.push({
       x: Math.random() * vw,
@@ -14,6 +16,8 @@ import * as renderer from './index.js';
   rain.length = count;
 }
 
+// Update rain particle positions
+export function updateMedallionRain(rain, vw, vh, dt) {
   for (let m of rain) {
     m.y += m.vy * dt;
     m.x += m.vx * dt;
@@ -27,6 +31,8 @@ import * as renderer from './index.js';
   }
 }
 
+// Draw the rain particles
+export function drawMedallionRain(rain, alpha = 1) {
   const ctx = renderer.getContext();
   ctx.save();
   ctx.globalAlpha = alpha;
