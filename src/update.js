@@ -9,6 +9,7 @@ import * as skinSys from './systems/skin-manager.js';
 import * as bgEntity from './entities/background.js';
 import * as particlesRender from './render/particles.js';
 import * as cfg from './config.js';
+import * as rainMod from './render/medallion-rain.js';
 
 export function update(gameState, dt, scale) {
   console.log('[Rain] update() called, mode:', gameState.mode, 'theme:', gameState.theme);
@@ -244,10 +245,11 @@ export function update(gameState, dt, scale) {
   const vh = renderer.getCanvasHeight();
   const rain = gameState.medallionRain.particles;
   if (rainActive) {
-    import('./render/medallion-rain.js').then(rainMod => {
+    if (rainActive) {
       rainMod.ensureMedallionRain(rain, vw, vh, 32);
       rainMod.updateMedallionRain(rain, vw, vh, dt);
-    });
+    }
+
   } else {
     // Clear rain when not in theme 3 or 10
     if (rain.length > 0) rain.length = 0;
