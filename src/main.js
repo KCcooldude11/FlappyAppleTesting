@@ -18,6 +18,23 @@ import * as dynPhysics from './physics/dynamics.js';
 let scoreTextEl, bestEl;
 
 async function initializeApp() {
+    // Observe theme changes to toggle CRT overlay
+    window._crtOverlay = document.getElementById('crt-overlay');
+    function updateCrtOverlay() {
+      if (!window._crtOverlay) return;
+      const theme = state.gameState.theme;
+      if (theme === 11) {
+        window._crtOverlay.classList.add('active');
+      } else {
+        window._crtOverlay.classList.remove('active');
+      }
+    }
+    // Patch into render loop
+    const origRender = loop.render;
+    loop.render = function patchedRender() {
+      origRender.apply(this, arguments);
+      updateCrtOverlay();
+    };
   // Canvas setup
   renderer.initializeCanvas();
   renderer.onWindowResize(onCanvasResize);
@@ -124,6 +141,7 @@ function onAutoJumpToggleRequested() {
 
 async function onStartClicked() {
   if (state.gameState.mode === 'playing') return;
+  if (window._crtOverlay) window._crtOverlay.classList.remove('active');
 
   const name = input.getNameInputValue() || storage.getSavedName();
   if (!fmt.isValidName(name)) {
@@ -168,6 +186,7 @@ function startGame(name) {
 
   uiOverlays.hideOverlay();
   uiOverlays.hideGameOver();
+  if (window._crtOverlay) window._crtOverlay.classList.remove('active');
 
   // Reset skin to Apple at start
   const appleIdx = cfg.SKIN_INDICES.APPLE;

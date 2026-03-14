@@ -18,6 +18,7 @@
       document.body.dataset.state = 'ready';
     </script>
     <div id="app">
+      <div id="crt-overlay"></div>
       <h1 id="homeTitle"><span class="titleText" data-text="Flappy Apple">Flappy Apple</span></h1>
       <canvas id="game" width="480" height="640" role="img" aria-label="Flappy Bird style game"></canvas>
       <div id="hud">
@@ -116,5 +117,46 @@
 
     </div>
     <script type="module" src="./src/main.js?v=bestsyncfromserver"></script>
+      <style>
+        /* --- CRT Overlay for Theme 11 (Clean Arcade CRT) --- */
+        #crt-overlay {
+          position: fixed;
+          left: 0; top: 0; width: 100vw; height: 100vh;
+          pointer-events: none;
+          z-index: 9999;
+          background:
+            repeating-linear-gradient(
+              to bottom,
+              rgba(0,0,0,0) 0px,
+              rgba(0,0,0,0) 2px,
+              rgba(0,0,0,0.25) 3px
+            );
+          display: none;
+          /* CRT softness and RGB phosphor separation for everything */
+          filter:
+            contrast(1.2)
+            brightness(1.1)
+            saturate(1.25)
+            blur(0.7px)
+            drop-shadow(-1px 0 red)
+            drop-shadow(1px 0 cyan);
+        }
+        #crt-overlay.active {
+          display: block;
+        }
+        #crt-overlay::after {
+          content: "";
+          position: absolute;
+          left: 0; top: 0; width: 100%; height: 100%;
+          pointer-events: none;
+          border-radius: 0;
+          z-index: 10000;
+          background: radial-gradient(
+            ellipse at center,
+            rgba(0,0,0,0) 55%,
+            rgba(0,0,0,0.4) 100%
+          );
+        }
+      </style>
   </body>
 </html>
