@@ -5,29 +5,32 @@ import * as pipe from '../entities/pipe.js';
 import * as state from '../state.js';
 import { glitchBirdImage } from './bird-glitch.js';
 
-// Glitch state for spires in theme 11
-let spireGlitchBurst = false;
-let spireGlitchTimer = 0;
-let cachedGlitchTile = null;
-let cachedGlitchCap = null;
-export function drawSpireSegmented(x, y, w, h, theme, orientation = 'up') {
+// Glitch state for spires in theme 11 (per-pipe)
+let spireGlitchState = {
+  burst: false,
+  timer: 0,
+  pipeIndex: -1, // which pipe is glitching
+  cachedTile: null,
+  cachedCap: null
+};
+export function drawSpireSegmented(x, y, w, h, theme, orientation = 'up', glitch = false) {
   const ctx = renderer.getContext();
   const imgTile = bg.getSpireSet(theme).tile;
   const imgCap = bg.getSpireSet(theme).cap;
   const ready = bg.getSpireReady(theme);
 
   if (orientation === 'up') {
-    drawStackUp(imgTile, imgCap, ready, x, y, w, h, 0);
+    drawStackUp(imgTile, imgCap, ready, x, y, w, h, 0, glitch);
   } else {
     ctx.save();
     ctx.translate(x + w, y + h);
     ctx.scale(-1, -1);
-    drawStackUp(imgTile, imgCap, ready, 0, 0, w, h, C.SPIRE.TOP_CAP_NUDGE);
+    drawStackUp(imgTile, imgCap, ready, 0, 0, w, h, C.SPIRE.TOP_CAP_NUDGE, glitch);
     ctx.restore();
   }
 }
 
-function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
+function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0, glitch = false) {
   const ctx = renderer.getContext();
   const { tileH, capH, sx } = pipe.getScaledSpireHeights(imgTile, imgCap, w);
 
@@ -44,29 +47,11 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
   const clipW = Math.ceil(w) + pad * 2;
   const clipH = Math.ceil(clipBottom - clipTop) + pad * 2;
 
-  // Theme 11: glitch burst logic (less frequent than bird)
-  let useGlitch = false;
-  if (state.gameState.theme === 11) {
-    spireGlitchTimer -= 1 / 60;
-    if (spireGlitchTimer <= 0) {
-      if (!spireGlitchBurst) {
-        // start glitch burst
-        spireGlitchBurst = true;
-        spireGlitchTimer = 0.4 + Math.random() * 0.5; // burst lasts 0.4–0.9s
-      } else {
-        // return to calm
-        spireGlitchBurst = false;
-        cachedGlitchTile = null;
-        cachedGlitchCap = null;
-        spireGlitchTimer = 5 + Math.random() * 7; // calm for 5–12s
-      }
-    }
-    useGlitch = spireGlitchBurst;
-  } else {
-    spireGlitchBurst = false;
-    cachedGlitchTile = null;
-    cachedGlitchCap = null;
-  }
+  // Only use glitch if glitch param is true (for selected pipe)
+  let useGlitch = glitch;
+  // Use per-spire cached glitch images
+  let cachedGlitchTile = glitch ? spireGlitchState.cachedTile : null;
+  let cachedGlitchCap = glitch ? spireGlitchState.cachedCap : null;
 
   ctx.save();
   ctx.beginPath();
@@ -99,6 +84,7 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
             rgb,
             glitchChance: 1
           });
+          if (glitch) spireGlitchState.cachedTile = cachedGlitchTile;
         }
         tileToDraw = cachedGlitchTile;
       }
@@ -122,6 +108,7 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
         rgb,
         glitchChance: 1
       });
+      if (glitch) spireGlitchState.cachedCap = cachedGlitchCap;
     }
     capToDraw = cachedGlitchCap;
   }
@@ -132,8 +119,52 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
 export function drawAllPipes(pipes, theme, screenHeight) {
   const pipeWidth = Math.round(C.PHYSICS.PIPE_WIDTH * renderer.getScale());
 
-  for (let p of pipes) {
-    drawSpireSegmented(p.x, 0, pipeWidth, p.topH, theme, 'down');
-    drawSpireSegmented(p.x, p.gapY, pipeWidth, screenHeight - p.gapY, theme, 'up');
+  // Theme 11: manage glitch burst for only one visible spire at a time
+  if (state.gameState.theme === 11) {
+    // Find visible pipes (in view)
+    const vw = renderer.getCanvasWidth();
+    const visible = [];
+    for (let i = 0; i < pipes.length; i++) {
+      const p = pipes[i];
+      if (p.x + pipeWidth > 0 && p.x < vw) visible.push(i);
+    }
+    // If no pipe is glitching or the current one is out of view, pick a new one
+    if (
+      spireGlitchState.pipeIndex === -1 ||
+      !visible.includes(spireGlitchState.pipeIndex)
+    ) {
+      spireGlitchState.burst = false;
+      spireGlitchState.cachedTile = null;
+      spireGlitchState.cachedCap = null;
+      spireGlitchState.pipeIndex = visible.length > 0 ? visible[Math.floor(Math.random() * visible.length)] : -1;
+      spireGlitchState.timer = 2 + Math.random() * 4; // wait before next burst
+    }
+    spireGlitchState.timer -= 1 / 60;
+    if (spireGlitchState.pipeIndex !== -1 && spireGlitchState.timer <= 0) {
+      if (!spireGlitchState.burst) {
+        spireGlitchState.burst = true;
+        spireGlitchState.timer = 0.4 + Math.random() * 0.5; // burst lasts 0.4–0.9s
+      } else {
+        spireGlitchState.burst = false;
+        spireGlitchState.cachedTile = null;
+        spireGlitchState.cachedCap = null;
+        spireGlitchState.pipeIndex = -1;
+        spireGlitchState.timer = 2 + Math.random() * 4;
+      }
+    }
+  } else {
+    spireGlitchState.burst = false;
+    spireGlitchState.pipeIndex = -1;
+    spireGlitchState.cachedTile = null;
+    spireGlitchState.cachedCap = null;
+    spireGlitchState.timer = 0;
+  }
+
+  for (let i = 0; i < pipes.length; i++) {
+    const p = pipes[i];
+    // Only glitch the selected pipe in theme 11
+    const glitch = state.gameState.theme === 11 && spireGlitchState.burst && spireGlitchState.pipeIndex === i;
+    drawSpireSegmented(p.x, 0, pipeWidth, p.topH, theme, 'down', glitch);
+    drawSpireSegmented(p.x, p.gapY, pipeWidth, screenHeight - p.gapY, theme, 'up', glitch);
   }
 }
