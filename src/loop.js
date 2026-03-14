@@ -238,10 +238,10 @@ export function render() {
         state.gameState.bird.flapTimer > 0
       );
     }
+
   } finally {
     renderer.setActiveContext(null);
   }
-
 
   // Apply filter for special themes
   if (invertAlpha > 0 && filterType) {
@@ -257,6 +257,31 @@ export function render() {
     outputCtx.restore();
   } else {
     outputCtx.drawImage(scene.canvas, 0, 0, vw, vh);
+  }
+
+  // --- Theme 3: Lightning overlay ---
+  if (state.gameState.theme === 3) {
+    if (!window._theme3Lightning) {
+      // Lazy-load and persist the effect instance and offscreen canvas
+      window._theme3Lightning = {
+        effect: new (require('./render/lightning.js').LightningEffect)(),
+        canvas: document.createElement('canvas'),
+        ctx: null,
+        lastW: 0,
+        lastH: 0
+      };
+    }
+    const lightning = window._theme3Lightning;
+    if (lightning.lastW !== vw || lightning.lastH !== vh) {
+      lightning.canvas.width = vw;
+      lightning.canvas.height = vh;
+      lightning.ctx = lightning.canvas.getContext('2d');
+      lightning.lastW = vw;
+      lightning.lastH = vh;
+    }
+    // Animate and draw lightning
+    lightning.effect.animate(lightning.ctx, vw, vh);
+    outputCtx.drawImage(lightning.canvas, 0, 0, vw, vh);
   }
 
   // ...existing code...
