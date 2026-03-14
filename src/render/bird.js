@@ -31,17 +31,15 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
 
   // Theme 11: glitch overlay
   if (window?.state?.gameState?.theme === 11) {
-
     const bands = 4 + Math.floor(Math.random() * 2); // 4–5 glitch slices
     const maxOffset = 4 + Math.floor(Math.random() * 2); // small horizontal shift
     const rgb = Math.random() < 0.3; // occasional RGB split
-
     const glitched = glitchBirdImage(img, birdW, birdH, {
       bands,
       maxOffset,
-      rgb
+      rgb,
+      glitchChance: 0.7 // much more likely to glitch, matches demo
     });
-
     // Draw glitch slices on top of the original bird
     ctx.drawImage(glitched, -birdW / 2, -birdH / 2, birdW, birdH);
   }
