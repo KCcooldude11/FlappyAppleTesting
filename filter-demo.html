@@ -43,6 +43,17 @@
   <p>Preview of <b>background2.png</b> and <b>background3.png</b> with various CSS filters.</p>
   <div id="demo"></div>
 
+    <h2>Matrix Green/Black Effect</h2>
+    <div class="row">
+      <div class="label">Matrix Green/Black</div>
+      <div class="img-wrap">
+        <div class="img-stack matrix-green">
+          <img src="./assets/background2.png" class="bg" alt="Matrix Green" />
+          <div class="matrix-overlay"></div>
+        </div>
+      </div>
+    </div>
+
     <h2>Arcade CRT Screen Effect (Clean Version)</h2>
     <div class="row">
       <div class="label">Clean CRT Arcade</div>
@@ -135,6 +146,20 @@
   </div>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.css" />
   <style>
+    /* --- Matrix Green/Black Effect --- */
+    .matrix-green .bg {
+      filter: grayscale(1) brightness(0.7) contrast(2.2) sepia(1) hue-rotate(90deg) saturate(6);
+      mix-blend-mode: lighten;
+      border-radius: 8px;
+    }
+    .matrix-overlay {
+      position: absolute; left: 0; top: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      border-radius: 8px;
+      background: linear-gradient(to bottom, rgba(0,255,64,0.18) 0%, rgba(0,0,0,0.7) 100%);
+      z-index: 2;
+      mix-blend-mode: multiply;
+    }
     /* --- Arcade CRT Screen Effect (Clean Version) --- */
     .arcade-screen {
       position: relative;

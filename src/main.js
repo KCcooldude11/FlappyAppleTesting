@@ -18,7 +18,7 @@ import * as dynPhysics from './physics/dynamics.js';
 let scoreTextEl, bestEl;
 
 async function initializeApp() {
-    // Observe theme changes to toggle CRT overlay
+    // Observe theme changes to toggle CRT overlay (safe for ES modules)
     window._crtOverlay = document.getElementById('crt-overlay');
     function updateCrtOverlay() {
       if (!window._crtOverlay) return;
@@ -29,12 +29,11 @@ async function initializeApp() {
         window._crtOverlay.classList.remove('active');
       }
     }
-    // Patch into render loop
-    const origRender = loop.render;
-    loop.render = function patchedRender() {
-      origRender.apply(this, arguments);
+    function watchThemeLoop() {
       updateCrtOverlay();
-    };
+      requestAnimationFrame(watchThemeLoop);
+    }
+    watchThemeLoop();
   // Canvas setup
   renderer.initializeCanvas();
   renderer.onWindowResize(onCanvasResize);
