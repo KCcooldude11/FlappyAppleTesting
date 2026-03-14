@@ -38,7 +38,8 @@ export class LightningEffect {
     ctx.globalCompositeOperation = 'source-over';
   }
 
-  drawLightning(ctx, w, h) {
+  drawLightning(ctx, w, h, options = {}) {
+    const color = options.color || 'white';
     for (let i = 0; i < this.lightning.length; i++) {
       const light = this.lightning[i];
       light.path.push({
@@ -56,7 +57,11 @@ export class LightningEffect {
       let alpha = 0.13;
       if (lastY > h * 0.6) alpha = 0.07;
       else if (lastY > h * 0.4) alpha = 0.10;
-      ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+      if (color === 'red') {
+        ctx.strokeStyle = `rgba(255,0,0,${alpha})`;
+      } else {
+        ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+      }
       ctx.lineWidth = 3;
       if (Math.floor(this.random(0, 15)) === 0) ctx.lineWidth = 6;
       if (Math.floor(this.random(0, 30)) === 0) ctx.lineWidth = 8;
@@ -71,14 +76,14 @@ export class LightningEffect {
       if (Math.floor(this.random(0, 30)) === 1) {
         ctx.save();
         ctx.globalAlpha = this.random(0.01, 0.03);
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = color === 'red' ? 'red' : '#fff';
         ctx.fillRect(0, 0, w, h);
         ctx.restore();
       }
     }
   }
 
-  animate(ctx, w, h) {
+  animate(ctx, w, h, options = {}) {
     if (w !== this.lastW || h !== this.lastH) {
       this.lastW = w;
       this.lastH = h;
@@ -91,6 +96,6 @@ export class LightningEffect {
       this.lightTimeCurrent = 0;
       this.lightTimeTotal = Math.floor(this.random(320, 700)); // much less frequent flashes
     }
-    this.drawLightning(ctx, w, h);
+    this.drawLightning(ctx, w, h, options);
   }
 }

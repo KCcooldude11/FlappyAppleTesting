@@ -195,8 +195,8 @@ export function render() {
     // Background
     bgRender.drawBackground(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow);
 
-    // --- Theme 3 & 10: Lightning overlay (draw behind spires) ---
-    if (state.gameState.theme === 3 || state.gameState.theme === 10) {
+    // --- Theme 3, 5, 10: Lightning overlay (draw behind spires) ---
+    if (state.gameState.theme === 3 || state.gameState.theme === 5 || state.gameState.theme === 10) {
       if (!window._theme3Lightning) {
         window._theme3Lightning = {
           effect: new LightningEffect(),
@@ -214,8 +214,12 @@ export function render() {
         lightning.lastW = vw;
         lightning.lastH = vh;
       }
-      // Animate and draw lightning
-      lightning.effect.animate(lightning.ctx, vw, vh);
+      // Animate and draw lightning, with red color for theme 5
+      if (state.gameState.theme === 5) {
+        lightning.effect.animate(lightning.ctx, vw, vh, { color: 'red' });
+      } else {
+        lightning.effect.animate(lightning.ctx, vw, vh);
+      }
       sceneCtx.drawImage(lightning.canvas, 0, 0, vw, vh);
     }
 
@@ -230,8 +234,8 @@ export function render() {
       sceneCtx.restore();
     }
 
-    // Theme 3 and 10: rain motes (old system)
-    if (state.gameState.theme === 3 || state.gameState.theme === 10) {
+    // Theme 3, 5, 10: rain motes (old system)
+    if (state.gameState.theme === 3 || state.gameState.theme === 5 || state.gameState.theme === 10) {
       sceneCtx.save();
       particlesRender.drawTheme3Motes(
         state.gameState.theme3Motes.particles,
