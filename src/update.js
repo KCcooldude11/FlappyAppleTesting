@@ -267,7 +267,7 @@ export function update(gameState, dt, scale) {
       gameState.medallionRain.particles = [];
       showMotes = true;
     }
-  } else if (gameState.theme === 3 || gameState.theme === 10) {
+  } else if (gameState.theme === 10) {
     showMotes = true;
   }
 
