@@ -10,6 +10,8 @@ import * as medallionsRender from './render/medallions.js';
 import * as themeSys from './systems/theme-manager.js';
 import * as bgEntity from './entities/background.js';
 import * as updateModule from './update.js';
+import * as rainMod from './render/medallion-rain.js';
+
 
 let lastTime = 0;
 let onGameOverCallback = null;
@@ -206,9 +208,7 @@ export function render() {
 
     // Theme 3 and 10: simple rain effect
     if (state.gameState.theme === 3 || state.gameState.theme === 10) {
-      import('./render/medallion-rain.js').then(rainMod => {
-        rainMod.drawMedallionRain(state.gameState.medallionRain.particles, 1);
-      });
+      rainMod.drawMedallionRain(state.gameState.medallionRain.particles, 1);
     } else if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
       sceneCtx.save();
       particlesRender.drawTheme3Motes(
