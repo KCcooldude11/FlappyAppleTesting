@@ -289,10 +289,10 @@ export function render() {
   // Theme 11: CRT/VCR effect overlay
   if (state.gameState.theme === 11) {
     const ctx = renderer.getBaseContext();
-    // 1. Apply CRT/VCR filter to the whole frame
+    // 1. Apply CRT/VCR filter to the whole frame (less bright/contrast)
     ctx.save();
     ctx.globalAlpha = 1.0;
-    ctx.filter = 'blur(1.2px) brightness(1.2) contrast(1.3) grayscale(0.08)';
+    ctx.filter = 'blur(1.2px) brightness(1.05) contrast(1.08) grayscale(0.08)';
     ctx.drawImage(scene.canvas, 0, 0, vw, vh);
     ctx.filter = 'none';
     ctx.restore();
@@ -301,7 +301,7 @@ export function render() {
     ctx.save();
     ctx.globalAlpha = 0.22;
     for (let y = 0; y < vh; y += 3) {
-      ctx.fillStyle = 'rgba(18,16,16,0.75)';
+      ctx.fillStyle = 'rgba(18,16,16,0.85)';
       ctx.fillRect(0, y + 2, vw, 1);
     }
     ctx.restore();
@@ -310,14 +310,14 @@ export function render() {
     ctx.save();
     const grad = ctx.createRadialGradient(vw/2, vh/2, Math.min(vw, vh)*0.45, vw/2, vh/2, Math.max(vw, vh)*0.65);
     grad.addColorStop(0.7, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(0,0,0,0.45)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.50)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, vw, vh);
     ctx.restore();
 
     // 4. Overlay snow/static
     ctx.save();
-    const snowDensity = 0.13; // Lower = more snow
+    const snowDensity = 0.13;
     const snowAlpha = 0.18;
     for (let i = 0; i < vw * vh * snowDensity * 0.001; i++) {
       const x = Math.random() * vw;
@@ -329,15 +329,47 @@ export function render() {
     }
     ctx.restore();
 
-    // 5. Overlay VCR noise (random white streaks)
+    // 5. Overlay VCR noise (random white streaks, more obvious)
     ctx.save();
-    ctx.globalAlpha = 0.10;
-    for (let i = 0; i < 18; i++) {
+    ctx.globalAlpha = 0.22;
+    for (let i = 0; i < 32; i++) {
       const y = Math.random() * vh;
-      const h = Math.random() * 2 + 1;
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      const h = Math.random() * 4 + 2;
+      ctx.fillStyle = 'rgba(255,255,255,0.22)';
       ctx.fillRect(0, y, vw, h);
     }
+    ctx.restore();
+
+    // 6. Overlay rounded glass pane
+    ctx.save();
+    const paneW = vw * 0.92;
+    const paneH = vh * 0.92;
+    const paneX = (vw - paneW) / 2;
+    const paneY = (vh - paneH) / 2;
+    ctx.globalAlpha = 0.22;
+    ctx.beginPath();
+    ctx.moveTo(paneX + 32, paneY);
+    ctx.lineTo(paneX + paneW - 32, paneY);
+    ctx.quadraticCurveTo(paneX + paneW, paneY, paneX + paneW, paneY + 32);
+    ctx.lineTo(paneX + paneW, paneY + paneH - 32);
+    ctx.quadraticCurveTo(paneX + paneW, paneY + paneH, paneX + paneW - 32, paneY + paneH);
+    ctx.lineTo(paneX + 32, paneY + paneH);
+    ctx.quadraticCurveTo(paneX, paneY + paneH, paneX, paneY + paneH - 32);
+    ctx.lineTo(paneX, paneY + 32);
+    ctx.quadraticCurveTo(paneX, paneY, paneX + 32, paneY);
+    ctx.closePath();
+    // Glass gradient
+    const glassGrad = ctx.createLinearGradient(paneX, paneY, paneX, paneY + paneH);
+    glassGrad.addColorStop(0, 'rgba(255,255,255,0.18)');
+    glassGrad.addColorStop(0.5, 'rgba(255,255,255,0.08)');
+    glassGrad.addColorStop(1, 'rgba(200,220,255,0.10)');
+    ctx.fillStyle = glassGrad;
+    ctx.fill();
+    // Inner shadow
+    ctx.globalAlpha = 0.18;
+    ctx.strokeStyle = 'rgba(80,100,160,0.18)';
+    ctx.lineWidth = 8;
+    ctx.stroke();
     ctx.restore();
   }
 
