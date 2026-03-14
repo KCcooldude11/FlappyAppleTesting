@@ -34,16 +34,30 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
   // Always draw the normal bird first
   let drawImg = img;
 
-    if (state.gameState.theme === 11) {
-      drawImg = glitchBirdImage(img, birdW, birdH, {
+  if (state.gameState.theme === 11) {
+
+    // countdown timer
+    glitchTimer -= 1 / 60;
+
+    // generate a new glitch occasionally
+    if (glitchTimer <= 0) {
+      cachedGlitch = glitchBirdImage(img, birdW, birdH, {
         bands: 5,
         maxOffset: 6,
-        rgb: true,
-        glitchChance: 0.7
+        rgb: Math.random() < 0.4,
+        glitchChance: 1
       });
+
+      // hold this glitch for ~80ms
+      glitchTimer = 0.08;
     }
 
-    ctx.drawImage(drawImg, -birdW / 2, -birdH / 2, birdW, birdH);
+    drawImg = cachedGlitch || img;
+  } else {
+    cachedGlitch = null;
+  }
+
+  ctx.drawImage(drawImg, -birdW / 2, -birdH / 2, birdW, birdH);
 
 
   ctx.restore();
