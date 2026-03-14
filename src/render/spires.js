@@ -38,36 +38,32 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
   const clipH = Math.ceil(clipBottom - clipTop) + pad * 2;
 
   ctx.save();
-  try {
+  ctx.beginPath();
+  ctx.rect(clipX, clipY, clipW, clipH);
+  ctx.clip();
+  ctx.imageSmoothingEnabled = false;
+
+  const limit = capY + (ready.cap ? capH : 0) - C.SPIRE.TILE_OVERLAP;
+
+  const shaftTop = Math.max(y, limit);
+  const shaftHeight = Math.max(0, y + h - shaftTop);
+  if (shaftHeight > 0) {
+    ctx.save();
     ctx.beginPath();
-    ctx.rect(clipX, clipY, clipW, clipH);
+    ctx.rect(clipX, shaftTop, clipW, shaftHeight);
     ctx.clip();
-    ctx.imageSmoothingEnabled = false;
 
-    const limit = capY + (ready.cap ? capH : 0) - C.SPIRE.TILE_OVERLAP;
-    const shaftTop = Math.max(y, limit);
-    const shaftHeight = Math.max(0, y + h - shaftTop);
-    if (shaftHeight > 0) {
-      ctx.save();
-      try {
-        ctx.beginPath();
-        ctx.rect(clipX, shaftTop, clipW, shaftHeight);
-        ctx.clip();
-
-        let cursorY = y + h - tileH;
-        while (cursorY + tileH > limit) {
-          ctx.drawImage(imgTile, x, cursorY, drawW, tileH);
-          cursorY -= tileH - C.SPIRE.TILE_OVERLAP;
-        }
-      } finally {
-        ctx.restore();
-      }
+    let cursorY = y + h - tileH;
+    while (cursorY + tileH > limit) {
+      ctx.drawImage(imgTile, x, cursorY, drawW, tileH);
+      cursorY -= tileH - C.SPIRE.TILE_OVERLAP;
     }
 
-    if (ready.cap) ctx.drawImage(imgCap, x, capY, drawW, capH);
-  } finally {
     ctx.restore();
   }
+
+  if (ready.cap) ctx.drawImage(imgCap, x, capY, drawW, capH);
+  ctx.restore();
 }
 
 export function drawAllPipes(pipes, theme, screenHeight) {
