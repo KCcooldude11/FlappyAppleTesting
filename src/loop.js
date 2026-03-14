@@ -204,12 +204,8 @@ export function render() {
       sceneCtx.restore();
     }
 
-    // Theme 3: medallion rain effect for all of theme 3
-    // Theme 10: medallion rain effect for 30s, then motes
-    if (
-      (state.gameState.theme === 3 || state.gameState.theme === 10) &&
-      state.gameState.medallionRain.active
-    ) {
+    // Theme 3 and 10: simple rain effect
+    if (state.gameState.theme === 3 || state.gameState.theme === 10) {
       import('./render/medallion-rain.js').then(rainMod => {
         rainMod.drawMedallionRain(state.gameState.medallionRain.particles, 1);
       });

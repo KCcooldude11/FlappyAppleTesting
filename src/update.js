@@ -235,63 +235,22 @@ export function update(gameState, dt, scale) {
   }
 
 
-  // Medallion rain effect for theme 3 and theme 10
-  let medallionRainActive = false;
-  let showMotes = false;
-  if (gameState.theme === 10) {
-    // Theme 10: rain for 30s after reaching theme 10, then resume motes
-    if (!gameState.medallionRain.active && !gameState.medallionRain.startTime) {
-      console.log('[Rain] Activating rain for theme 10');
-      gameState.medallionRain.active = true;
-      gameState.medallionRain.startTime = performance.now();
-    }
-    if (gameState.medallionRain.active && (performance.now() - gameState.medallionRain.startTime <= C.THEME.MEDALLION_RAIN_EFFECT_DURATION_MS)) {
-      medallionRainActive = true;
-    } else {
-      if (gameState.medallionRain.active) {
-        console.log('[Rain] Deactivating rain for theme 10 after 30s');
-      }
-      gameState.medallionRain.active = false;
-      gameState.medallionRain.startTime = 0;
-      gameState.medallionRain.particles = [];
-      showMotes = true;
-    }
-  } else if (gameState.theme === 3) {
-    // Theme 3: always show rain while in theme 3
-    if (!gameState.medallionRain.active) {
-      console.log('[Rain] Activating rain for theme 3');
-      gameState.medallionRain.active = true;
-    }
-    medallionRainActive = true;
-  } else {
-    // If leaving theme 3 or 10, forcibly clear medallion rain
-    if (
-      (gameState.medallionRain.active || gameState.medallionRain.particles.length > 0) &&
-      (gameState.theme !== 3 && gameState.theme !== 10)
-    ) {
-      console.log('[Rain] Clearing rain state (leaving theme 3/10)', {
-        theme: gameState.theme,
-        active: gameState.medallionRain.active,
-        particles: gameState.medallionRain.particles.length
-      });
-      gameState.medallionRain.active = false;
-      gameState.medallionRain.startTime = 0;
-      gameState.medallionRain.particles = [];
-    }
+  // Rain effect for theme 3 and theme 10 only
+  let rainActive = false;
+  if (gameState.theme === 3 || gameState.theme === 10) {
+    rainActive = true;
   }
-
-  if (medallionRainActive) {
-    const vw = renderer.getCanvasWidth();
-    const vh = renderer.getCanvasHeight();
-    const rain = gameState.medallionRain.particles;
+  const vw = renderer.getCanvasWidth();
+  const vh = renderer.getCanvasHeight();
+  const rain = gameState.medallionRain.particles;
+  if (rainActive) {
     import('./render/medallion-rain.js').then(rainMod => {
       rainMod.ensureMedallionRain(rain, vw, vh, 32);
-      console.log('[Rain] After ensureMedallionRain, particles:', rain.length);
       rainMod.updateMedallionRain(rain, vw, vh, dt);
     });
-  }
-  if (showMotes) {
-    particlesRender.updateTheme3Motes(gameState.theme3Motes.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
+  } else {
+    // Clear rain when not in theme 3 or 10
+    if (rain.length > 0) rain.length = 0;
   }
 
   return null; // no collision
