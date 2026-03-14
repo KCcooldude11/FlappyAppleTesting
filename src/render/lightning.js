@@ -51,7 +51,12 @@ export class LightningEffect {
         continue;
       }
       ctx.save();
-      ctx.strokeStyle = 'rgba(255,255,255,0.13)';
+      // Make lower lightning more transparent
+      const lastY = light.path[light.path.length - 1].y;
+      let alpha = 0.13;
+      if (lastY > h * 0.6) alpha = 0.07;
+      else if (lastY > h * 0.4) alpha = 0.10;
+      ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
       ctx.lineWidth = 3;
       if (Math.floor(this.random(0, 15)) === 0) ctx.lineWidth = 6;
       if (Math.floor(this.random(0, 30)) === 0) ctx.lineWidth = 8;
@@ -84,7 +89,7 @@ export class LightningEffect {
     if (this.lightTimeCurrent >= this.lightTimeTotal) {
       this.createLightning(w, h);
       this.lightTimeCurrent = 0;
-      this.lightTimeTotal = Math.floor(this.random(120, 260)); // sparser flashes
+      this.lightTimeTotal = Math.floor(this.random(320, 700)); // much less frequent flashes
     }
     this.drawLightning(ctx, w, h);
   }
