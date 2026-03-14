@@ -2,10 +2,8 @@ import * as C from '../constants.js';
 import * as renderer from './index.js';
 import * as bg from '../entities/background.js';
 import * as pipe from '../entities/pipe.js';
-import * as state from '../state.js';
-import { glitchBirdImage } from './bird-glitch.js';
 
-
+export function drawSpireSegmented(x, y, w, h, theme, orientation = 'up') {
   const ctx = renderer.getContext();
   const imgTile = bg.getSpireSet(theme).tile;
   const imgCap = bg.getSpireSet(theme).cap;
@@ -57,21 +55,19 @@ function drawStackUp(imgTile, imgCap, ready, x, y, w, h, capNudgeY = 0) {
 
     let cursorY = y + h - tileH;
     while (cursorY + tileH > limit) {
-      let tileToDraw = imgTile;
-      // ...existing code...
-      ctx.drawImage(tileToDraw, x, cursorY, drawW, tileH);
+      ctx.drawImage(imgTile, x, cursorY, drawW, tileH);
       cursorY -= tileH - C.SPIRE.TILE_OVERLAP;
     }
 
     ctx.restore();
   }
 
-  let capToDraw = imgCap;
-  // ...existing code...
-  if (ready.cap) ctx.drawImage(capToDraw, x, capY, drawW, capH);
+  if (ready.cap) ctx.drawImage(imgCap, x, capY, drawW, capH);
+
   ctx.restore();
 }
 
+export function drawAllPipes(pipes, theme, screenHeight) {
   const pipeWidth = Math.round(C.PHYSICS.PIPE_WIDTH * renderer.getScale());
 
   for (let p of pipes) {
