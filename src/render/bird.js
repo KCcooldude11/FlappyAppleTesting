@@ -5,6 +5,10 @@ import * as state from '../state.js';
 import * as skin from '../systems/skin-manager.js';
 import { glitchBirdImage } from './bird-glitch.js';
 
+let cachedGlitch = null;
+let glitchTimer = 0;
+
+
 export function getBirdDrawSize(skinIndex) {
   const s = renderer.getScale();
   const baseH = C.PHYSICS.BIRD_BASE_H * s * skin.getSkinScale(skinIndex);
@@ -41,21 +45,6 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
 
     ctx.drawImage(drawImg, -birdW / 2, -birdH / 2, birdW, birdH);
 
-
-  // Theme 11: glitch overlay
-  if (state.gameState.theme === 11) {
-    const bands = 4 + Math.floor(Math.random() * 2); // 4–5 glitch slices
-    const maxOffset = 4 + Math.floor(Math.random() * 2); // small horizontal shift
-    const rgb = Math.random() < 0.3; // occasional RGB split
-    const glitched = glitchBirdImage(img, birdW, birdH, {
-      bands,
-      maxOffset,
-      rgb,
-      glitchChance: 0.7 // much more likely to glitch, matches demo
-    });
-    // Draw glitch slices on top of the original bird
-    ctx.drawImage(glitched, -birdW / 2, -birdH / 2, birdW, birdH);
-  }
 
   ctx.restore();
 }
