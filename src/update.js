@@ -11,7 +11,7 @@ import * as particlesRender from './render/particles.js';
 import * as cfg from './config.js';
 
 export function update(gameState, dt, scale) {
-  console.debug('[Rain] update() called, mode:', gameState.mode, 'theme:', gameState.theme);
+  console.log('[Rain] update() called, mode:', gameState.mode, 'theme:', gameState.theme);
   if (gameState.mode !== 'playing') return null;
 
   const noDeathDebug = C.DEBUG?.NO_DEATH_RUN;
@@ -241,7 +241,7 @@ export function update(gameState, dt, scale) {
   if (gameState.theme === 10) {
     // Theme 10: rain for 30s after reaching theme 10, then resume motes
     if (!gameState.medallionRain.active && !gameState.medallionRain.startTime) {
-      console.debug('[Rain] Activating rain for theme 10');
+      console.log('[Rain] Activating rain for theme 10');
       gameState.medallionRain.active = true;
       gameState.medallionRain.startTime = performance.now();
     }
@@ -249,7 +249,7 @@ export function update(gameState, dt, scale) {
       medallionRainActive = true;
     } else {
       if (gameState.medallionRain.active) {
-        console.debug('[Rain] Deactivating rain for theme 10 after 30s');
+        console.log('[Rain] Deactivating rain for theme 10 after 30s');
       }
       gameState.medallionRain.active = false;
       gameState.medallionRain.startTime = 0;
@@ -259,7 +259,7 @@ export function update(gameState, dt, scale) {
   } else if (gameState.theme === 3) {
     // Theme 3: always show rain while in theme 3
     if (!gameState.medallionRain.active) {
-      console.debug('[Rain] Activating rain for theme 3');
+      console.log('[Rain] Activating rain for theme 3');
       gameState.medallionRain.active = true;
     }
     medallionRainActive = true;
@@ -269,7 +269,7 @@ export function update(gameState, dt, scale) {
       (gameState.medallionRain.active || gameState.medallionRain.particles.length > 0) &&
       (gameState.theme !== 3 && gameState.theme !== 10)
     ) {
-      console.debug('[Rain] Clearing rain state (leaving theme 3/10)', {
+      console.log('[Rain] Clearing rain state (leaving theme 3/10)', {
         theme: gameState.theme,
         active: gameState.medallionRain.active,
         particles: gameState.medallionRain.particles.length
