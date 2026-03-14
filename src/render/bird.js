@@ -28,7 +28,19 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
   ctx.rotate(bird.rot * C.BIRD.ROTATION_FACTOR);
 
   // Always draw the normal bird first
-  ctx.drawImage(img, -birdW / 2, -birdH / 2, birdW, birdH);
+  let drawImg = img;
+
+    if (state.gameState.theme === 11) {
+      drawImg = glitchBirdImage(img, birdW, birdH, {
+        bands: 5,
+        maxOffset: 6,
+        rgb: true,
+        glitchChance: 0.7
+      });
+    }
+
+    ctx.drawImage(drawImg, -birdW / 2, -birdH / 2, birdW, birdH);
+
 
   // Theme 11: glitch overlay
   if (state.gameState.theme === 11) {
