@@ -163,6 +163,9 @@ function startGame(name) {
   state.setGameMode('playing');
   state.markRunStart(state.gameState.frameNow);
 
+  // Always reset the score badge to 0 at the start of a run
+  hudRender.updateScoreBadge(document.getElementById('score'), scoreTextEl, 0);
+
   uiOverlays.hideOverlay();
   uiOverlays.hideGameOver();
 
@@ -194,6 +197,7 @@ function startGame(name) {
       skinSys.switchToSkin(state.gameState, cfg.SKIN_INDICES.MERRIKH, C.PHYSICS.BIRD_RADIUS_RATIO);
     }
 
+    // Also update the score badge for debug start
     hudRender.updateScoreBadge(document.getElementById('score'), scoreTextEl, state.gameState.score);
   }
 

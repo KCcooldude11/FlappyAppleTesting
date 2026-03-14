@@ -261,34 +261,58 @@ export function render() {
 
   // ...existing code...
 
-  // Theme 11: spotlight/darkness overlay
+  // Theme 11: CRT/VCR effect overlay
   if (state.gameState.theme === 11) {
-    // Shrink spotlight from 400px to 250px as score goes from 1100 to 1200
-    const minRadius = 250;
-    const maxRadius = 400;
-    const s = Math.max(0, Math.min(1, (1200 - state.gameState.score) / 100));
-    const radius = minRadius + (maxRadius - minRadius) * s;
     const ctx = renderer.getBaseContext();
-    const cx = state.gameState.bird.x || vw / 2;
-    const cy = state.gameState.bird.y || vh / 2;
+    // 1. Apply CRT/VCR filter to the whole frame
     ctx.save();
     ctx.globalAlpha = 1.0;
-    ctx.globalCompositeOperation = 'source-over';
-    // Create a radial gradient for soft edge
-    const edge = Math.max(32, Math.round(radius * 0.25));
-    const grad = ctx.createRadialGradient(cx, cy, radius - edge, cx, cy, radius);
-    grad.addColorStop(0, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(0,0,0,1)');
-    // Fill full darkness
-    ctx.fillStyle = 'rgba(0,0,0,0.98)';
-    ctx.fillRect(0, 0, vw, vh);
-    // Punch out spotlight with gradient
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-    ctx.closePath();
+    ctx.filter = 'blur(1.2px) brightness(1.2) contrast(1.3) grayscale(0.08)';
+    ctx.drawImage(scene.canvas, 0, 0, vw, vh);
+    ctx.filter = 'none';
+    ctx.restore();
+
+    // 2. Overlay scanlines
+    ctx.save();
+    ctx.globalAlpha = 0.22;
+    for (let y = 0; y < vh; y += 3) {
+      ctx.fillStyle = 'rgba(18,16,16,0.75)';
+      ctx.fillRect(0, y + 2, vw, 1);
+    }
+    ctx.restore();
+
+    // 3. Overlay vignette
+    ctx.save();
+    const grad = ctx.createRadialGradient(vw/2, vh/2, Math.min(vw, vh)*0.45, vw/2, vh/2, Math.max(vw, vh)*0.65);
+    grad.addColorStop(0.7, 'rgba(0,0,0,0)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.45)');
     ctx.fillStyle = grad;
-    ctx.fill();
+    ctx.fillRect(0, 0, vw, vh);
+    ctx.restore();
+
+    // 4. Overlay snow/static
+    ctx.save();
+    const snowDensity = 0.13; // Lower = more snow
+    const snowAlpha = 0.18;
+    for (let i = 0; i < vw * vh * snowDensity * 0.001; i++) {
+      const x = Math.random() * vw;
+      const y = Math.random() * vh;
+      const s = Math.random() * 1.2 + 0.3;
+      ctx.globalAlpha = snowAlpha * Math.random();
+      ctx.fillStyle = '#fff';
+      ctx.fillRect(x, y, s, s);
+    }
+    ctx.restore();
+
+    // 5. Overlay VCR noise (random white streaks)
+    ctx.save();
+    ctx.globalAlpha = 0.10;
+    for (let i = 0; i < 18; i++) {
+      const y = Math.random() * vh;
+      const h = Math.random() * 2 + 1;
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fillRect(0, y, vw, h);
+    }
     ctx.restore();
   }
 
