@@ -286,6 +286,7 @@ export function update(gameState, dt, scale) {
     const rain = gameState.medallionRain.particles;
     import('./render/medallion-rain.js').then(rainMod => {
       rainMod.ensureMedallionRain(rain, vw, vh, 32);
+      console.log('[Rain] After ensureMedallionRain, particles:', rain.length);
       rainMod.updateMedallionRain(rain, vw, vh, dt);
     });
   }

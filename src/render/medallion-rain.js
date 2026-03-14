@@ -44,6 +44,7 @@ export function updateMedallionRain(rain, vw, vh, dt) {
 }
 
 export function drawMedallionRain(rain, alpha = 1) {
+  console.log('[Rain] drawMedallionRain called, particles:', rain.length);
   const ctx = renderer.getContext();
   ctx.save();
   ctx.globalAlpha = alpha;
