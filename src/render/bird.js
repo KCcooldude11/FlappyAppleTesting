@@ -6,6 +6,7 @@ import { glitchBirdImage } from './bird-glitch.js';
 
 let cachedGlitch = null;
 let glitchTimer = 0;
+let glitchBurst = false;
 
 export function getBirdDrawSize(skinIndex) {
   const s = renderer.getScale();
@@ -34,22 +35,35 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
 
   if (state.gameState.theme === 11) {
 
-    // update timer
     glitchTimer -= 1 / 60;
 
     if (glitchTimer <= 0) {
 
-      const bigGlitch = Math.random() < 0.12;
+      if (!glitchBurst) {
+        // Start a burst after calm period
+        glitchBurst = true;
+        glitchTimer = 0.25 + Math.random() * 0.35; // burst lasts ~0.25–0.6s
+      } else {
+        // End burst and return to calm
+        glitchBurst = false;
+        cachedGlitch = null;
+        glitchTimer = 2 + Math.random() * 3; // calm for 2–5 seconds
+      }
+    }
+
+    if (glitchBurst) {
+
+      const bigGlitch = Math.random() < 0.18;
 
       const bands = bigGlitch
-        ? 8 + Math.floor(Math.random() * 5)
+        ? 8 + Math.floor(Math.random() * 6)
         : 3 + Math.floor(Math.random() * 4);
 
       const maxOffset = bigGlitch
-        ? 10 + Math.random() * 10
+        ? 10 + Math.random() * 12
         : 2 + Math.random() * 6;
 
-      const rgb = Math.random() < 0.35;
+      const rgb = Math.random() < 0.4;
 
       cachedGlitch = glitchBirdImage(img, birdW, birdH, {
         bands,
@@ -58,18 +72,12 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
         glitchChance: 1
       });
 
-      // vary glitch duration / calm period
-      if (Math.random() < 0.6) {
-        glitchTimer = 0.05 + Math.random() * 0.15;
-      } else {
-        glitchTimer = 0.2 + Math.random() * 0.5;
-      }
+      drawImg = cachedGlitch;
     }
-
-    drawImg = cachedGlitch || img;
 
   } else {
     cachedGlitch = null;
+    glitchBurst = false;
   }
 
   ctx.drawImage(drawImg, -birdW / 2, -birdH / 2, birdW, birdH);
