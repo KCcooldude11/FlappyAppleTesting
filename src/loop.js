@@ -289,11 +289,15 @@ export function render() {
   // Theme 11: CRT/VCR effect overlay
   if (state.gameState.theme === 11) {
     const ctx = renderer.getBaseContext();
-    // 1. Apply CRT/Arcade Glow filter to the whole frame
+    // 1. Apply clean CRT filter with RGB phosphor separation
     ctx.save();
     ctx.globalAlpha = 1.0;
-    ctx.filter = 'brightness(1.18) contrast(1.12) saturate(1.25) blur(0.7px) drop-shadow(0 0 8px #0ff8) drop-shadow(0 0 8px #f0f8) drop-shadow(0 0 8px #08f8)';
+    ctx.filter = 'contrast(1.2) brightness(1.1) saturate(1.25) blur(0.7px) drop-shadow(-1px 0 red) drop-shadow(1px 0 cyan)';
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+    // slight curvature illusion
+    ctx.transform(1.02, 0, 0, 1.02, vw * -0.01, vh * -0.01);
     ctx.drawImage(scene.canvas, 0, 0, vw, vh);
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.filter = 'none';
     ctx.restore();
 
@@ -301,50 +305,18 @@ export function render() {
     ctx.save();
     ctx.globalAlpha = 0.22;
     for (let y = 0; y < vh; y += 3) {
-      ctx.fillStyle = 'rgba(18,16,16,0.85)';
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
       ctx.fillRect(0, y + 2, vw, 1);
     }
     ctx.restore();
 
-    // 3. Overlay vignette
+    // 3. Overlay vignette / tube edges
     ctx.save();
-    const grad = ctx.createRadialGradient(vw/2, vh/2, Math.min(vw, vh)*0.45, vw/2, vh/2, Math.max(vw, vh)*0.65);
-    grad.addColorStop(0.7, 'rgba(0,0,0,0)');
-    grad.addColorStop(1, 'rgba(0,0,0,0.50)');
+    const grad = ctx.createRadialGradient(vw/2, vh/2, Math.min(vw, vh)*0.55, vw/2, vh/2, Math.max(vw, vh)*0.98);
+    grad.addColorStop(0.55, 'rgba(0,0,0,0)');
+    grad.addColorStop(1, 'rgba(0,0,0,0.4)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, vw, vh);
-    ctx.restore();
-
-    // 4. Overlay rounded glass pane (unchanged)
-    ctx.save();
-    const paneW = vw * 0.92;
-    const paneH = vh * 0.92;
-    const paneX = (vw - paneW) / 2;
-    const paneY = (vh - paneH) / 2;
-    ctx.globalAlpha = 0.22;
-    ctx.beginPath();
-    ctx.moveTo(paneX + 32, paneY);
-    ctx.lineTo(paneX + paneW - 32, paneY);
-    ctx.quadraticCurveTo(paneX + paneW, paneY, paneX + paneW, paneY + 32);
-    ctx.lineTo(paneX + paneW, paneY + paneH - 32);
-    ctx.quadraticCurveTo(paneX + paneW, paneY + paneH, paneX + paneW - 32, paneY + paneH);
-    ctx.lineTo(paneX + 32, paneY + paneH);
-    ctx.quadraticCurveTo(paneX, paneY + paneH, paneX, paneY + paneH - 32);
-    ctx.lineTo(paneX, paneY + 32);
-    ctx.quadraticCurveTo(paneX, paneY, paneX + 32, paneY);
-    ctx.closePath();
-    // Glass gradient
-    const glassGrad = ctx.createLinearGradient(paneX, paneY, paneX, paneY + paneH);
-    glassGrad.addColorStop(0, 'rgba(255,255,255,0.18)');
-    glassGrad.addColorStop(0.5, 'rgba(255,255,255,0.08)');
-    glassGrad.addColorStop(1, 'rgba(200,220,255,0.10)');
-    ctx.fillStyle = glassGrad;
-    ctx.fill();
-    // Inner shadow
-    ctx.globalAlpha = 0.18;
-    ctx.strokeStyle = 'rgba(80,100,160,0.18)';
-    ctx.lineWidth = 8;
-    ctx.stroke();
     ctx.restore();
   }
 

@@ -43,6 +43,16 @@
   <p>Preview of <b>background2.png</b> and <b>background3.png</b> with various CSS filters.</p>
   <div id="demo"></div>
 
+    <h2>Arcade CRT Screen Effect (Clean Version)</h2>
+    <div class="row">
+      <div class="label">Clean CRT Arcade</div>
+      <div class="img-wrap">
+        <div class="arcade-screen">
+          <img src="./assets/background2.png" alt="Arcade CRT Clean" />
+        </div>
+      </div>
+    </div>
+
     <h2>Arcade CRT Monitor Effect</h2>
     <div class="row">
       <div class="label">CRT Arcade Monitor</div>
@@ -125,6 +135,63 @@
   </div>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.css" />
   <style>
+    /* --- Arcade CRT Screen Effect (Clean Version) --- */
+    .arcade-screen {
+      position: relative;
+      width: 640px;
+      height: 360px;
+      overflow: hidden;
+      border-radius: 10px;
+      background: black;
+      margin: 0 8px;
+    }
+    .arcade-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      /* CRT softness and RGB phosphor separation */
+      filter:
+        contrast(1.2)
+        brightness(1.1)
+        saturate(1.25)
+        blur(0.7px)
+        drop-shadow(-1px 0 red)
+        drop-shadow(1px 0 cyan);
+      /* slight curvature illusion */
+      transform: perspective(800px) scale(1.02);
+      border-radius: 10px;
+      display: block;
+    }
+    /* scanlines */
+    .arcade-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0,0,0,0) 0px,
+        rgba(0,0,0,0) 2px,
+        rgba(0,0,0,0.25) 3px
+      );
+      mix-blend-mode: multiply;
+      pointer-events: none;
+      border-radius: 10px;
+      z-index: 2;
+    }
+    /* vignette / tube edges */
+    .arcade-screen::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(0,0,0,0) 55%,
+        rgba(0,0,0,0.4) 100%
+      );
+      pointer-events: none;
+      border-radius: 10px;
+      z-index: 3;
+    }
     /* --- CRT Arcade Monitor Effect --- */
     .arcade-crt .bg {
       filter: brightness(1.18) contrast(1.18) blur(1.1px) saturate(1.08);
