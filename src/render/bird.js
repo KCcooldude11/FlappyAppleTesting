@@ -49,7 +49,7 @@ export function drawBird(bird, skinIndex, isFlapTiming, ctxOverride) {
       });
 
       // hold this glitch for ~80ms
-      glitchTimer = 0.08;
+      glitchTimer = 0.25;
     }
 
     drawImg = cachedGlitch || img;
