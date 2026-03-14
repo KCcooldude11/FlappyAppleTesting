@@ -206,9 +206,14 @@ export function render() {
       sceneCtx.restore();
     }
 
-    // Theme 3 and 10: simple rain effect
+    // Theme 3 and 10: rain motes (old system)
     if (state.gameState.theme === 3 || state.gameState.theme === 10) {
-      rainMod.drawMedallionRain(state.gameState.medallionRain.particles, 1);
+      sceneCtx.save();
+      particlesRender.drawTheme3Motes(
+        state.gameState.theme3Motes.particles,
+        1
+      );
+      sceneCtx.restore();
     } else if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
       sceneCtx.save();
       particlesRender.drawTheme3Motes(

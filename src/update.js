@@ -229,30 +229,19 @@ export function update(gameState, dt, scale) {
     gameState.medallions = gameState.medallions.filter(m => !m.taken && m.x + m.size > -40 * scale);
   }
 
+
   // Water particles (Theme 2 and 9)
   const themeForParticles = (gameState.theme === 9) ? 2 : gameState.theme;
   if (themeForParticles === 2 || themeForParticles === C.THEME.INVERT_THEME2_ID) {
     particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 
-
-    // Theme 3 rain motes
+  // Theme 3/10: rain motes (old system)
   if (gameState.theme === 3 || gameState.theme === 10) {
     const vw = renderer.getCanvasWidth();
     const vh = renderer.getCanvasHeight();
-
-    particlesRender.ensureTheme3MoteCount(
-      gameState.theme3Motes.particles,
-      vw,
-      vh
-    );
-
-    particlesRender.updateTheme3Motes(
-      gameState.theme3Motes.particles,
-      vw,
-      vh,
-      dt
-    );
+    particlesRender.ensureTheme3MoteCount(gameState.theme3Motes.particles, vw, vh);
+    particlesRender.updateTheme3Motes(gameState.theme3Motes.particles, vw, vh, dt);
   } else {
     // clear particles when leaving theme
     if (gameState.theme3Motes.particles.length > 0) {
