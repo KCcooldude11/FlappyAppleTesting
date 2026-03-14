@@ -195,6 +195,30 @@ export function render() {
     // Background
     bgRender.drawBackground(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow);
 
+    // --- Theme 3: Lightning overlay (draw behind spires) ---
+    if (state.gameState.theme === 3) {
+      if (!window._theme3Lightning) {
+        window._theme3Lightning = {
+          effect: new LightningEffect(),
+          canvas: document.createElement('canvas'),
+          ctx: null,
+          lastW: 0,
+          lastH: 0
+        };
+      }
+      const lightning = window._theme3Lightning;
+      if (lightning.lastW !== vw || lightning.lastH !== vh) {
+        lightning.canvas.width = vw;
+        lightning.canvas.height = vh;
+        lightning.ctx = lightning.canvas.getContext('2d');
+        lightning.lastW = vw;
+        lightning.lastH = vh;
+      }
+      // Animate and draw lightning
+      lightning.effect.animate(lightning.ctx, vw, vh);
+      sceneCtx.drawImage(lightning.canvas, 0, 0, vw, vh);
+    }
+
     // Water particles (Theme 2 and 9)
     let themeForParticles = state.gameState.theme === 9 ? 2 : state.gameState.theme;
     if (themeSys.getTheme2Alpha(themeForParticles, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
@@ -259,29 +283,7 @@ export function render() {
     outputCtx.drawImage(scene.canvas, 0, 0, vw, vh);
   }
 
-  // --- Theme 3: Lightning overlay ---
-  if (state.gameState.theme === 3) {
-    if (!window._theme3Lightning) {
-      window._theme3Lightning = {
-        effect: new LightningEffect(),
-        canvas: document.createElement('canvas'),
-        ctx: null,
-        lastW: 0,
-        lastH: 0
-      };
-    }
-    const lightning = window._theme3Lightning;
-    if (lightning.lastW !== vw || lightning.lastH !== vh) {
-      lightning.canvas.width = vw;
-      lightning.canvas.height = vh;
-      lightning.ctx = lightning.canvas.getContext('2d');
-      lightning.lastW = vw;
-      lightning.lastH = vh;
-    }
-    // Animate and draw lightning
-    lightning.effect.animate(lightning.ctx, vw, vh);
-    outputCtx.drawImage(lightning.canvas, 0, 0, vw, vh);
-  }
+
 
   // ...existing code...
 
