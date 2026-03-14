@@ -233,37 +233,36 @@ export function update(gameState, dt, scale) {
     particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 
-  // Theme 3/10: medallion rain effect at 1000+ and motes
-  // For theme 10, medallion rain for 30s after reaching score 1000, then resume motes
+
+  // Medallion rain effect for theme 3 and theme 10
   let medallionRainActive = false;
   let showMotes = false;
-  if (gameState.theme === 10 && gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE) {
-    // If just reached 1000, start rain
+  if (gameState.theme === 10) {
+    // Theme 10: rain for 30s after reaching theme 10, then resume motes
     if (!gameState.medallionRain.active && !gameState.medallionRain.startTime) {
       gameState.medallionRain.active = true;
       gameState.medallionRain.startTime = performance.now();
     }
-    // If rain is active and within 30s, keep rain
     if (gameState.medallionRain.active && (performance.now() - gameState.medallionRain.startTime <= C.THEME.MEDALLION_RAIN_EFFECT_DURATION_MS)) {
       medallionRainActive = true;
     } else {
-      // End rain after 30s
       gameState.medallionRain.active = false;
       gameState.medallionRain.startTime = 0;
       gameState.medallionRain.particles = [];
       showMotes = true;
     }
-  } else if (gameState.theme === 3 && gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE) {
-    // Theme 3: always show rain above 1000
+  } else if (gameState.theme === 3) {
+    // Theme 3: always show rain while in theme 3
     if (!gameState.medallionRain.active) {
       gameState.medallionRain.active = true;
     }
     medallionRainActive = true;
-  } else if (gameState.theme === 10) {
-    showMotes = true;
   } else {
-    // If leaving theme 10, forcibly clear medallion rain
-    if (gameState.medallionRain.active || gameState.medallionRain.particles.length > 0) {
+    // If leaving theme 3 or 10, forcibly clear medallion rain
+    if (
+      (gameState.medallionRain.active || gameState.medallionRain.particles.length > 0) &&
+      (gameState.theme !== 3 && gameState.theme !== 10)
+    ) {
       gameState.medallionRain.active = false;
       gameState.medallionRain.startTime = 0;
       gameState.medallionRain.particles = [];

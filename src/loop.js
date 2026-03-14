@@ -204,22 +204,20 @@ export function render() {
       sceneCtx.restore();
     }
 
-    // Theme 3/10: medallion rain effect at 1000+
-    // Theme 3/10/11: medallion rain effect at 1000+
-    let themeForRain = (state.gameState.theme === 10 || state.gameState.theme === 11) ? 3 : state.gameState.theme;
+    // Theme 3: medallion rain effect for all of theme 3
+    // Theme 10: medallion rain effect for 30s, then motes
     if (
-      (state.gameState.theme === 10 || state.gameState.theme === 11 || themeForRain === 3) &&
-      state.gameState.medallionRain.active &&
-      state.gameState.score >= C.THEME.MEDALLION_RAIN_EFFECT_SCORE
+      (state.gameState.theme === 3 || state.gameState.theme === 10) &&
+      state.gameState.medallionRain.active
     ) {
       import('./render/medallion-rain.js').then(rainMod => {
         rainMod.drawMedallionRain(state.gameState.medallionRain.particles, 1);
       });
-    } else if (themeSys.getTheme3Alpha(themeForRain, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
+    } else if (themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow) > 0) {
       sceneCtx.save();
       particlesRender.drawTheme3Motes(
         state.gameState.theme3Motes.particles,
-        themeSys.getTheme3Alpha(themeForRain, state.gameState.themeTransition, state.gameState.frameNow)
+        themeSys.getTheme3Alpha(state.gameState.theme, state.gameState.themeTransition, state.gameState.frameNow)
       );
       sceneCtx.restore();
     }
