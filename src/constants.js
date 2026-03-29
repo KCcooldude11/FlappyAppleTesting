@@ -94,8 +94,8 @@ export const PROGRESSION = {
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
     ENABLED: true,
-    START_SCORE: 590,
-    START_COLUMNS: 590,
+    START_SCORE: 1090,
+    START_COLUMNS: 1090,
     START_THEME: 2,
     START_AS_MERRIKH: false,
     FORCE_MEDAL_EVERY_PIPE: true,
