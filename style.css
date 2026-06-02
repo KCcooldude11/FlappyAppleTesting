@@ -114,8 +114,12 @@ body {
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100svh;   /* fallback */
-  height: 100dvh;   /* modern dynamic viewport */
+  /* Prefer the stable small viewport unit on mobile to avoid
+     browser chrome overlapping app content (notably iPad/Safari).
+     Avoid using 100dvh as it can include dynamic browser UI and
+     cause overlays to be pushed under the bottom controls. */
+  height: 100svh;
+  min-height: 100svh;
   overflow: hidden; /* keep gameplay from scrolling */
 }
 
@@ -206,6 +210,12 @@ body {
   display: none; /* JS toggles .show/.hide */
   align-items: center;
   justify-content: center;
+  /* Allow overlays to scroll on very short viewports (e.g. iPad in split
+     or when browser UI consumes space). Use stable viewport height to
+     ensure content isn't clipped by dynamic browser chrome. */
+  max-height: 100svh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 #overlay.show { display: flex; }
