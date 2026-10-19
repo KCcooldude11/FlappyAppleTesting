@@ -6,6 +6,11 @@ export function setupScoreBadgeElement() {
   if (!scoreEl) return null;
 
   let t = scoreEl.querySelector('.txt');
+  const valueEl = scoreEl.querySelector('.score-value');
+  if (valueEl) {
+    valueEl.classList.add('txt');
+    return valueEl;
+  }
   if (!t) {
     t = document.createElement('span');
     t.className = 'txt';
