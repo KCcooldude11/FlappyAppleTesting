@@ -298,11 +298,7 @@ export function render() {
     ctx.save();
     ctx.globalAlpha = 1.0;
     ctx.filter = 'contrast(1.2) brightness(1.1) saturate(1.25) blur(0.7px) drop-shadow(-1px 0 red) drop-shadow(1px 0 cyan)';
-    ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
-    // slight curvature illusion
-    ctx.transform(1.02, 0, 0, 1.02, vw * -0.01, vh * -0.01);
     ctx.drawImage(scene.canvas, 0, 0, vw, vh);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.filter = 'none';
     ctx.restore();
 
