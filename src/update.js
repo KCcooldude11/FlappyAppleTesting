@@ -88,10 +88,10 @@ export function update(gameState, dt, scale) {
       );
       gameState.medallions.push(medal_m);
     } else if (
-      gameState.score === C.PROGRESSION.RESET_TO_APPLE_AT_SCORE + 1 &&
-      !gameState.post500AppleResetDone
+      gameState.awaitingPost500AppleReset &&
+      !gameState.post500ResetMedallionSpawned
     ) {
-      // Force a medallion at 501 for apple/invert reset
+      // Spawn the reset medallion once after crossing score 500.
       const prevPipe = gameState.pipes[gameState.pipes.length - 2];
       const thisPipe = gameState.pipes[gameState.pipes.length - 1];
       const medal_r = medalEntity.spawnRegularMedal(
@@ -103,6 +103,7 @@ export function update(gameState, dt, scale) {
       );
       medal_r.type = 'apple_invert_reset';
       gameState.medallions.push(medal_r);
+      gameState.post500ResetMedallionSpawned = true;
     } else if (medalEcon.shouldSpawnRegularMedal(gameState.columnsSpawned, gameState.nextMedalColumn, gameState.pipes)) {
       const prevPipe = gameState.pipes[gameState.pipes.length - 2];
       const thisPipe = gameState.pipes[gameState.pipes.length - 1];
@@ -198,6 +199,7 @@ export function update(gameState, dt, scale) {
           gameState.theme = C.THEME.INVERT_THEME1_ID; // Switch to inverted theme 1 (theme 6)
           gameState.awaitingPost500AppleReset = false;
           gameState.post500AppleResetDone = true;
+          gameState.post500ResetMedallionSpawned = true;
           gameState.skinLocked = false;
           continue;
         }
@@ -210,6 +212,7 @@ export function update(gameState, dt, scale) {
           );
           gameState.awaitingPost500AppleReset = false;
           gameState.post500AppleResetDone = true;
+          gameState.post500ResetMedallionSpawned = true;
           gameState.skinLocked = false;
           continue;
         }

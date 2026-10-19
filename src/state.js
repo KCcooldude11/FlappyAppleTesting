@@ -60,6 +60,7 @@ export const gameState = {
   skinLocked: false,
   awaitingPost500AppleReset: false,
   post500AppleResetDone: false,
+  post500ResetMedallionSpawned: false,
 
   // Timing
   runStartTime: 0,
@@ -114,6 +115,7 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
   gameState.skinLocked = false;
   gameState.awaitingPost500AppleReset = false;
   gameState.post500AppleResetDone = false;
+  gameState.post500ResetMedallionSpawned = false;
 
   gameState.debug.autoJumpEnabled = keepAutoJumpEnabled || autoJumpPreset;
   gameState.debug.autoJumpTargetY = newBirdY;
