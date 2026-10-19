@@ -1236,3 +1236,151 @@ body[data-state="ready"] #best{
     padding: calc(var(--space-1) * 1.10) calc(var(--space-2) * 1.25);
   }
 }
+
+/* =========================
+   Theme 11: CRT arcade UI
+   ========================= */
+body[data-theme="11"] {
+  --arcade-ink: #f7f0cf;
+  --arcade-amber: #ffca3a;
+  --arcade-cyan: #48f4e8;
+  --arcade-pink: #ff4f9a;
+  --arcade-panel: rgba(12, 17, 28, 0.94);
+  --arcade-line: rgba(72, 244, 232, 0.82);
+  color: var(--arcade-ink);
+}
+
+body[data-theme="11"] #hud,
+body[data-theme="11"] #overlay,
+body[data-theme="11"] #gameover,
+body[data-theme="11"] #support-links,
+body[data-theme="11"] #rename-dlg,
+body[data-theme="11"] button,
+body[data-theme="11"] input,
+body[data-theme="11"] #score,
+body[data-theme="11"] #best {
+  font-family: 'WitcherKnight', 'Courier New', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0.08em 0 var(--arcade-pink), -0.08em 0 var(--arcade-cyan);
+}
+
+body[data-theme="11"] #hud {
+  filter: drop-shadow(0 0 0.35rem rgba(72, 244, 232, 0.55));
+}
+
+body[data-theme="11"] #score::before,
+body[data-theme="11"] #score::after {
+  border-left-color: var(--arcade-amber);
+  border-right-color: var(--arcade-amber);
+}
+
+body[data-theme="11"] #score::before { border-bottom-color: var(--arcade-amber); }
+body[data-theme="11"] #score::after { border-top-color: var(--arcade-amber); }
+
+body[data-theme="11"] #best,
+body[data-theme="11"] #btn-restart {
+  border: 0.12rem solid var(--arcade-line);
+  border-radius: 0;
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  box-shadow: 0.2rem 0.2rem 0 var(--arcade-pink), 0 0 0.8rem rgba(72, 244, 232, 0.35);
+}
+
+body[data-theme="11"] #btn-restart:hover,
+body[data-theme="11"] #btn-restart:focus-visible {
+  color: var(--arcade-amber);
+  outline: 0.12rem solid var(--arcade-amber);
+  outline-offset: 0.15rem;
+}
+
+body[data-theme="11"] #overlay .overlay-medallion__fill {
+  background: var(--arcade-panel);
+  border: 0.16rem solid var(--arcade-amber);
+  box-shadow: 0 0 0 0.24rem #10131e, 0 0 0 0.36rem var(--arcade-cyan), 0 0 2rem rgba(72, 244, 232, 0.35);
+}
+
+body[data-theme="11"] #overlay .overlay-medallion__inner .field > span,
+body[data-theme="11"] #overlay .overlay-medallion__inner .field input,
+body[data-theme="11"] #overlay #btn-play {
+  color: var(--arcade-ink);
+  text-shadow: 0.08em 0 var(--arcade-pink), -0.08em 0 var(--arcade-cyan);
+}
+
+body[data-theme="11"] #overlay .overlay-medallion__inner .field input,
+body[data-theme="11"] #rename-input {
+  border: 0.12rem solid var(--arcade-cyan);
+  border-radius: 0;
+  background: #080b13;
+  color: var(--arcade-ink);
+  box-shadow: inset 0 0 0 0.12rem rgba(255, 79, 154, 0.45);
+}
+
+body[data-theme="11"] #overlay #btn-play,
+body[data-theme="11"] #btn-try,
+body[data-theme="11"] #rename-save {
+  border: 0.12rem solid var(--arcade-amber);
+  border-radius: 0;
+  background: var(--arcade-amber);
+  color: #111522;
+  box-shadow: 0.24rem 0.24rem 0 var(--arcade-pink), 0 0 1rem rgba(255, 202, 58, 0.35);
+  text-shadow: none;
+  text-transform: uppercase;
+}
+
+body[data-theme="11"] #overlay #btn-play:hover,
+body[data-theme="11"] #btn-try:hover,
+body[data-theme="11"] #rename-save:hover {
+  background: var(--arcade-cyan);
+  border-color: var(--arcade-cyan);
+}
+
+body[data-theme="11"] #gameover .go-card,
+body[data-theme="11"] #gameover .leaderboard {
+  border: 0.14rem solid var(--arcade-cyan);
+  border-radius: 0;
+  background: var(--arcade-panel);
+  box-shadow: 0.3rem 0.3rem 0 var(--arcade-pink), 0 0 1.4rem rgba(72, 244, 232, 0.3);
+}
+
+body[data-theme="11"] #gameover .go-card h2,
+body[data-theme="11"] #gameover .profile-line {
+  background: rgba(255, 202, 58, 0.18);
+  color: var(--arcade-amber);
+  border-bottom: 0.12rem solid var(--arcade-amber);
+}
+
+body[data-theme="11"] #gameover .go-score-line,
+body[data-theme="11"] #gameover .username-label,
+body[data-theme="11"] #gameover .lb-title,
+body[data-theme="11"] #gameover .lb-head,
+body[data-theme="11"] #gameover .lb-rows,
+body[data-theme="11"] #gameover .your-rank {
+  color: var(--arcade-ink);
+}
+
+body[data-theme="11"] #gameover #go-score.go-score-medallion {
+  background: var(--arcade-amber);
+  color: #111522;
+  filter: drop-shadow(0 0 0.5rem rgba(255, 202, 58, 0.6));
+  text-shadow: none;
+}
+
+body[data-theme="11"] .icon-btn {
+  border-radius: 0;
+  color: var(--arcade-cyan);
+}
+
+body[data-theme="11"] .icon-btn:hover,
+body[data-theme="11"] .icon-btn:focus-visible {
+  background: rgba(72, 244, 232, 0.18);
+  outline: 0.1rem solid var(--arcade-cyan);
+}
+
+body[data-theme="11"] #support-links a {
+  border-radius: 0;
+  border-color: var(--arcade-cyan);
+  background: var(--arcade-panel);
+  color: var(--arcade-ink);
+  box-shadow: 0.16rem 0.16rem 0 var(--arcade-pink);
+}

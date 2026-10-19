@@ -23,6 +23,7 @@ async function initializeApp() {
     function updateCrtOverlay() {
       if (!window._crtOverlay) return;
       const theme = state.gameState.theme;
+      document.body.dataset.theme = String(theme);
       if (theme === 11) {
         window._crtOverlay.classList.add('active');
       } else {
