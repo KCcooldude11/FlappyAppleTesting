@@ -1490,7 +1490,12 @@ body[data-theme="11"] #support-links a {
 }
 
 @media (max-width: 700px) {
-  body[data-theme="11"] #score,
+  body[data-theme="11"] #score {
+    width: clamp(150px, 38vw, 190px);
+    min-height: clamp(52px, 13vw, 72px);
+    padding: clamp(9px, 2.5vw, 14px) clamp(14px, 3.6vw, 20px);
+  }
+
   body[data-theme="11"] #best {
     width: clamp(112px, 30vw, 170px);
     min-height: clamp(52px, 13vw, 72px);
@@ -1502,7 +1507,8 @@ body[data-theme="11"] #support-links a {
   }
 
   body[data-theme="11"] #score .score-value {
-    font-size: clamp(14px, 4vw, 21px);
+    font-size: clamp(13px, 3.6vw, 18px);
+    white-space: nowrap;
   }
 
   body[data-theme="11"] #best .best-label {
