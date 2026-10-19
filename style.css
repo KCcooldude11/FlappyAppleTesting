@@ -190,6 +190,10 @@ body {
   pointer-events: none;
 }
 
+#score .score-label {
+  display: none;
+}
+
 #best {
   background: rgba(255,255,255,.7);
   padding: 0 var(--space-2);
@@ -1306,6 +1310,7 @@ body[data-theme="11"] #score::after {
 }
 
 body[data-theme="11"] #score .score-label {
+  display: inline;
   position: static;
   width: auto;
   transform: none;
