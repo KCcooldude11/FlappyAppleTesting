@@ -1488,3 +1488,28 @@ body[data-theme="11"] #support-links a {
   color: var(--arcade-ink);
   box-shadow: 0.16rem 0.16rem 0 var(--arcade-pink);
 }
+
+@media (max-width: 700px) {
+  body[data-theme="11"] #score,
+  body[data-theme="11"] #best {
+    width: clamp(112px, 30vw, 170px);
+    min-height: clamp(52px, 13vw, 72px);
+    padding: clamp(9px, 2.5vw, 14px) clamp(12px, 3.2vw, 18px);
+  }
+
+  body[data-theme="11"] #score .score-label {
+    font-size: clamp(8px, 2.2vw, 12px);
+  }
+
+  body[data-theme="11"] #score .score-value {
+    font-size: clamp(14px, 4vw, 21px);
+  }
+
+  body[data-theme="11"] #best .best-label {
+    font-size: clamp(8px, 2vw, 11px);
+  }
+
+  body[data-theme="11"] #best .best-value {
+    font-size: clamp(13px, 3.4vw, 18px);
+  }
+}
