@@ -236,8 +236,8 @@ export function update(gameState, dt, scale) {
     particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 
-  // Theme 3/10: rain motes (old system)
-  if (gameState.theme === 3 || gameState.theme === 10) {
+  // Theme 3, inverted Theme 3, and Theme 10: rain motes
+  if (gameState.theme === 3 || gameState.theme === 5 || gameState.theme === 10) {
     const vw = renderer.getCanvasWidth();
     const vh = renderer.getCanvasHeight();
     particlesRender.ensureTheme3MoteCount(gameState.theme3Motes.particles, vw, vh);
