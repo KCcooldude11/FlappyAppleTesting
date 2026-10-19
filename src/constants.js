@@ -93,7 +93,7 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: true,
+    ENABLED: false,
     START_SCORE: 1090,
     START_COLUMNS: 1090,
     START_THEME: 2,
@@ -105,7 +105,7 @@ export const DEBUG = {
   // Force bgReady for themes in debug mode (array of theme numbers)
   // FORCE_BG_READY: [2, 3, 4, 5],
   NO_DEATH_RUN: {
-    ENABLED: true,
+    ENABLED: false,
     IGNORE_PIPE_COLLISIONS: true,
     IGNORE_WORLD_BOUNDS: false,
     AUTO_JUMP_TOGGLE_KEY: 'KeyQ',

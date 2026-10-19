@@ -204,18 +204,24 @@ body {
    ========================= */
 #overlay,
 #gameover {
-  position: absolute;
+  /* Pin overlays to the visual viewport so they don't get clipped
+    when the browser UI (chrome) changes size on iPad/Safari. */
+  position: fixed;
   inset: 0;
   z-index: 5;
   display: none; /* JS toggles .show/.hide */
   align-items: center;
   justify-content: center;
   /* Allow overlays to scroll on very short viewports (e.g. iPad in split
-     or when browser UI consumes space). Use stable viewport height to
-     ensure content isn't clipped by dynamic browser chrome. */
+    or when browser UI consumes space). Use stable viewport height to
+    ensure content isn't clipped by dynamic browser chrome. */
   max-height: 100svh;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  /* Ensure there is extra breathing room at the bottom for devices with
+    prominent bottom chrome or home indicators. */
+  padding-bottom: calc(env(safe-area-inset-bottom, 20px) + 1.2rem);
 }
 
 #overlay.show { display: flex; }
