@@ -1340,6 +1340,28 @@ body[data-theme="11"] #btn-restart {
   box-shadow: 0.2rem 0.2rem 0 var(--arcade-pink), 0 0 0.8rem rgba(72, 244, 232, 0.35);
 }
 
+body[data-theme="11"] #best {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(0.35 * var(--u));
+  font-size: calc(0.72 * var(--u));
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+body[data-theme="11"] #best .best-label {
+  font-size: calc(0.52 * var(--u));
+  line-height: 1;
+  color: var(--arcade-cyan);
+}
+
+body[data-theme="11"] #best .best-value {
+  font-size: calc(0.78 * var(--u));
+  line-height: 1;
+  color: var(--arcade-amber);
+}
+
 body[data-theme="11"] .best-label-default { display: none; }
 body[data-theme="11"] .best-label-theme11 { display: inline; }
 
