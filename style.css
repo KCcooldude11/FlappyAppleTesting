@@ -200,6 +200,7 @@ body {
   border-radius: var(--r-12);
   font-size: var(--fs-2);
 }
+.best-label-theme11 { display: none; }
 #btn-restart {
   pointer-events: auto;
   border: 0;
@@ -1339,6 +1340,9 @@ body[data-theme="11"] #btn-restart {
   box-shadow: 0.2rem 0.2rem 0 var(--arcade-pink), 0 0 0.8rem rgba(72, 244, 232, 0.35);
 }
 
+body[data-theme="11"] .best-label-default { display: none; }
+body[data-theme="11"] .best-label-theme11 { display: inline; }
+
 body[data-theme="11"] #btn-restart:hover,
 body[data-theme="11"] #btn-restart:focus-visible {
   color: var(--arcade-amber);
@@ -1411,7 +1415,28 @@ body[data-theme="11"] #gameover .your-rank {
   color: var(--arcade-ink);
 }
 
+body[data-theme="11"] #gameover .go-score-line {
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: wrap;
+  gap: calc(0.7 * var(--u));
+}
+
 body[data-theme="11"] #gameover #go-score.go-score-medallion {
+  width: auto;
+  min-width: min(100%, calc(14 * var(--u)));
+  max-width: 100%;
+  height: auto;
+  min-height: calc(4.6 * var(--u));
+  padding: calc(0.9 * var(--u)) calc(1.1 * var(--u));
+  border: 0.14rem solid var(--arcade-amber);
+  border-radius: 0;
+  -webkit-clip-path: none;
+  clip-path: none;
+  font-family: 'PressStart2P', 'Courier New', monospace;
+  font-size: clamp(calc(0.75 * var(--u)), 4vw, calc(1.25 * var(--u)));
+  overflow-wrap: anywhere;
+  white-space: nowrap;
   background: var(--arcade-amber);
   color: #111522;
   filter: drop-shadow(0 0 0.5rem rgba(255, 202, 58, 0.6));

@@ -35,6 +35,11 @@ export function updateScoreBadge(scoreEl, scoreTextEl, score) {
 
 export function updateBestBadge(bestEl, bestScore) {
   if (bestEl) {
-    bestEl.textContent = 'Best: ' + bestScore;
+    const valueEl = bestEl.querySelector('.best-value');
+    if (valueEl) {
+      valueEl.textContent = String(bestScore);
+    } else {
+      bestEl.textContent = 'Best: ' + bestScore;
+    }
   }
 }
