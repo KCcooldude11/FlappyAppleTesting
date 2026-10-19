@@ -105,7 +105,7 @@ export const DEBUG = {
   // Force bgReady for themes in debug mode (array of theme numbers)
   // FORCE_BG_READY: [2, 3, 4, 5],
   NO_DEATH_RUN: {
-    ENABLED: false,
+    ENABLED: true,
     IGNORE_PIPE_COLLISIONS: true,
     IGNORE_WORLD_BOUNDS: false,
     AUTO_JUMP_TOGGLE_KEY: 'KeyQ',
