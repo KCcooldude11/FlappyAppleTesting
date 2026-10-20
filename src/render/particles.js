@@ -91,6 +91,13 @@ export function ensureParticleCount(particles, w, h) {
   if (particles.length > target) particles.length = target;
 }
 
+export function startWaterParticleEntrance(particles, w, h) {
+  for (const particle of particles) {
+    particle.x = Math.random() * w;
+    particle.y = h + Math.random() * h;
+  }
+}
+
 export function updateParticles(particles, w, h, dt) {
   for (let i = 0; i < particles.length; i++) {
     particles[i].step(w, h);

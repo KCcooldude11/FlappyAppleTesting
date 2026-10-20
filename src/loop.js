@@ -138,6 +138,13 @@ export function gameLoop(t) {
         transition: themeTransition
       });
       state.gameState.themeTransition = { ...themeTransition, start: t };
+      if (themeTransition.to === 2) {
+        particlesRender.startWaterParticleEntrance(
+          state.gameState.waterParticles.particles,
+          renderer.getCanvasWidth(),
+          renderer.getCanvasHeight()
+        );
+      }
     }
   } else if (themeSys.isTransitionComplete(state.gameState.themeTransition, t)) {
     console.debug('[ThemeTransition] Completed:', {

@@ -235,7 +235,10 @@ export function update(gameState, dt, scale) {
 
   // Water particles (Theme 2 and 9)
   const themeForParticles = (gameState.theme === 9) ? 2 : gameState.theme;
-  if (themeForParticles === 2 || themeForParticles === C.THEME.INVERT_THEME2_ID) {
+  const transitioningToWaterTheme =
+    gameState.themeTransition &&
+    (gameState.themeTransition.to === 2 || gameState.themeTransition.to === C.THEME.INVERT_THEME2_ID);
+  if (themeForParticles === 2 || themeForParticles === C.THEME.INVERT_THEME2_ID || transitioningToWaterTheme) {
     particlesRender.updateParticles(gameState.waterParticles.particles, renderer.getCanvasWidth(), renderer.getCanvasHeight(), dt);
   }
 

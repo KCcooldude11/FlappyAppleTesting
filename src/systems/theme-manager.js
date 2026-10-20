@@ -2,36 +2,38 @@ import * as C from '../constants.js';
 import * as cfg from '../config.js';
 
 export function shouldTransitionTheme(currentTheme, score, bgReady) {
+  const isBackgroundReady = themeId => !bgReady || bgReady[themeId] !== false;
+
     // 10 -> 11 at 1100
-    if (currentTheme === 10 && score >= C.THEME.THRESHOLDS[8]) {
+    if (currentTheme === 10 && score >= C.THEME.THRESHOLDS[8] && isBackgroundReady(11)) {
       return { from: 10, to: 11 };
     }
   // 1 -> 2 at 100
-  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[0]) {
+  if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[0] && isBackgroundReady(2)) {
     return { from: 1, to: 2 };
   }
   // 2 -> 3 at 200
-  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1]) {
+  if (currentTheme === 2 && score >= C.THEME.THRESHOLDS[1] && isBackgroundReady(3)) {
     return { from: 2, to: 3 };
   }
   // 2 or inverted 1 (6) -> inverted 2 (4) at 600
-  if ((currentTheme === 2 || currentTheme === C.THEME.INVERT_THEME1_ID) && score >= C.THEME.THRESHOLDS[3]) {
+  if ((currentTheme === 2 || currentTheme === C.THEME.INVERT_THEME1_ID) && score >= C.THEME.THRESHOLDS[3] && isBackgroundReady(4)) {
     return { from: currentTheme, to: C.THEME.INVERT_THEME2_ID };
   }
   // inverted 2 (4) -> inverted 3 (5) at 700
-  if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[4]) {
+  if (currentTheme === C.THEME.INVERT_THEME2_ID && score >= C.THEME.THRESHOLDS[4] && isBackgroundReady(5)) {
     return { from: C.THEME.INVERT_THEME2_ID, to: C.THEME.INVERT_THEME3_ID };
   }
   // inverted 3 (5) -> 8 at 850
-  if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[5]) {
+  if (currentTheme === C.THEME.INVERT_THEME3_ID && score >= C.THEME.THRESHOLDS[5] && isBackgroundReady(8)) {
     return { from: C.THEME.INVERT_THEME3_ID, to: 8 };
   }
   // 8 -> 9 at 900
-  if (currentTheme === 8 && score >= C.THEME.THRESHOLDS[6]) {
+  if (currentTheme === 8 && score >= C.THEME.THRESHOLDS[6] && isBackgroundReady(9)) {
     return { from: 8, to: 9 };
   }
   // 9 -> 10 at 1000
-  if (currentTheme === 9 && score >= C.THEME.THRESHOLDS[7]) {
+  if (currentTheme === 9 && score >= C.THEME.THRESHOLDS[7] && isBackgroundReady(10)) {
     return { from: 9, to: 10 };
   }
   return null;
