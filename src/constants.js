@@ -97,7 +97,7 @@ export const DEBUG = {
     FORCE_NEXT_REGULAR_MEDALLION: true,
   },
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: true,
+    ENABLED: false,
     START_SCORE:190,
     START_COLUMNS: 190,
     START_THEME: 2,
@@ -109,7 +109,7 @@ export const DEBUG = {
   // Force bgReady for themes in debug mode (array of theme numbers)
   // FORCE_BG_READY: [2, 3, 4, 5],
   NO_DEATH_RUN: {
-    ENABLED: true,
+    ENABLED: false,
     IGNORE_PIPE_COLLISIONS: true,
     IGNORE_WORLD_BOUNDS: false,
     AUTO_JUMP_TOGGLE_KEY: 'KeyQ',
