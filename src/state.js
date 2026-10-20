@@ -35,6 +35,7 @@ export const gameState = {
     autoJumpTargetY: 0,
     autoJumpCooldownMs: 0,
     speedMultiplier: 1,
+    starMedallionSpawned: false,
   },
 
   // Pipes and collision
@@ -49,6 +50,9 @@ export const gameState = {
   medallions: [],
   columnsSpawned: 0,
   nextMedalColumn: 16,
+  starPowerup: {
+    activeUntil: 0,
+  },
 
   // Themes
   theme: 1, // 1 | 2 | 3
@@ -107,6 +111,8 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
   gameState.medallions = [];
   gameState.columnsSpawned = 0;
   gameState.nextMedalColumn = 16;
+  gameState.starPowerup.activeUntil = 0;
+  gameState.debug.starMedallionSpawned = false;
 
   gameState.theme = 1;
   gameState.themeTransition = null;

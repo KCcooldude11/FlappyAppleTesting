@@ -92,6 +92,10 @@ export const PROGRESSION = {
 };
 
 export const DEBUG = {
+  STAR_MEDALLION_TEST: {
+    ENABLED: true,
+    FORCE_NEXT_REGULAR_MEDALLION: true,
+  },
   TEST_START_NEAR_INVERT_ZONE: {
     ENABLED: true,
     START_SCORE:190,
@@ -125,6 +129,12 @@ export const MEDALS = {
   SAFE_MARGIN_RATIO: 0.2,
   JITTER_RATIO: 0.4,
   MERRIKH_JITTER_RATIO: 0.3,
+};
+
+export const STAR_POWERUP = {
+  SPAWN_CHANCE: 0.001, // 0.1% of eligible regular medallions
+  DURATION_MS: 10000,
+  SPEED_MULTIPLIER: 5,
 };
 
 export const WATER_PARTICLES = {
