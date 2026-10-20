@@ -328,6 +328,8 @@ body {
   font-weight: 700;
   color: #111;
   line-height: 1;
+  min-width: 0;
+  overflow: hidden;
   padding-inline: calc(0.18 * var(--u));
   font-variant-numeric: tabular-nums;
   background: var(--c-amber);
@@ -1464,8 +1466,8 @@ body[data-theme="11"] #gameover #go-score.go-score-medallion {
   -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   font-family: 'PressStart2P', 'Courier New', monospace;
-  font-size: clamp(calc(0.75 * var(--u)), 4vw, calc(1.25 * var(--u)));
-  overflow-wrap: anywhere;
+  font-size: calc(var(--fs-1) * var(--score-font-scale));
+  overflow: hidden;
   white-space: nowrap;
   background: var(--arcade-amber);
   color: #111522;

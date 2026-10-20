@@ -92,7 +92,7 @@ export function updateGameOverScore(score) {
     const scale = 1.5 + extraDigits * 0.12;
     const widthScale = 1 + extraWideDigits * 0.18;
     const heightScale = 1 + extraWideDigits * 0.12;
-    const fontScale = Math.max(0.84, 1 - extraWideDigits * 0.09);
+    const fontScale = Math.max(0.68, 1 - extraWideDigits * 0.16);
 
     goScoreEl.textContent = scoreText;
     goScoreEl.style.setProperty('--score-scale', String(scale));
