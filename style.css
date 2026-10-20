@@ -1450,16 +1450,14 @@ body[data-theme="11"] #gameover .go-score-line {
 }
 
 body[data-theme="11"] #gameover #go-score.go-score-medallion {
-  width: auto;
-  min-width: min(100%, calc(14 * var(--u)));
-  max-width: 100%;
-  height: auto;
-  min-height: calc(4.6 * var(--u));
-  padding: calc(0.9 * var(--u)) calc(1.1 * var(--u));
+  width: min(calc(3.25 * var(--u) * var(--score-scale) * var(--score-width-scale)), 100%);
+  height: calc(4.45 * var(--u) * var(--score-scale) * var(--score-height-scale));
+  flex: 0 1 auto;
+  padding: 0 calc(0.45 * var(--u));
   border: 0.14rem solid var(--arcade-amber);
   border-radius: 0;
-  -webkit-clip-path: none;
-  clip-path: none;
+  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
   font-family: 'PressStart2P', 'Courier New', monospace;
   font-size: clamp(calc(0.75 * var(--u)), 4vw, calc(1.25 * var(--u)));
   overflow-wrap: anywhere;
