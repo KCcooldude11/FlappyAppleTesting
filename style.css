@@ -305,6 +305,9 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  flex-wrap: wrap;
   gap: calc(0.9 * var(--u));
 }
 
@@ -318,6 +321,8 @@ body {
   align-items: center;
   justify-content: center;
   width: calc(3.05 * var(--u) * var(--score-scale) * var(--score-width-scale));
+  max-width: 100%;
+  flex-shrink: 1;
   height: calc(4.6 * var(--u) * var(--score-scale) * var(--score-height-scale));
   font-size: calc(var(--fs-1) * (1 + (var(--score-scale) - 1) * 0.26) * var(--score-font-scale));
   font-weight: 700;
