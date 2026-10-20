@@ -93,13 +93,13 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: false,
-    START_SCORE: 1090,
-    START_COLUMNS: 1090,
+    ENABLED: true,
+    START_SCORE: 90,
+    START_COLUMNS: 90,
     START_THEME: 2,
     START_AS_MERRIKH: false,
     FORCE_MEDAL_EVERY_PIPE: true,
-    NEXT_MEDAL_COLUMN: 992,
+    NEXT_MEDAL_COLUMN: 92,
     MERRIKH_UNLOCK_COLUMN: 301,
   },
   // Force bgReady for themes in debug mode (array of theme numbers)
