@@ -49,6 +49,10 @@ export const gameState = {
   medallions: [],
   columnsSpawned: 0,
   nextMedalColumn: 16,
+  breath: {
+    remaining: C.UNDERWATER.BREATH_MAX,
+    max: C.UNDERWATER.BREATH_MAX,
+  },
 
   // Themes
   theme: 1, // 1 | 2 | 3
@@ -107,6 +111,8 @@ export function resetGameState(newBirdX, newBirdY, birdRadius) {
   gameState.medallions = [];
   gameState.columnsSpawned = 0;
   gameState.nextMedalColumn = 16;
+  gameState.breath.remaining = C.UNDERWATER.BREATH_MAX;
+  gameState.breath.max = C.UNDERWATER.BREATH_MAX;
 
   gameState.theme = 1;
   gameState.themeTransition = null;

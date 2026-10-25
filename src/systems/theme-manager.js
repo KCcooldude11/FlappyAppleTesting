@@ -8,6 +8,10 @@ export function shouldTransitionTheme(currentTheme, score, bgReady) {
     if (currentTheme === 10 && score >= C.THEME.THRESHOLDS[8] && isBackgroundReady(11)) {
       return { from: 10, to: 11 };
     }
+  // 11 -> 12 at 1200
+  if (currentTheme === 11 && score >= C.THEME.THRESHOLDS[9] && isBackgroundReady(12)) {
+    return { from: 11, to: 12 };
+  }
   // 1 -> 2 at 100
   if (currentTheme === 1 && score >= C.THEME.THRESHOLDS[0] && isBackgroundReady(2)) {
     return { from: 1, to: 2 };

@@ -20,6 +20,15 @@ export const PHYSICS = {
   MAX_CENTER_DELTA_RATIO: 0.99,
 };
 
+export const UNDERWATER = {
+  THEMES: [12],
+  GRAVITY_MULTIPLIER: 0.72,
+  PIPE_SPEED_MULTIPLIER: 0.68,
+  MEDAL_MIN_JUMP: 8,
+  MEDAL_MAX_JUMP: 15,
+  BREATH_MAX: 2,
+};
+
 export const COLLISION = {
   HIT_INSET_X_RATIO: 0.14,
   CAP_INSET_Y: 8,
@@ -52,7 +61,8 @@ export const THEME = {
   // 9: at 900 (clone of 2)
   // 10: at 1000 (clone of 3)
   // 11: at 1100 (spotlight/darkness)
-  THRESHOLDS: [100, 200, 500, 600, 700, 850, 900, 1000, 1100],
+  // 12: at 1200 (underwater)
+  THRESHOLDS: [100, 200, 500, 600, 700, 850, 900, 1000, 1100, 1200],
   FOCUS: {
     1: { desktop: { cx: 0.50, cy: 0.50 }, mobile: { cx: 0.50, cy: 0.50 } },
     2: { desktop: { cx: 0.55, cy: 0.52 }, mobile: { cx: 0.72, cy: 0.52 } },
@@ -93,19 +103,19 @@ export const PROGRESSION = {
 
 export const DEBUG = {
   TEST_START_NEAR_INVERT_ZONE: {
-    ENABLED: false,
-    START_SCORE:190,
-    START_COLUMNS: 190,
+    ENABLED: true,
+    START_SCORE:1190,
+    START_COLUMNS: 1190,
     START_THEME: 2,
     START_AS_MERRIKH: false,
     FORCE_MEDAL_EVERY_PIPE: true,
-    NEXT_MEDAL_COLUMN: 192,
+    NEXT_MEDAL_COLUMN: 1192,
     MERRIKH_UNLOCK_COLUMN: 301,
   },
   // Force bgReady for themes in debug mode (array of theme numbers)
   // FORCE_BG_READY: [2, 3, 4, 5],
   NO_DEATH_RUN: {
-    ENABLED: false,
+    ENABLED: true,
     IGNORE_PIPE_COLLISIONS: true,
     IGNORE_WORLD_BOUNDS: false,
     AUTO_JUMP_TOGGLE_KEY: 'KeyQ',
@@ -205,6 +215,7 @@ export const ASSETS = {
     9: './assets/background2.png',    // theme 9 uses theme 2's background
     10: './assets/background3.png',   // theme 10 uses theme 3's background
     11: './assets/Untitled_Artwork.png', // theme 11 uses theme 1's background (for now)
+    12: './assets/background2.png',
   },
   SPIRES: {
     1: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },
@@ -217,6 +228,7 @@ export const ASSETS = {
     9: { tile: './assets/rock_spire_bottom2.png', cap: './assets/rock_spire_top2.png' }, // theme 9 uses theme 2's spires
     10: { tile: './assets/rock_spire_bottom3.png', cap: './assets/rock_spire_top3.png' }, // theme 10 uses theme 3's spires
     11: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' }, // theme 11 uses theme 1's spires (for now)
+    12: { tile: './assets/coral_bottom.png', cap: './assets/coral_top.png' },
   },
   MEDALLION: './assets/medallion.png',
   APPLE_HOME: { regular: './assets/apple_regular.png', fly: './assets/apple_fly.png' },

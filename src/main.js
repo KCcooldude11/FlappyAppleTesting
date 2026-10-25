@@ -49,6 +49,11 @@ async function initializeApp() {
   // Initialize score display
   hudRender.updateScoreBadge(document.getElementById('score'), scoreTextEl, state.gameState.score);
   hudRender.updateBestBadge(bestEl, state.gameState.best);
+  hudRender.updateBreathMeter({
+    theme: state.gameState.theme,
+    remaining: state.gameState.breath.remaining,
+    max: state.gameState.breath.max,
+  });
 
   // Load initial data
   const existingName = storage.getSavedName();
@@ -183,6 +188,11 @@ function startGame(name) {
 
   // Always reset the score badge to 0 at the start of a run
   hudRender.updateScoreBadge(document.getElementById('score'), scoreTextEl, 0);
+  hudRender.updateBreathMeter({
+    theme: state.gameState.theme,
+    remaining: state.gameState.breath.remaining,
+    max: state.gameState.breath.max,
+  });
 
   uiOverlays.hideOverlay();
   uiOverlays.hideGameOver();

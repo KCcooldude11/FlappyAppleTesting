@@ -20,10 +20,11 @@ export function update(gameState, dt, scale) {
   const ignoreWorldBounds = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_WORLD_BOUNDS);
   const autoJumpEnabled = Boolean(noDeathDebug?.ENABLED && gameState.debug.autoJumpEnabled);
   const speedMult = noDeathDebug?.ENABLED ? Math.max(1, gameState.debug.speedMultiplier || 1) : 1;
-  const totalSpeedMult = speedMult;
+  const underwater = C.UNDERWATER.THEMES.includes(gameState.theme);
+  const totalSpeedMult = speedMult * (underwater ? C.UNDERWATER.PIPE_SPEED_MULTIPLIER : 1);
 
   const physics_params = {
-    gravity: C.PHYSICS.GRAVITY * scale,
+    gravity: C.PHYSICS.GRAVITY * scale * (underwater ? C.UNDERWATER.GRAVITY_MULTIPLIER : 1),
     jumpVy: C.PHYSICS.JUMP_VY * scale,
     pipeSpeed: C.PHYSICS.PIPE_SPEED * scale * totalSpeedMult,
     pipeGap: Math.round(C.PHYSICS.PIPE_GAP * scale),
@@ -120,7 +121,7 @@ export function update(gameState, dt, scale) {
         medal_r.type = 'apple_invert_reset';
       }
       gameState.medallions.push(medal_r);
-      gameState.nextMedalColumn = gameState.columnsSpawned + medalEntity.nextMedalJump();
+      gameState.nextMedalColumn = gameState.columnsSpawned + medalEntity.nextMedalJump(gameState.theme);
     }
 
     gameState.lastPipeAt = C.PHYSICS.PIPE_INTERVAL_MS;
@@ -189,6 +190,9 @@ export function update(gameState, dt, scale) {
 
       if (!m.taken && dx * dx + dy * dy < rr * rr) {
         m.taken = true;
+        if (underwater) {
+          gameState.breath.remaining = gameState.breath.max;
+        }
 
 
         if (m.type === 'apple_invert_reset') {
@@ -230,7 +234,17 @@ export function update(gameState, dt, scale) {
       }
     }
 
-    gameState.medallions = gameState.medallions.filter(m => !m.taken && m.x + m.size > -40 * scale);
+    const remainingMedallions = [];
+    for (const m of gameState.medallions) {
+      if (!m.taken && m.x + m.size <= -40 * scale && underwater) {
+        gameState.breath.remaining = Math.max(0, gameState.breath.remaining - 1);
+        if (gameState.breath.remaining === 0) {
+          return { collision: true, type: 'out_of_air' };
+        }
+      }
+      if (!m.taken && m.x + m.size > -40 * scale) remainingMedallions.push(m);
+    }
+    gameState.medallions = remainingMedallions;
   }
 
 

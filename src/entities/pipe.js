@@ -10,10 +10,8 @@ export function createPipe(x, topH, gapY) {
   };
 }
 
-export function quantizeSpireHeight(desiredH, imgTile, imgCap) {
-  const sx = getSpireScaleX(imgTile);
-  const tileH = (imgTile?.height ? imgTile.height : C.SPIRE.SEG_SRC_TILE_H) * sx;
-  const capH = (imgCap?.height || 0) * sx;
+export function quantizeSpireHeight(desiredH, imgTile, imgCap, pipeWidth = C.PHYSICS.PIPE_WIDTH) {
+  const { tileH, capH } = getScaledSpireHeights(imgTile, imgCap, pipeWidth);
 
   if (tileH <= 0) return desiredH;
 
@@ -29,6 +27,13 @@ export function getSpireScaleX(imgTile, pipeWidth) {
 
 export function getScaledSpireHeights(imgTile, imgCap, pipeWidth) {
   const sx = pipeWidth / (imgTile?.width || 1);
+  if (imgTile?.width > 100) {
+    return {
+      tileH: pipeWidth * 1.25,
+      capH: pipeWidth * 1.2,
+      sx,
+    };
+  }
   const tileH = (imgTile?.height ? imgTile.height : C.SPIRE.SEG_SRC_TILE_H) * sx;
   const capH = (imgCap?.height || 0) * sx;
   return { tileH, capH, sx };
@@ -53,9 +58,9 @@ export function spawnPipePair(
 
   // Quantize to current theme's tiles
   if (segReady.tile) {
-    const qTop = quantizeSpireHeight(topY, segTile, segCap);
+    const qTop = quantizeSpireHeight(topY, segTile, segCap, pipeWidth);
     const desiredBottomH = screenH - (qTop + pipeGap);
-    const qBottom = quantizeSpireHeight(desiredBottomH, segTile, segCap);
+    const qBottom = quantizeSpireHeight(desiredBottomH, segTile, segCap, pipeWidth);
     const total = qTop + pipeGap + qBottom;
     if (total <= screenH - marginBot) topY = qTop;
   }
@@ -72,9 +77,9 @@ export function spawnPipePair(
     topY = Math.max(marginTop, Math.min(topY, screenH - marginBot - pipeGap));
 
     if (segReady.tile) {
-      const qTop = quantizeSpireHeight(topY, segTile, segCap);
+      const qTop = quantizeSpireHeight(topY, segTile, segCap, pipeWidth);
       const desiredBottomH = screenH - (qTop + pipeGap);
-      const qBottom = quantizeSpireHeight(desiredBottomH, segTile, segCap);
+      const qBottom = quantizeSpireHeight(desiredBottomH, segTile, segCap, pipeWidth);
       const total = qTop + pipeGap + qBottom;
       topY = total <= screenH - marginBot ? qTop : topY;
     }

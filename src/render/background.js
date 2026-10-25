@@ -14,6 +14,7 @@ const bgCache = {
   9: { w: 0, h: 0, dpr: 0, canvas: null },
   10: { w: 0, h: 0, dpr: 0, canvas: null },
   11: { w: 0, h: 0, dpr: 0, canvas: null },
+  12: { w: 0, h: 0, dpr: 0, canvas: null },
 };
 
 export function invalidateBgCache() {
@@ -85,6 +86,7 @@ export function drawBackground(theme, transition, frameNow) {
   if (!transition) {
     const can = ensureBgCached(theme, vw, vh);
     if (can) ctx.drawImage(can, 0, 0, vw, vh);
+    if (C.UNDERWATER.THEMES.includes(theme)) drawUnderwaterEffects(ctx, vw, vh, frameNow);
     return;
   }
 
@@ -100,6 +102,46 @@ export function drawBackground(theme, transition, frameNow) {
   if (toCan) {
     ctx.globalAlpha = a;
     ctx.drawImage(toCan, 0, 0, vw, vh);
+  }
+  ctx.restore();
+  if (C.UNDERWATER.THEMES.includes(theme) || C.UNDERWATER.THEMES.includes(transition.to)) {
+    drawUnderwaterEffects(ctx, vw, vh, frameNow);
+  }
+}
+
+function drawUnderwaterEffects(ctx, vw, vh, frameNow) {
+  const t = frameNow / 1000;
+  ctx.save();
+  ctx.globalAlpha = 0.2;
+  for (let i = 0; i < 5; i++) {
+    const x = vw * (0.12 + i * 0.22) + Math.sin(t * 0.35 + i) * 35;
+    const gradient = ctx.createLinearGradient(x, 0, x + 70, vh);
+    gradient.addColorStop(0, 'rgba(215, 255, 255, 0.7)');
+    gradient.addColorStop(0.5, 'rgba(90, 220, 240, 0.08)');
+    gradient.addColorStop(1, 'rgba(0, 100, 170, 0)');
+    ctx.fillStyle = gradient;
+    ctx.beginPath();
+    ctx.moveTo(x - 35, 0);
+    ctx.lineTo(x + 35, 0);
+    ctx.lineTo(x + 95, vh);
+    ctx.lineTo(x - 20, vh);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  ctx.globalAlpha = 0.32;
+  for (let i = 0; i < 7; i++) {
+    const x = ((i * 173 + t * (8 + i)) % (vw + 140)) - 70;
+    const y = vh * (0.22 + (i % 4) * 0.18) + Math.sin(t * 0.8 + i) * 12;
+    const length = 34 + (i % 3) * 16;
+    ctx.fillStyle = 'rgba(12, 34, 58, 0.85)';
+    ctx.beginPath();
+    ctx.ellipse(x, y, length, 7, Math.sin(i) * 0.15, 0, Math.PI * 2);
+    ctx.moveTo(x - length, y);
+    ctx.lineTo(x - length - 15, y - 8);
+    ctx.lineTo(x - length - 15, y + 8);
+    ctx.closePath();
+    ctx.fill();
   }
   ctx.restore();
 }

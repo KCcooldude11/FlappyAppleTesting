@@ -11,6 +11,7 @@ import * as themeSys from './systems/theme-manager.js';
 import * as bgEntity from './entities/background.js';
 import * as updateModule from './update.js';
 import * as rainMod from './render/medallion-rain.js';
+import * as hudRender from './render/hud.js';
 
 
 let lastTime = 0;
@@ -83,6 +84,11 @@ export function gameLoop(t) {
 
   // Update game state
   const collisionResult = updateModule.update(state.gameState, dt, renderer.getScale());
+  hudRender.updateBreathMeter({
+    theme: state.gameState.theme,
+    remaining: state.gameState.breath.remaining,
+    max: state.gameState.breath.max,
+  });
 
   // Update score display if changed
   if (state.gameState.score !== lastDisplayedScore && onScoreUpdateCallback) {
@@ -108,6 +114,7 @@ export function gameLoop(t) {
     9: bgEntity.backgroundReady[9],
     10: bgEntity.backgroundReady[10],
     11: bgEntity.backgroundReady[11],
+    12: bgEntity.backgroundReady[12],
   };
   // Debug: force bgReady for selected themes and stub backgrounds if missing
   if (C.DEBUG.FORCE_BG_READY && Array.isArray(C.DEBUG.FORCE_BG_READY)) {
@@ -264,7 +271,7 @@ export function render() {
       spiresRender.drawAllPipes(state.gameState.pipes, state.gameState.theme, vh);
 
       // Medallions
-      medallionsRender.drawMedallions(state.gameState.medallions);
+      medallionsRender.drawMedallions(state.gameState.medallions, state.gameState.theme);
 
       // Bird: always draw here for all themes
       birdRender.drawBird(

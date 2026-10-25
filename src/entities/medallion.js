@@ -12,9 +12,14 @@ export function createMedallion(x, y, size, special = false) {
   };
 }
 
-export function nextMedalJump() {
+export function nextMedalJump(theme = 1) {
   if (C.DEBUG?.TEST_START_NEAR_INVERT_ZONE?.ENABLED && C.DEBUG.TEST_START_NEAR_INVERT_ZONE.FORCE_MEDAL_EVERY_PIPE) {
     return 1;
+  }
+  if (C.UNDERWATER.THEMES.includes(theme)) {
+    return C.UNDERWATER.MEDAL_MIN_JUMP + Math.floor(
+      Math.random() * (C.UNDERWATER.MEDAL_MAX_JUMP - C.UNDERWATER.MEDAL_MIN_JUMP + 1)
+    );
   }
   return 13 + Math.floor(Math.random() * 8); // [13..20]
 }

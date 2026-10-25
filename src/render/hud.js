@@ -41,5 +41,17 @@ export function updateBestBadge(bestEl, bestScore) {
     } else {
       bestEl.textContent = 'Best: ' + bestScore;
     }
+
+    export function updateBreathMeter(breath) {
+      const meter = document.getElementById('breath-meter');
+      if (!meter) return;
+      const isUnderwater = C.UNDERWATER.THEMES.includes(breath.theme);
+      meter.classList.toggle('hide', !isUnderwater);
+      if (!isUnderwater) return;
+      meter.setAttribute('aria-label', `Air bubbles remaining: ${breath.remaining} of ${breath.max}`);
+      meter.innerHTML = Array.from({ length: breath.max }, (_, index) =>
+        `<span class="breath-bubble${index < breath.remaining ? '' : ' empty'}" aria-hidden="true"></span>`
+      ).join('');
+    }
   }
 }
