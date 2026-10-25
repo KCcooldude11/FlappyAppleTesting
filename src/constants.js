@@ -215,7 +215,7 @@ export const ASSETS = {
     9: './assets/background2.png',    // theme 9 uses theme 2's background
     10: './assets/background3.png',   // theme 10 uses theme 3's background
     11: './assets/Untitled_Artwork.png', // theme 11 uses theme 1's background (for now)
-    12: './assets/background2.png',
+    12: './assets/ocean_theme12.svg',
   },
   SPIRES: {
     1: { tile: './assets/rock_spire_bottom.png', cap: './assets/rock_spire_top.png' },

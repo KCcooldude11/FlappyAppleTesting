@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="720" viewBox="0 0 960 720">
+  <defs>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b6f9e"/>
+      <stop offset=".52" stop-color="#07547f"/>
+      <stop offset="1" stop-color="#032d56"/>
+    </linearGradient>
+    <linearGradient id="light" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#bdf7ff" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#bdf7ff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="720" fill="url(#water)"/>
+
+  <path fill="url(#light)" d="M70 0h100l150 480H210zm250 0h90l100 440h-90zm260 0h120l100 500H690z"/>
+
+  <g fill="#042b4c" opacity=".7">
+    <path d="M0 600c80-34 130-22 190 8 55-38 120-36 178-2 62-44 130-37 190 4 70-43 135-39 202 2 65-28 133-27 200 9v99H0z"/>
+    <path d="M120 614c0-86 20-126 38-155 18 29 28 73 20 155zm54 0c-8-65 8-108 34-145 17 38 18 89 7 145zm650 0c0-76 17-116 38-149 18 34 25 84 17 149zm52 0c-5-52 12-91 34-122 15 34 16 78 7 122z"/>
+  </g>
+
+  <g fill="none" stroke="#9defff" stroke-width="4" opacity=".28">
+    <path d="M90 164c40-26 80-26 120 0s80 26 120 0"/>
+    <path d="M590 238c42-28 84-28 126 0s84 28 126 0"/>
+    <path d="M250 360c36-22 72-22 108 0s72 22 108 0"/>
+  </g>
+
+  <g fill="#b9f6ff" opacity=".52">
+    <circle cx="118" cy="278" r="5"/>
+    <circle cx="145" cy="240" r="3"/>
+    <circle cx="820" cy="330" r="4"/>
+    <circle cx="850" cy="286" r="7"/>
+    <circle cx="530" cy="150" r="4"/>
+    <circle cx="560" cy="110" r="2"/>
+  </g>
+</svg>
