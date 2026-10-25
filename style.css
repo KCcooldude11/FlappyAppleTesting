@@ -95,14 +95,6 @@ pre, code, table, .table { max-width: 100%; overflow-x: auto; }
   font-display: swap;
 }
 
-@font-face{
-  font-family: 'PressStart2P';
-  src: url('./assets/PressStart2P-vaV7.ttf') format('truetype');
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
-
 /* Apply custom font to key UI */
 body, #overlay, #gameover, #score, #best, button, .btn {
   font-family: 'WitcherKnight', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -190,17 +182,12 @@ body {
   pointer-events: none;
 }
 
-#score .score-label {
-  display: none;
-}
-
 #best {
   background: rgba(255,255,255,.7);
   padding: 0 var(--space-2);
   border-radius: var(--r-12);
   font-size: var(--fs-2);
 }
-.best-label-theme11 { display: none; }
 #btn-restart {
   pointer-events: auto;
   border: 0;
@@ -305,9 +292,6 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  max-width: 100%;
-  flex-wrap: wrap;
   gap: calc(0.9 * var(--u));
 }
 
@@ -321,15 +305,11 @@ body {
   align-items: center;
   justify-content: center;
   width: calc(3.05 * var(--u) * var(--score-scale) * var(--score-width-scale));
-  max-width: 100%;
-  flex-shrink: 1;
   height: calc(4.6 * var(--u) * var(--score-scale) * var(--score-height-scale));
   font-size: calc(var(--fs-1) * (1 + (var(--score-scale) - 1) * 0.26) * var(--score-font-scale));
   font-weight: 700;
   color: #111;
   line-height: 1;
-  min-width: 0;
-  overflow: hidden;
   padding-inline: calc(0.18 * var(--u));
   font-variant-numeric: tabular-nums;
   background: var(--c-amber);
@@ -1254,282 +1234,5 @@ body[data-state="ready"] #best{
   #best{
     font-size: calc(var(--fs-2) * 1.15);
     padding: calc(var(--space-1) * 1.10) calc(var(--space-2) * 1.25);
-  }
-}
-
-/* =========================
-   Theme 11: CRT arcade UI
-   ========================= */
-body[data-theme="11"] {
-  --arcade-ink: #f7f0cf;
-  --arcade-amber: #ffca3a;
-  --arcade-cyan: #48f4e8;
-  --arcade-pink: #ff4f9a;
-  --arcade-panel: rgba(12, 17, 28, 0.94);
-  --arcade-line: rgba(72, 244, 232, 0.82);
-  color: var(--arcade-ink);
-}
-
-body[data-theme="11"] #hud,
-body[data-theme="11"] #overlay,
-body[data-theme="11"] #gameover,
-body[data-theme="11"] #support-links,
-body[data-theme="11"] #rename-dlg,
-body[data-theme="11"] button,
-body[data-theme="11"] input,
-body[data-theme="11"] #score,
-body[data-theme="11"] #best {
-  font-family: 'PressStart2P', 'Courier New', monospace;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-shadow: 0.08em 0 var(--arcade-pink), -0.08em 0 var(--arcade-cyan);
-}
-
-body[data-theme="11"] #hud {
-  filter: drop-shadow(0 0 0.35rem rgba(72, 244, 232, 0.55));
-}
-
-body[data-theme="11"] #score::before,
-body[data-theme="11"] #score::after {
-  border-left-color: var(--arcade-amber);
-  border-right-color: var(--arcade-amber);
-}
-
-body[data-theme="11"] #score::before { border-bottom-color: var(--arcade-amber); }
-body[data-theme="11"] #score::after { border-top-color: var(--arcade-amber); }
-
-body[data-theme="11"] #score {
-  display: inline-flex;
-  align-items: center;
-  gap: calc(0.8 * var(--u));
-  width: min(11 * var(--u), 34vw);
-  min-height: calc(4.5 * var(--u));
-  justify-content: center;
-  padding: calc(0.75 * var(--u)) calc(1.1 * var(--u));
-  border: 0.12rem solid var(--arcade-amber);
-  background: var(--arcade-panel);
-  box-shadow: 0.18rem 0.18rem 0 var(--arcade-pink), 0 0 0.8rem rgba(72, 244, 232, 0.35);
-  filter: none;
-  white-space: nowrap;
-}
-
-body[data-theme="11"] #score::before,
-body[data-theme="11"] #score::after {
-  display: none;
-}
-
-body[data-theme="11"] #score .score-label {
-  display: inline;
-  position: static;
-  width: auto;
-  transform: none;
-  font-size: calc(0.58 * var(--u));
-  line-height: 1;
-  color: var(--arcade-cyan);
-  pointer-events: none;
-}
-
-body[data-theme="11"] #score .score-value {
-  position: static;
-  width: auto;
-  transform: none;
-  font-size: calc(0.95 * var(--u));
-  line-height: 1;
-  color: var(--arcade-amber);
-  pointer-events: none;
-}
-
-body[data-theme="11"] #best,
-body[data-theme="11"] #btn-restart {
-  border: 0.12rem solid var(--arcade-line);
-  border-radius: 0;
-  background: var(--arcade-panel);
-  color: var(--arcade-ink);
-  box-shadow: 0.2rem 0.2rem 0 var(--arcade-pink), 0 0 0.8rem rgba(72, 244, 232, 0.35);
-}
-
-body[data-theme="11"] #best {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: min(11 * var(--u), 34vw);
-  min-height: calc(4.5 * var(--u));
-  padding: calc(0.8 * var(--u)) calc(1.25 * var(--u));
-  gap: calc(0.35 * var(--u));
-  font-size: calc(0.72 * var(--u));
-  line-height: 1.15;
-  white-space: nowrap;
-}
-
-body[data-theme="11"] #best .best-label {
-  font-size: calc(0.52 * var(--u));
-  line-height: 1;
-  color: var(--arcade-cyan);
-}
-
-body[data-theme="11"] #best .best-value {
-  font-size: calc(0.78 * var(--u));
-  line-height: 1;
-  color: var(--arcade-amber);
-}
-
-body[data-theme="11"] .best-label-default { display: none; }
-body[data-theme="11"] .best-label-theme11 { display: inline; }
-
-body[data-theme="11"] #btn-restart:hover,
-body[data-theme="11"] #btn-restart:focus-visible {
-  color: var(--arcade-amber);
-  outline: 0.12rem solid var(--arcade-amber);
-  outline-offset: 0.15rem;
-}
-
-body[data-theme="11"] #overlay .overlay-medallion__fill {
-  background: var(--arcade-panel);
-  border: 0.16rem solid var(--arcade-amber);
-  box-shadow: 0 0 0 0.24rem #10131e, 0 0 0 0.36rem var(--arcade-cyan), 0 0 2rem rgba(72, 244, 232, 0.35);
-}
-
-body[data-theme="11"] #overlay .overlay-medallion__inner .field > span,
-body[data-theme="11"] #overlay .overlay-medallion__inner .field input,
-body[data-theme="11"] #overlay #btn-play {
-  color: var(--arcade-ink);
-  text-shadow: 0.08em 0 var(--arcade-pink), -0.08em 0 var(--arcade-cyan);
-}
-
-body[data-theme="11"] #overlay .overlay-medallion__inner .field input,
-body[data-theme="11"] #rename-input {
-  border: 0.12rem solid var(--arcade-cyan);
-  border-radius: 0;
-  background: #080b13;
-  color: var(--arcade-ink);
-  box-shadow: inset 0 0 0 0.12rem rgba(255, 79, 154, 0.45);
-}
-
-body[data-theme="11"] #overlay #btn-play,
-body[data-theme="11"] #btn-try,
-body[data-theme="11"] #rename-save {
-  border: 0.12rem solid var(--arcade-amber);
-  border-radius: 0;
-  background: var(--arcade-amber);
-  color: #111522;
-  box-shadow: 0.24rem 0.24rem 0 var(--arcade-pink), 0 0 1rem rgba(255, 202, 58, 0.35);
-  text-shadow: none;
-  text-transform: uppercase;
-}
-
-body[data-theme="11"] #overlay #btn-play:hover,
-body[data-theme="11"] #btn-try:hover,
-body[data-theme="11"] #rename-save:hover {
-  background: var(--arcade-cyan);
-  border-color: var(--arcade-cyan);
-}
-
-body[data-theme="11"] #gameover .go-card,
-body[data-theme="11"] #gameover .leaderboard {
-  border: 0.14rem solid var(--arcade-cyan);
-  border-radius: 0;
-  background: var(--arcade-panel);
-  box-shadow: 0.3rem 0.3rem 0 var(--arcade-pink), 0 0 1.4rem rgba(72, 244, 232, 0.3);
-}
-
-body[data-theme="11"] #gameover .go-card h2,
-body[data-theme="11"] #gameover .profile-line {
-  background: rgba(255, 202, 58, 0.18);
-  color: var(--arcade-amber);
-  border-bottom: 0.12rem solid var(--arcade-amber);
-}
-
-body[data-theme="11"] #gameover .go-score-line,
-body[data-theme="11"] #gameover .username-label,
-body[data-theme="11"] #gameover .lb-title,
-body[data-theme="11"] #gameover .lb-head,
-body[data-theme="11"] #gameover .lb-rows,
-body[data-theme="11"] #gameover .your-rank {
-  color: var(--arcade-ink);
-}
-
-body[data-theme="11"] #gameover .go-score-line {
-  width: 100%;
-  max-width: 100%;
-  flex-wrap: wrap;
-  gap: calc(0.7 * var(--u));
-}
-
-body[data-theme="11"] #gameover #go-score.go-score-medallion {
-  width: min(calc(3.25 * var(--u) * var(--score-scale) * var(--score-width-scale)), 100%);
-  height: calc(4.45 * var(--u) * var(--score-scale) * var(--score-height-scale));
-  flex: 0 1 auto;
-  padding: 0 calc(0.45 * var(--u));
-  border: 0.14rem solid var(--arcade-amber);
-  border-radius: 0;
-  -webkit-clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  font-family: 'PressStart2P', 'Courier New', monospace;
-  font-size: calc(var(--fs-1) * var(--score-font-scale));
-  overflow: hidden;
-  white-space: nowrap;
-  background: var(--arcade-amber);
-  color: #111522;
-  filter: drop-shadow(0 0 0.5rem rgba(255, 202, 58, 0.6));
-  text-shadow: none;
-}
-
-body[data-theme="11"] .icon-btn {
-  border-radius: 0;
-  color: var(--arcade-cyan);
-}
-
-body[data-theme="11"] .icon-btn:hover,
-body[data-theme="11"] .icon-btn:focus-visible {
-  background: rgba(72, 244, 232, 0.18);
-  outline: 0.1rem solid var(--arcade-cyan);
-}
-
-body[data-theme="11"] #support-links a {
-  border-radius: 0;
-  border-color: var(--arcade-cyan);
-  background: var(--arcade-panel);
-  color: var(--arcade-ink);
-  box-shadow: 0.16rem 0.16rem 0 var(--arcade-pink);
-}
-
-@media (max-width: 700px) {
-  body[data-theme="11"] #score {
-    width: clamp(150px, 38vw, 190px);
-    min-height: clamp(52px, 13vw, 72px);
-    padding: clamp(9px, 2.5vw, 14px) clamp(14px, 3.6vw, 20px);
-  }
-
-  body[data-theme="11"] #best {
-    width: clamp(102px, 27vw, 154px);
-    min-height: clamp(48px, 12vw, 66px);
-    padding: clamp(8px, 2.2vw, 12px) clamp(10px, 2.8vw, 16px);
-  }
-
-  body[data-theme="11"] #score .score-label {
-    font-size: clamp(8px, 2.2vw, 12px);
-  }
-
-  body[data-theme="11"] #score .score-value {
-    font-size: clamp(13px, 3.6vw, 18px);
-    white-space: nowrap;
-  }
-
-  body[data-theme="11"] #best .best-label {
-    font-size: clamp(7px, 1.75vw, 10px);
-  }
-
-  body[data-theme="11"] #best .best-value {
-    font-size: clamp(12px, 3vw, 16px);
-  }
-
-  body[data-theme="11"] #gameover .go-card h2 {
-    font-size: clamp(18px, 5vw, 24px);
-    line-height: 1.25;
-    margin-top: calc(-0.35 * var(--space-2));
-    padding-top: calc(0.9 * var(--u));
-    padding-bottom: calc(0.8 * var(--u));
-    white-space: nowrap;
   }
 }

@@ -12,11 +12,6 @@ export function createMedallion(x, y, size, special = false) {
   };
 }
 
-export function markAsStarPowerup(medallion) {
-  medallion.type = 'star_powerup';
-  return medallion;
-}
-
 export function nextMedalJump() {
   if (C.DEBUG?.TEST_START_NEAR_INVERT_ZONE?.ENABLED && C.DEBUG.TEST_START_NEAR_INVERT_ZONE.FORCE_MEDAL_EVERY_PIPE) {
     return 1;

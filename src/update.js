@@ -20,9 +20,7 @@ export function update(gameState, dt, scale) {
   const ignoreWorldBounds = Boolean(noDeathDebug?.ENABLED && noDeathDebug.IGNORE_WORLD_BOUNDS);
   const autoJumpEnabled = Boolean(noDeathDebug?.ENABLED && gameState.debug.autoJumpEnabled);
   const speedMult = noDeathDebug?.ENABLED ? Math.max(1, gameState.debug.speedMultiplier || 1) : 1;
-  const starPowerupActive = gameState.frameNow < gameState.starPowerup.activeUntil;
-  const powerupSpeedMult = starPowerupActive ? C.STAR_POWERUP.SPEED_MULTIPLIER : 1;
-  const totalSpeedMult = speedMult * powerupSpeedMult;
+  const totalSpeedMult = speedMult;
 
   const physics_params = {
     gravity: C.PHYSICS.GRAVITY * scale,
@@ -121,17 +119,6 @@ export function update(gameState, dt, scale) {
       if (!gameState.post500AppleResetDone && gameState.score > C.PROGRESSION.RESET_TO_APPLE_AT_SCORE && gameState.theme < C.THEME.THRESHOLDS[3]) {
         medal_r.type = 'apple_invert_reset';
       }
-      if (
-        medal_r.type === 'regular' &&
-        C.DEBUG?.STAR_MEDALLION_TEST?.ENABLED &&
-        C.DEBUG.STAR_MEDALLION_TEST.FORCE_NEXT_REGULAR_MEDALLION &&
-        !gameState.debug.starMedallionSpawned
-      ) {
-        medalEntity.markAsStarPowerup(medal_r);
-        gameState.debug.starMedallionSpawned = true;
-      } else if (medal_r.type === 'regular' && Math.random() < C.STAR_POWERUP.SPAWN_CHANCE) {
-        medalEntity.markAsStarPowerup(medal_r);
-      }
       gameState.medallions.push(medal_r);
       gameState.nextMedalColumn = gameState.columnsSpawned + medalEntity.nextMedalJump();
     }
@@ -153,7 +140,7 @@ export function update(gameState, dt, scale) {
 
   // World bounds
   const screenHeight = renderer.getCanvasHeight();
-  if (!starPowerupActive && !ignoreWorldBounds && (gameState.bird.y - gameState.bird.r <= 0 || gameState.bird.y + gameState.bird.r >= screenHeight)) {
+  if (!ignoreWorldBounds && (gameState.bird.y - gameState.bird.r <= 0 || gameState.bird.y + gameState.bird.r >= screenHeight)) {
     return { collision: true, type: 'bounds' };
   }
 
@@ -163,7 +150,6 @@ export function update(gameState, dt, scale) {
 
   for (let p of gameState.pipes) {
     if (
-      !starPowerupActive &&
       !ignorePipeCollisions &&
       physics.checkPipeCollision(
         gameState.bird,
@@ -238,9 +224,6 @@ export function update(gameState, dt, scale) {
           if (C.MEDALS.LOCK_AFTER_MERRIKH) {
             gameState.skinLocked = true;
           }
-        } else if (m.type === 'star_powerup') {
-          gameState.starPowerup.activeUntil =
-            gameState.frameNow + C.STAR_POWERUP.DURATION_MS;
         } else {
           skinSys.advanceSkinOneStep(gameState, C.PHYSICS.BIRD_RADIUS_RATIO);
         }
