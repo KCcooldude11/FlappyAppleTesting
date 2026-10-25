@@ -106,7 +106,7 @@ export const DEBUG = {
     ENABLED: true,
     START_SCORE:1190,
     START_COLUMNS: 1190,
-    START_THEME: 2,
+    START_THEME: 11,
     START_AS_MERRIKH: false,
     FORCE_MEDAL_EVERY_PIPE: true,
     NEXT_MEDAL_COLUMN: 1192,
