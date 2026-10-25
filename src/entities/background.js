@@ -58,11 +58,19 @@ export const spiresReady = {
 
 export function initializeBackgrounds() {
   for (const themeId of Object.keys(C.ASSETS.BACKGROUNDS).map(Number)) {
+    if (!backgrounds[themeId]) {
+      backgrounds[themeId] = new Image();
+      backgroundReady[themeId] = false;
+    }
     backgrounds[themeId].src = C.ASSETS.BACKGROUNDS[themeId];
     backgrounds[themeId].onload = () => (backgroundReady[themeId] = true);
   }
 
   for (const themeId of Object.keys(C.ASSETS.SPIRES).map(Number)) {
+    if (!spires[themeId]) {
+      spires[themeId] = { tile: new Image(), cap: new Image() };
+      spiresReady[themeId] = { tile: false, cap: false };
+    }
     spires[themeId].tile.src = C.ASSETS.SPIRES[themeId].tile;
     spires[themeId].cap.src = C.ASSETS.SPIRES[themeId].cap;
 
