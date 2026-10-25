@@ -182,12 +182,33 @@ body {
   pointer-events: none;
 }
 
+#score .score-label {
+  display: none;
+}
+
+body[data-theme="11"] #score .score-label {
+  display: inline;
+}
+
 #best {
   background: rgba(255,255,255,.7);
   padding: 0 var(--space-2);
   border-radius: var(--r-12);
   font-size: var(--fs-2);
 }
+
+#best .best-label-theme11 {
+  display: none;
+}
+
+body[data-theme="11"] #best .best-label-default {
+  display: none;
+}
+
+body[data-theme="11"] #best .best-label-theme11 {
+  display: inline;
+}
+
 #btn-restart {
   pointer-events: auto;
   border: 0;
